@@ -1,0 +1,1632 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>理科のフシギ — 身のまわりから始まる科学の物語</title>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&family=Kiwi+Maru:wght@300;400;500&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f8fa;--card:#fff;--accent:#2e7d6f;--accent-light:#6ab8a7;--accent-bg:#e4f2ef;--text:#2d3a36;--text-light:#6b7d76;--highlight:#d4a843;--highlight-bg:#fdf6e3;--tip-bg:#e8f0f8;--tip-accent:#4a7eaa;--danger-bg:#fde8e8;--danger-accent:#c45a5a;--shadow:0 2px 16px rgba(46,125,111,.08);--shadow-hover:0 4px 24px rgba(46,125,111,.15);--radius:16px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text);line-height:1.9;font-size:16px;-webkit-font-smoothing:antialiased}
+.top-page{min-height:100vh;padding:0 16px 40px}
+.top-header{text-align:center;padding:48px 0 12px}
+.top-header h1{font-family:'Zen Maru Gothic',sans-serif;font-weight:900;font-size:28px;color:var(--accent);margin-bottom:8px;letter-spacing:-.5px}
+.top-header .subtitle{font-family:'Kiwi Maru',serif;font-size:14px;color:var(--text-light);font-weight:300}
+.top-stats{display:flex;justify-content:center;gap:24px;margin:16px 0 8px;font-size:13px;color:var(--text-light)}
+.search-wrap{max-width:600px;margin:16px auto 0;position:relative}
+.search-input{width:100%;padding:12px 16px 12px 40px;border-radius:12px;border:1.5px solid #c5d8d3;background:#fff;font-size:14px;font-family:'Noto Sans JP',sans-serif;outline:none;transition:border-color .2s}
+.search-input:focus{border-color:var(--accent-light)}
+.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:16px;color:var(--text-light)}
+.chapter-list{max-width:600px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
+.chapter-card{background:var(--card);border-radius:var(--radius);padding:16px 18px;display:flex;align-items:center;gap:14px;cursor:pointer;box-shadow:var(--shadow);transition:all .25s ease;border:1.5px solid transparent;opacity:0;animation:fadeUp .4s ease forwards}
+.chapter-card:hover{box-shadow:var(--shadow-hover);border-color:var(--accent-light);transform:translateY(-2px)}
+.chapter-num{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent-light));color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Zen Maru Gothic',sans-serif;font-weight:700;font-size:14px;flex-shrink:0}
+.chapter-info{flex:1;min-width:0}
+.chapter-title{font-family:'Zen Maru Gothic',sans-serif;font-weight:700;font-size:14.5px;line-height:1.5}
+.chapter-desc{font-size:11.5px;color:var(--text-light);margin-top:1px;line-height:1.4}
+.chapter-tag{font-size:10px;padding:3px 8px;border-radius:20px;font-weight:500;flex-shrink:0;white-space:nowrap}
+.tag-physics{background:#e0e8f8;color:#4a5eaa}.tag-chemistry{background:#f0e0f4;color:#8a4e9a}.tag-biology{background:#e0f4e4;color:#4a8a5e}.tag-earth{background:#f0ece0;color:#8a7a4e}.tag-exam{background:#f8e8e0;color:#aa6a4a}.tag-mind{background:#e0eef0;color:#4e7a8a}
+.tag-filters{max-width:600px;margin:12px auto 0;display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.tag-filter{padding:6px 14px;border-radius:20px;border:1.5px solid #c5d8d3;background:#fff;font-size:12px;font-family:'Zen Maru Gothic',sans-serif;font-weight:500;cursor:pointer;transition:all .2s;color:var(--text-light)}
+.tag-filter:hover{border-color:var(--accent-light);color:var(--accent)}
+.tag-filter.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.section-label{font-family:'Zen Maru Gothic',sans-serif;font-weight:700;font-size:13px;color:var(--accent);letter-spacing:1px;margin:28px 0 12px;padding-left:4px;max-width:600px;margin-left:auto;margin-right:auto}
+.reading-page{display:none;min-height:100vh;padding:0 0 80px}
+.reading-header{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-light) 100%);padding:20px 20px 28px;color:#fff;position:sticky;top:0;z-index:100}
+.back-btn{background:rgba(255,255,255,.2);border:none;color:#fff;padding:8px 16px;border-radius:20px;font-size:13px;font-family:'Zen Maru Gothic',sans-serif;font-weight:500;cursor:pointer;transition:background .2s}
+.back-btn:hover{background:rgba(255,255,255,.3)}
+.reading-title{font-family:'Zen Maru Gothic',sans-serif;font-weight:900;font-size:21px;margin-top:12px;line-height:1.4}
+.reading-meta{font-size:12px;opacity:.8;margin-top:6px;font-weight:300}
+.progress-bar{height:3px;background:rgba(255,255,255,.2);border-radius:2px;margin-top:12px;overflow:hidden}
+.progress-fill{height:100%;background:#fff;border-radius:2px;transition:width .4s ease}
+.reading-body{max-width:640px;margin:0 auto;padding:28px 20px}
+.reading-body h2{font-family:'Zen Maru Gothic',sans-serif;font-weight:900;font-size:20px;color:var(--accent);margin:36px 0 16px;padding-bottom:8px;border-bottom:2px solid var(--accent-bg)}
+.reading-body h2:first-child{margin-top:0}
+.reading-body h3{font-family:'Zen Maru Gothic',sans-serif;font-weight:700;font-size:17px;color:var(--text);margin:28px 0 12px}
+.reading-body p{margin-bottom:16px;font-size:15.5px;line-height:2;text-align:justify}
+.reading-body strong{color:var(--accent);font-weight:700}
+.callout{background:var(--accent-bg);border-radius:12px;padding:16px 18px;margin:20px 0;border-left:4px solid var(--accent);font-size:14.5px;line-height:1.8}
+.callout-title{font-family:'Zen Maru Gothic',sans-serif;font-weight:700;color:var(--accent);margin-bottom:6px;font-size:14px}
+.tip-box{background:var(--tip-bg);border-radius:12px;padding:16px 18px;margin:20px 0;border-left:4px solid var(--tip-accent);font-size:14.5px;line-height:1.8}
+.tip-title{font-family:'Zen Maru Gothic',sans-serif;font-weight:700;color:var(--tip-accent);margin-bottom:6px;font-size:14px}
+.exam-box{background:var(--highlight-bg);border-radius:12px;padding:16px 18px;margin:20px 0;border-left:4px solid var(--highlight);font-size:14.5px;line-height:1.8}
+.exam-title{font-family:'Zen Maru Gothic',sans-serif;font-weight:700;color:#9a7a20;margin-bottom:6px;font-size:14px}
+.warn-box{background:var(--danger-bg);border-radius:12px;padding:16px 18px;margin:20px 0;border-left:4px solid var(--danger-accent);font-size:14.5px;line-height:1.8}
+.warn-title{font-family:'Zen Maru Gothic',sans-serif;font-weight:700;color:var(--danger-accent);margin-bottom:6px;font-size:14px}
+.example-block{background:#f0f6f4;border-radius:10px;padding:14px 16px;margin:16px 0;font-size:15px;line-height:2}
+.example-block .en{font-weight:500;color:var(--accent)}
+.example-block .ja{font-size:13px;color:var(--text-light)}
+.ref-table{width:100%;border-collapse:separate;border-spacing:0;margin:16px 0;font-size:13.5px;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(46,125,111,.06)}
+.ref-table th{background:linear-gradient(135deg,var(--accent),var(--accent-light));color:#fff;padding:8px 10px;font-family:'Zen Maru Gothic',sans-serif;font-weight:700;text-align:left;font-size:12px;white-space:nowrap}
+.ref-table td{padding:7px 10px;border-bottom:1px solid #dceee9;line-height:1.65;vertical-align:top}
+.ref-table tr:last-child td{border-bottom:none}
+.ref-table tr:nth-child(even) td{background:#f0f8f5}
+.ref-table tr:hover td{background:#e4f2ef}
+.ref-table .en-cell{font-weight:500;color:var(--accent);word-break:break-word}
+.ref-table .note{font-size:12px;color:var(--text-light)}
+.chapter-nav{display:flex;gap:12px;margin-top:40px;padding-top:20px;border-top:2px solid var(--accent-bg)}
+.nav-btn{flex:1;padding:14px;border-radius:12px;border:2px solid var(--accent-bg);background:var(--card);font-family:'Zen Maru Gothic',sans-serif;font-weight:700;font-size:12px;color:var(--accent);cursor:pointer;transition:all .2s;text-align:center;line-height:1.4}
+.nav-btn:hover{background:var(--accent-bg);border-color:var(--accent-light)}
+.nav-btn:disabled{opacity:.3;cursor:not-allowed}
+.scroll-top{position:fixed;bottom:24px;right:24px;width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent-light));color:#fff;border:none;font-size:20px;cursor:pointer;box-shadow:0 4px 16px rgba(46,125,111,.3);display:none;align-items:center;justify-content:center;z-index:200;transition:transform .2s}
+.scroll-top:hover{transform:scale(1.1)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:480px){.top-header h1{font-size:24px}.reading-title{font-size:18px}.reading-body p{font-size:15px}}
+</style>
+</head>
+<body>
+<div class="top-page" id="topPage">
+  <div class="top-header">
+    <h1>🔬 理科のフシギ</h1>
+    <div class="subtitle">身のまわりから始まる、科学の「なぜ？」の物語</div>
+    <div class="top-stats"><span>📖 全<span id="totalCount">0</span>章</span></div>
+  </div>
+  <div class="search-wrap"><span class="search-icon">🔍</span><input type="text" class="search-input" id="searchInput" placeholder="キーワードで探す…" oninput="filterChapters()"></div>
+  <div class="tag-filters" id="tagFilters"></div>
+  <div class="section-label" id="label-physics">⚡ 物理のフシギ</div><div class="chapter-list" id="physicsChapters"></div>
+  <div class="section-label" id="label-chemistry">🧪 化学のフシギ</div><div class="chapter-list" id="chemistryChapters"></div>
+  <div class="section-label" id="label-biology">🌿 生物のフシギ</div><div class="chapter-list" id="biologyChapters"></div>
+  <div class="section-label" id="label-earth">🌏 地学のフシギ</div><div class="chapter-list" id="earthChapters"></div>
+  <div class="section-label" id="label-mind">🧠 理科脳のつくり方</div><div class="chapter-list" id="mindChapters"></div>
+</div>
+<div class="reading-page" id="readingPage">
+  <div class="reading-header">
+    <button class="back-btn" onclick="goBack()">← もどる</button>
+    <div class="reading-title" id="readingTitle"></div>
+    <div class="reading-meta" id="readingMeta"></div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  </div>
+  <div class="reading-body" id="readingBody"></div>
+</div>
+<button class="scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>
+const chapters = [
+{id:1,section:'physics',title:'なぜプールの底が浅く見えるのか——光の性質',desc:'光はまっすぐ進む、でも曲がることもある。その理由がわかれば世界の見え方が変わる',tag:'physics',tagLabel:'物理',time:9,
+content:`
+<h2>プールの底に手を伸ばしたら、思ったより深かった</h2>
+<p>プールに入ったとき、底を見ると「あ、浅そうだな」と思ったのに、実際に足をつけてみると思ったより深かった——こんな経験はありませんか？ あれは目の錯覚でもなんでもなく、<strong>光が水面で曲がっている</strong>せいです。</p>
+<p>光には「まっすぐ進む」という基本ルールがありますが、じつは「別の物質に入るとき、曲がる」という裏ルールもあります。光が空気から水に入ると、スピードが遅くなります。スピードが変わるとき、光の進む方向が変わる。これを<strong>屈折（くっせつ）</strong>と言います。</p>
+<p>プールの底から出た光は、水面で曲がって私たちの目に届く。でも脳は「光はまっすぐ来た」と思い込んでいるので、底の位置を実際より浅く感じてしまうのです。</p>
+<p>ざっくり言うと——<strong>「光が曲がっているのに、脳がまっすぐだと勘違いする」から浅く見える</strong>。</p>
+
+<div class="tip-box"><div class="tip-title">💡 屈折をもっと身近に感じよう</div>コップに水を入れてストローを斜めに立ててみてください。水面のところでストローが「折れ曲がって」見えますよね。でもストローは実際には曲がっていません。光が曲がったせいで、目が「曲がっている」と騙されているだけ。理科って、こういう「目に見えているものが真実とは限らない」ということを教えてくれる教科なんです。</div>
+
+<table class="ref-table">
+<tr><th>状況</th><th>光の動き</th><th>見え方</th></tr>
+<tr><td>プールの底を外から見る</td><td>水から空気に出るときに曲がる</td><td>実際より浅く見える</td></tr>
+<tr><td>水の中のストロー</td><td>水面で屈折する</td><td>折れ曲がって見える</td></tr>
+<tr><td>虫めがねで物を見る</td><td>レンズで屈折して集まる</td><td>大きく見える（虚像）</td></tr>
+</table>
+
+<h2>鏡が自分を映す仕組み——「反射」のルール</h2>
+<p>毎朝、鏡で顔をチェックしますよね。鏡に自分が映るのは、光が鏡の表面で跳ね返っているからです。これを<strong>反射</strong>と言います。</p>
+<p>反射にはひとつだけ絶対のルールがあります。<strong>「入射角＝反射角」</strong>。難しそうに聞こえますが、感覚としてはボールを床に投げたときと同じです。斜めに投げると、同じ角度で跳ね返ってくる。光も同じ。</p>
+<p>ここで大事なのは、「角度」をどこから測るかです。鏡の面ではなく、鏡に垂直な線（<strong>法線</strong>と言います）から測ります。法線から光が入ってくる角度が30°なら、跳ね返る角度も30°。ここをテストで聞かれるので注意してください。</p>
+
+<div class="callout"><div class="callout-title">📐 法線って何？——わかりやすく言うと</div>法線とは「鏡（または境界面）に対してまっすぐ垂直に引いた線」のことです。角度を測るときの基準線と思えばOK。鏡に向かって真正面から光を当てると入射角＝0°で、そのまままっすぐ跳ね返ってくる。斜めに当てると、その同じ角度で跳ね返る。これが「入射角＝反射角」。</div>
+
+<div class="callout"><div class="callout-title">🌈 虹の正体——7色に分かれる理由</div>太陽の光は「白い光」に見えますが、じつは赤・橙・黄・緑・青・藍・紫の7色の光が全部混ざっています。雨上がりに虹が見えるのは、空中に残った水滴がプリズムの役割を果たして、光を色ごとに分けているから。赤い光は曲がりにくく、紫の光は曲がりやすい。この<strong>曲がり方の違い</strong>が、あの美しい7色の帯をつくっているのです。これを<strong>光の分散</strong>と呼びます。</div>
+
+<h2>「全反射」——インターネットを支える光のワザ</h2>
+<p>水中からプールの底を見上げたことはありますか？ 真上を見ると外が見えますが、かなり斜めから見ると鏡のように反射して空が見えなくなることがある。これが<strong>全反射</strong>——光が外に出られなくなり、全部反射される現象です。</p>
+<p>全反射が起きる条件は決まっています。光が「密度の高い物質から密度の低い物質」に出ようとするとき、かつ角度がある一定以上のとき。水→空気、ガラス→空気のパターンです。逆の空気→水では全反射は起きません。</p>
+
+<div class="tip-box"><div class="tip-title">📱 全反射があなたのスマホを支えている</div>全反射を利用したのが<strong>光ファイバー</strong>。ガラスの細い管の中で光を何度も全反射させながら、遠くまで光を送る技術です。あなたがスマホでYouTubeを見られるのも、海底に敷かれた光ファイバーケーブルが全反射を使って世界中にデータを運んでいるおかげ。理科の法則が世界をつないでいるのです。</div>
+
+<h2>凸レンズ——虫めがねからカメラまで</h2>
+<p>虫めがねで太陽の光を集めると、紙を燃やせますよね。あの光が集まる点を<strong>焦点</strong>、レンズの中心から焦点までの距離を<strong>焦点距離</strong>と言います。凸レンズに平行に入った光は、必ず焦点を通るのがルールです。</p>
+<p>凸レンズで物を見るとき、物体の位置によって見え方がまったく変わります。</p>
+
+<table class="ref-table">
+<tr><th>物体の位置</th><th>できる像の種類</th><th>像の特徴</th><th>身近な例</th></tr>
+<tr><td>焦点より遠い</td><td>実像（スクリーンに映る）</td><td>ひっくり返った像</td><td>カメラ、プロジェクター</td></tr>
+<tr><td>焦点より近い</td><td>虚像（レンズを覗いて見える）</td><td>大きく見える正立像</td><td>虫めがね、ルーペ</td></tr>
+<tr><td>焦点の2倍の距離</td><td>実像</td><td>物体と同じ大きさ</td><td>目の水晶体</td></tr>
+</table>
+
+<p>カメラはレンズ（凸レンズ）が物体の光を集めてフィルムやセンサーに「実像」を映している。目も同じ。水晶体がレンズで、網膜がスクリーン。あなたが今これを読めているのも、凸レンズの原理があなたの目の中で働いているからです。</p>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①入射角＝反射角</strong>。角度は「法線から測る」。鏡の面からではない。<br>
+<strong>②屈折の方向</strong>：空気→ガラス・水＝法線に近づく方向に曲がる。ガラス・水→空気＝法線から離れる方向に曲がる。<br>
+<strong>③凸レンズの作図の3本の線</strong>：①軸に平行な光→反対側の焦点を通る ②中心を通る光→そのまま直進 ③焦点を通った光→平行に出る。この3本の交点が像の位置。<br>
+<strong>④全反射の条件</strong>：光がガラスや水から空気へ出ようとするときだけ起こる。空気→ガラスでは起こらない。これが光ファイバーの原理。</div>
+`},
+
+{id:2,section:'physics',title:'宇宙映画の爆発音はウソ——音の正体',desc:'音は空気の振動。だから宇宙では音が聞こえない。この事実からすべてが始まる',tag:'physics',tagLabel:'物理',time:9,
+content:`
+<h2>スター・ウォーズの宇宙船は、本当は「無音」</h2>
+<p>映画でよく見る宇宙空間での爆発シーン。「ドカーン！」とものすごい音が響きますよね。でも、あれは全部ウソです。<strong>宇宙空間は真空（何もない空間）なので、音は1ミリも伝わりません</strong>。本当なら、宇宙での爆発はまったくの無音です。</p>
+<p>なぜ音は真空で伝わらないのか？ それは、<strong>音の正体が「空気の振動」</strong>だからです。ギターの弦をはじくと、弦がブルブル振動します。その振動が隣の空気をポンッと押す。押された空気がまた隣の空気を押す。こうして空気の「押す・引く」の波が次々と伝わっていき、あなたの耳の鼓膜に届く。鼓膜が振動して、脳が「あ、音だ」と認識する。</p>
+<p>つまり、音が伝わるには「振動させる物質（媒質）」が必要。宇宙には何もないので、音が伝わる物質がない。だから無音です。<strong>音は空気がないと伝わらない</strong>——これが大前提です。</p>
+
+<div class="callout"><div class="callout-title">🔊 音は固体・液体・気体すべてで伝わる</div>実は空気がなくても、音は固体や液体の中を伝わります。壁に耳をつけると隣の部屋の音が聞こえる（固体を伝わる音）。プールの中で誰かが叩いた音が水中で聞こえる（液体を伝わる音）。<strong>固体＞液体＞気体</strong>の順に速く伝わります。糸電話で糸をピンと張ると声が伝わるのも、固体（糸）の方が気体（空気）より速く振動を伝えるからです。</div>
+
+<h2>音の「高い・低い」は、振動の速さで決まる</h2>
+<p>女の人の声は高いですよね。男の人の声は低い。この違いは<strong>振動数（しんどうすう）</strong>の違いです。1秒間に何回振動するかを表す数値で、単位はHz（ヘルツ）。</p>
+<p>女性の声は振動数が多い（1秒間にたくさん振動する）から高く聞こえ、男性の声は少ないから低く聞こえます。振動数が多い＝波の山が細かく並ぶ＝高い音。少ない＝波がゆったり＝低い音。</p>
+
+<table class="ref-table">
+<tr><th>生き物</th><th>聞こえる音の範囲</th><th>特徴</th></tr>
+<tr><td>人間</td><td>約20〜20,000Hz</td><td>この範囲以外は聞こえない</td></tr>
+<tr><td>犬</td><td>約65〜65,000Hz</td><td>ドッグホイッスルは人に聞こえない</td></tr>
+<tr><td>コウモリ</td><td>約10〜100,000Hz</td><td>超音波で暗闇でも障害物を避ける</td></tr>
+<tr><td>イルカ</td><td>約200〜150,000Hz</td><td>超音波でコミュニケーション</td></tr>
+</table>
+
+<p>人間に聞こえない高い音を<strong>超音波</strong>と呼びます。病院のエコー検査は超音波を体に当てて、はね返ってくる波から体の中の画像をつくる技術です。赤ちゃんの超音波エコー写真を見たことがある人もいるでしょう。</p>
+
+<h2>音の「大きい・小さい」は、振動の幅で決まる</h2>
+<p>大声を出すときは、のどの振動がダイナミック（幅が大きい）。小声のときは振動がおとなしい（幅が小さい）。この振動の幅を<strong>振幅（しんぷく）</strong>と言います。</p>
+<p>ざっくり言うと——<strong>振幅が大きい＝音が大きい。振幅が小さい＝音が小さい</strong>。それだけです。</p>
+
+<div class="callout"><div class="callout-title">🎸 オシロスコープの波形を読む——2つのポイントだけ</div>入試では、音の波形（なみがた）を画面に映す<strong>オシロスコープ</strong>の読み取りが頻出です。ポイントは2つだけ覚えればOK。<br><br>
+<strong>波の間隔（山から山までの距離）が狭い＝振動数が多い＝高い音</strong><br>
+<strong>波の高さが大きい＝振幅が大きい＝大きい音</strong><br><br>
+2つの波形を比較して「どちらが高い音か」「どちらが大きい音か」を答える問題がよく出ます。「間隔の狭さ＝音の高さ」「波の高さ＝音の大きさ」この2軸だけで判断できます。</div>
+
+<h2>音速は約340m/s——雷までの距離がわかる</h2>
+<p>空気中の音の速さは、気温15℃で約<strong>340m/s</strong>。1秒で340m進む速さです。光の速さ（約30万km/s）と比べると圧倒的に遅いですよね。だから雷のとき、稲光が先に見えて、雷鳴は遅れて聞こえます。</p>
+<p>これを使えば雷までの距離がわかります。</p>
+
+<div class="example-block">
+<span class="en">光ってから音が聞こえるまでの秒数 × 340 ＝ 距離 (m)</span><br>
+<span class="ja">例：ピカッと光って3秒後にゴロゴロ聞こえた場合</span><br>
+<span class="ja">3秒 × 340m/s ＝ <strong>1020m（約1km先）</strong></span>
+</div>
+
+<p>この計算は入試にも出ますし、雷から身を守る実用的な知恵にもなります。3秒未満なら1km以内＝危険なので屋内に避難してください。</p>
+
+<div class="tip-box"><div class="tip-title">🎵 モノコードの実験——高い音にする3つの方法</div>弦を使った楽器の仕組みを調べるモノコードの実験は入試の定番です。高い音を出すには：<strong>①弦を短くする ②弦を細くする ③弦を強く張る</strong>。逆にすれば低い音になる。ギターで考えてみてください。フレットを押さえて弦を短くすると高い音が出る。太い弦（低音弦）は低い音、細い弦（高音弦）は高い音。全部同じ原理です。</div>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①音は空気の振動→真空中では伝わらない</strong>。宇宙での爆発は無音。<br>
+<strong>②振動数が多い→高い音。振幅が大きい→大きい音</strong>。オシロスコープの波形読み取り問題は必出。<br>
+<strong>③音速約340m/s</strong>。光と音の時間差×340で距離を計算。「3秒なら約1km」と体で覚えておくと良い。<br>
+<strong>④音は固体＞液体＞気体の順で速く伝わる</strong>。糸電話の糸をピンと張ると音が伝わるのはこのため。</div>
+`},
+
+{id:3,section:'physics',title:'スマホが落ちるのは地球のせい——力のはたらき',desc:'重力・弾性力・摩擦力。見えない力が世界を動かしている',tag:'physics',tagLabel:'物理',time:9,
+content:`
+<h2>手を離したスマホが「上」に飛ばないのはなぜ？</h2>
+<p>手を滑らせてスマホを落とした経験、ありますよね。画面にヒビが入ったときの絶望感はすさまじい。でもここでひとつ考えてみてください。手を離したスマホは、なぜ「上」ではなく必ず「下」に落ちるのでしょう？</p>
+<p>答えは<strong>重力</strong>。地球が、地上のすべてのものを自分の中心に向かって引っ張る力です。約350年前にニュートンが発見した<strong>万有引力の法則</strong>によれば、質量を持つもの同士はすべて引き合っています。あなたと隣の友達の間にも引力が働いているのですが、人間の質量は地球に比べてあまりにも小さいので感じ取れないのです。</p>
+<p>地球の質量は約6×10²⁴kg。この途方もない質量が生む引力が、私たちを地面に引きつけ、スマホを落としています。</p>
+
+<h2>「質量」と「重さ」は全然ちがう——ここが最重要！</h2>
+<p>ここが理科の超重要ポイントであり、日常の感覚との最大のズレです。同じ「重さ」に関係する言葉なのに、意味がまったく違います。</p>
+
+<table class="ref-table">
+<tr><th>用語</th><th>単位</th><th>意味</th><th>月に行ったら？</th></tr>
+<tr><td class="en-cell">質量</td><td>kg（キログラム）</td><td>物体そのものの量（体の中身の量）</td><td>変わらない（60kgのまま）</td></tr>
+<tr><td class="en-cell">重さ（重力）</td><td>N（ニュートン）</td><td>重力の大きさ</td><td>約1/6になる（約600N→100N）</td></tr>
+</table>
+
+<p>体重計に乗って「60kg」と出たとき、それは<strong>質量</strong>（物体そのものの量）です。月に行っても火星に行っても、あなたの体の中身は変わらないから質量は60kgのまま。でも<strong>重さ（重力）</strong>はその星の引力の大きさによって変わります。地球上では質量100gにかかる重力が約<strong>1N</strong>なので、60kgの人には約600N。月の引力は地球の約1/6なので、月では約100Nになります。</p>
+
+<div class="callout"><div class="callout-title">⚖️ ばねばかりと上皿天びんの違い——ここは絶対に出る</div>
+<strong>ばねばかり</strong>は「重力の大きさ（N）」を測る器具。月に持っていくと値が1/6になる。<br>
+<strong>上皿天びん</strong>は「分銅と比較して質量を測る」器具。月でも値は変わらない（分銅も軽くなるので釣り合う位置は同じ）。<br><br>
+まとめると：「月ではばねばかりの値だけが1/6になる、天びんは変わらない」——この一文を覚えておけば関連問題はほぼ取れます。</div>
+
+<h2>力にはいろいろな種類がある</h2>
+<p>重力だけでなく、身の回りにはたくさんの力がはたらいています。それぞれどんな場面で働くのか確認しましょう。</p>
+
+<table class="ref-table">
+<tr><th>力の種類</th><th>説明</th><th>身近な例</th></tr>
+<tr><td class="en-cell">重力</td><td>地球が下向きに引く力</td><td>スマホが落ちる、跳んでも地面に戻る</td></tr>
+<tr><td class="en-cell">弾性力</td><td>変形したものがもとに戻ろうとする力</td><td>ゴムを伸ばす、バネを押す、トランポリン</td></tr>
+<tr><td class="en-cell">摩擦力</td><td>動きを妨げる力</td><td>歩ける、ブレーキ、消しゴムで字が消える</td></tr>
+<tr><td class="en-cell">磁力</td><td>磁石が引き合う・反発する力</td><td>磁石、モーター、冷蔵庫のマグネット</td></tr>
+<tr><td class="en-cell">電気の力</td><td>静電気による引き合い・反発</td><td>下敷きで髪が逆立つ、セーターのパチパチ</td></tr>
+<tr><td class="en-cell">垂直抗力</td><td>接触面が物体を押し返す力</td><td>机の上の本が落ちない、床に立てる</td></tr>
+</table>
+
+<p><strong>弾性力</strong>：ゴムを引っ張ると、もとに戻ろうとする力。バネを押すと押し返す力。変形したものが「もとに戻ろうとする力」です。<strong>摩擦力</strong>：物体の動きを妨げる力。靴と地面の間に摩擦がなかったら、一歩も歩けません。ツルツルの氷の上で滑るのは摩擦力が極端に小さいから。<strong>磁力・電気の力</strong>：どちらも離れていても作用する「非接触の力」。重力もじつは非接触——地球に触れていなくても引っ張られますよね。</p>
+
+<h2>力を矢印で表す——「力の三要素」</h2>
+<p>理科では力を矢印で表します。この矢印を描くときに必ず守る3つのルールがあります。</p>
+<p><strong>①矢印の向き＝力の向き　②矢印の長さ＝力の大きさ　③矢印の始まる点＝力のはたらく点（作用点）</strong>。この3つを合わせて<strong>力の三要素</strong>と言います。重力の矢印は常に真下を向き、作用点は物体の中心です。</p>
+
+<div class="tip-box"><div class="tip-title">🔧 フックの法則——バネの伸びは力に比例する</div>バネは引っ張る力が2倍になると伸びも2倍、3倍の力なら3倍伸びる。グラフにすると原点を通る直線になる。これが<strong>フックの法則</strong>。ばねばかりはこの性質を利用した測定器具です。「ばねの伸びは力の大きさに比例する」——これを覚えておくと計算問題が解けます。</div>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①質量(kg)と重さ(N)の違い</strong>：100g≒1N。月面では重さは1/6だが質量は変わらない。<br>
+<strong>②ばねばかりvs上皿天びん</strong>：ばねばかりは重力を測る→月で値が1/6になる。天びんは質量を比較→変わらない。<br>
+<strong>③力の三要素</strong>：大きさ・向き・作用点。矢印で正確に表す。<br>
+<strong>④フックの法則</strong>：ばねの伸びは力の大きさに比例する。グラフは原点を通る直線。</div>
+`},
+
+{id:4,section:'physics',title:'なぜ綱引きで動かないのか——力の規則性',desc:'力のつり合い・合力・分力。2つの力がぶつかるとき何が起きるか',tag:'physics',tagLabel:'物理',time:9,
+content:`
+<h2>綱引きで両方が同じ力で引いたら、どうなる？</h2>
+<p>運動会の綱引き。赤組が100Nの力で引き、白組も100Nの力で引く。結果、綱は動きません。<strong>同じ大きさの力が反対方向にはたらくと、打ち消し合ってゼロになる</strong>。これが<strong>力のつり合い</strong>です。</p>
+<p>テーブルの上に置いてある教科書。静かに止まっていますよね。でも力がかかっていないわけではありません。下向きに<strong>重力</strong>がはたらき、同時にテーブルが上向きに<strong>垂直抗力（すいちょくこうりょく）</strong>で教科書を押し返しています。この2つの力が同じ大きさで逆向きだから、教科書は動かないのです。</p>
+<p>「動かないとき＝力がない」ではない。「動かないとき＝力がつり合っている」。この発想の転換が大事です。</p>
+
+<h2>2力のつり合いの3つの条件</h2>
+<p>2つの力がつり合うには、<strong>3つの条件</strong>がすべて満たされる必要があります。3つ全部満たさないとつり合いません。</p>
+
+<table class="ref-table">
+<tr><th>条件</th><th>説明</th><th>身近な例で確認</th></tr>
+<tr><td><strong>①大きさが同じ</strong></td><td>2つの力の大きさが等しい</td><td>綱引きで同じ人数なら動かない</td></tr>
+<tr><td><strong>②向きが反対</strong></td><td>2つの力が逆の方向を向く</td><td>重力（下）と垂直抗力（上）</td></tr>
+<tr><td><strong>③同一直線上</strong></td><td>2つの力が同じ直線上にある</td><td>ズレると物体が回転する</td></tr>
+</table>
+
+<p>3つめの条件を忘れがちですが大事です。たとえば、左右の手で本の端と端をつまんで反対方向に引いたら、本は回転してしまいますよね。力が一直線上にないと、物体は回転してしまう。「大きさが同じ＋逆向き」だけでは不十分で、「同一直線上」も必要です。</p>
+
+<h2>合力——2つの力の「結果」</h2>
+<p>2つの力が同じ方向にはたらくとき、合力は足し算。3Nと5Nが同じ向きなら合力は8N。反対方向なら引き算。5Nと3Nが逆向きなら、合力は大きい方の向きに2N。ここまでは直感的です。</p>
+<p>では、2つの力が<strong>斜めの方向</strong>にはたらいたらどうなるでしょう？ 犬を2本のリードで引っ張るとき、2人が広がれば広がるほど犬の進む方向は変わりますよね。この場合の合力は<strong>平行四辺形の対角線</strong>で求めます。2つの力の矢印を2辺とする平行四辺形を書くと、その対角線が合力になる。これを<strong>力の合成</strong>と言います。</p>
+
+<h2>分力——1つの力を「分解」する</h2>
+<p>逆に、1つの力を2つに分けることもできます。これが<strong>力の分解</strong>。斜面の上に物体を置いたとき、重力（真下向き）を「斜面に平行な力」と「斜面に垂直な力」に分解する——この考え方が、のちの運動やエネルギーの章でとても重要になります。</p>
+
+<div class="callout"><div class="callout-title">💡 自転車の急ブレーキで体が前に飛ぶ理由——慣性の法則</div>
+<strong>慣性の法則</strong>：「力がはたらかない限り、止まっているものは止まり続け、動いているものは動き続ける」。自転車で急ブレーキをかけたとき、自転車は止まっても体は前に動き続けようとする。だから前に飛び出しそうになるのです。<br><br>
+慣性の例をまとめると：<br>
+・バスの急停止→乗客がつんのめる（動き続けようとする）<br>
+・テーブルクロス引き→食器が残る（止まり続けようとする）<br>
+・電車が発車→体が後ろに引かれる感覚（止まり続けようとする）<br>
+全部同じ原理です。</div>
+
+<div class="tip-box"><div class="tip-title">⚡ 作用・反作用の法則——力は必ずペアで現れる</div>壁を押すと、壁もあなたを押し返す。ロケットが後ろに炎を噴き出すと、ロケットは前に進む。これが<strong>作用・反作用の法則</strong>。「力のつり合い」と混同しやすいのですが、違いは：つり合いは「同じ物体にはたらく2つの力」、作用・反作用は「異なる物体同士が互いに及ぼす力」です。</div>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①力のつり合いの3条件</strong>：大きさが同じ・逆向き・同一直線上（この3つ全部）。<br>
+<strong>②垂直抗力</strong>：物体が接している面から受ける押し返す力。「動かない＝つり合っている」。<br>
+<strong>③合力の求め方</strong>：同じ向きなら足す、逆向きなら引く、斜めなら平行四辺形の対角線。<br>
+<strong>④慣性の法則</strong>：力がなければ止まったものは止まり続け、動くものは動き続ける。急ブレーキで前に飛ぶのもこれ。</div>
+`},
+
+{id:5,section:'physics',title:'深く潜るほど耳が痛い——水圧と浮力',desc:'プールの底、ペットボトル、風船。水と空気が「押す力」の秘密',tag:'physics',tagLabel:'物理',time:9,
+content:`
+<h2>プールの深いところに潜ると、耳がキーンとする</h2>
+<p>プールで深く潜ったとき、耳がキーンと痛くなった経験ありませんか？ あれは<strong>水圧</strong>のせいです。水には重さがあります。深く潜れば潜るほど、頭の上にある水の量が増える。その水の重さがあなたの体を押しつけるのです。</p>
+<p>ペットボトルの側面に、上・中・下の3か所に穴を開けたらどうなるでしょう。水は3つの穴から出ますが、<strong>下の穴から出る水が一番勢いよく飛びます</strong>。下のほうが水圧が大きいからです。水圧は深さに比例して大きくなります。</p>
+<p>もうひとつ大事なこと。水圧は<strong>あらゆる方向から</strong>かかります。横からも下からも上からも。真下だけではありません。風船を水中に沈めると、全方向から押されて少し小さくなりますよね。深海魚が海の底でつぶれないのは、体の内側からも同じ圧力で押し返しているからです。</p>
+
+<div class="tip-box"><div class="tip-title">💧 水圧を整理しよう</div>
+水圧のルールを頭の中で整理してみましょう。<br><br>
+<strong>①深いほど水圧は大きい</strong>——頭の上の水が増えるから当然ですね。<br>
+<strong>②同じ深さなら、四方八方から同じ大きさの水圧がかかる</strong>——上からだけじゃない。<br>
+<strong>③水の量（面積の広さ）ではなく、深さで決まる</strong>——これが意外と大事。大きなプールでも小さな水槽でも、同じ深さなら水圧は同じ。</div>
+
+<h2>浮力——なぜ水に浮けるのか</h2>
+<p>お風呂に入ると、体が軽く感じますよね。あの「軽くなった感覚」が<strong>浮力</strong>です。浮力とは、水中の物体に対して上向きにはたらく力のことです。</p>
+<p>なぜ上向きの力が生まれるのでしょうか。さっき「水圧は深いほど大きい」と言いました。物体の底面にかかる水圧（深い＝大きい）と、上面にかかる水圧（浅い＝小さい）には差があります。<strong>底面が上面より強く押されるので、差し引きで「上向き」の力が生まれる</strong>。これが浮力の正体です。</p>
+<p>浮力の大きさには美しい法則があります。<strong>浮力の大きさ ＝ その物体が押しのけた水の重さ</strong>。これを発見したのは約2200年前のギリシャの科学者アルキメデス。お風呂に入ったとき水があふれるのを見て「エウレカ！（わかった！）」と叫んで裸のまま街を走り回った、という伝説は有名です。</p>
+
+<div class="callout"><div class="callout-title">🏊 沖縄の海で浮きやすい理由</div>海水はプールの水より浮きやすいですよね。これは海水に塩が溶けているため、<strong>密度が真水より大きい</strong>からです。密度が大きい液体ほど浮力が大きくなる。死海（塩分濃度が超高い湖）では人が沈まずに浮かべるのもこのためです。沖縄の海は塩分濃度がやや高いので、体験的に浮きやすいと感じる人が多いのです。</div>
+
+<h2>「浮く」か「沈む」かは、密度で決まる</h2>
+<p>物体の密度が水より小さければ浮く。水より大きければ沈む。木は水より密度が小さいので浮く。鉄は水より密度が大きいので沈む。ではなぜ鉄の船は浮くのか？ 船の内部に空気がたくさん入っているので、<strong>船全体としての平均密度が水より小さくなる</strong>からです。穴が開いて水が入ると、平均密度が上がって沈みます。</p>
+
+<table class="ref-table">
+<tr><th>物体</th><th>密度(g/cm³)</th><th>水に入れると？</th></tr>
+<tr><td>木（スギ）</td><td>約0.4〜0.6</td><td>浮く</td></tr>
+<tr><td>水</td><td>1.0</td><td>基準</td></tr>
+<tr><td>鉄</td><td>約7.9</td><td>沈む</td></tr>
+<tr><td>氷</td><td>約0.92</td><td>浮く（例外的！）</td></tr>
+<tr><td>海水</td><td>約1.03</td><td>真水より浮力が大きい</td></tr>
+</table>
+
+<h2>大気圧——じつは空気にも「重さ」がある</h2>
+<p>私たちは空気の海の底に住んでいます。水中で水圧がかかるように、空気にも重さがあり、空気の層の底にいる私たちには<strong>大気圧</strong>がかかっています。海面上での大気圧は約1013hPa（ヘクトパスカル）、力に直すと1cm²あたり約10N。つまりあなたの手のひら（約150cm²）には約1500N（＝約150kgの重さ）の力がかかっているのです。</p>
+<p>「えっ、なぜ手がつぶれないの？」——体の中からも同じ圧力で押し返しているからです。吸盤がくっつくのは、吸盤と壁の間の空気を押し出して真空に近い状態をつくり、外側の大気圧で壁に押しつけているからなのです。</p>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①水圧は深さに比例</strong>、あらゆる方向からはたらく。同じ深さなら方向に関係なく同じ大きさ。<br>
+<strong>②浮力＝押しのけた水の重さ</strong>（アルキメデスの原理）。完全に沈んだら浮力は一定。<br>
+<strong>③浮くか沈むか＝物体の密度と水の密度の比較</strong>。密度が水より小＝浮く、大＝沈む。<br>
+<strong>④大気圧＝約1013hPa</strong>。吸盤の原理（外の大気圧が押しつける）がよく出る。</div>
+`},
+
+{id:6,section:'physics',title:'コンセントの向こう側——回路の電流と電圧',desc:'電気を「水の流れ」でイメージすれば、回路は怖くない',tag:'physics',tagLabel:'物理',time:9,
+content:`
+<h2>スマホの充電中、コンセントの向こうで何が起きている？</h2>
+<p>スマホを充電するとき、コンセントにケーブルを差しますよね。でも「電気」って何なのか。電気の正体は<strong>電子（でんし）</strong>という目に見えないほど小さな粒の流れです。金属の導線の中を、ものすごい数の電子がわーっと移動していく。これが電気の流れ＝<strong>電流</strong>です。</p>
+<p>でも電子は目に見えないのでイメージしにくい。そこで、<strong>電気を「水の流れ」にたとえる</strong>とすべてがスッキリします。</p>
+
+<div class="callout"><div class="callout-title">🚰 電気＝水流モデル</div>
+<strong>電圧（V ボルト）＝水を押すポンプの力</strong>。ポンプが強いほど水がたくさん流れるように、電圧が高いほど電流が多く流れます。電池やコンセントが「ポンプ」です。<br><br>
+<strong>電流（A アンペア）＝流れる水の量</strong>。パイプの中を1秒間にどれだけ水が通過するか。電流が大きいほど、たくさんの電気が流れています。<br><br>
+<strong>抵抗（Ω オーム）＝パイプの細さ</strong>。パイプが細いと水は流れにくい。抵抗が大きいと電流は流れにくくなります。電球や電熱線が「細いパイプ」にあたります。</div>
+
+<h2>直列回路——一本道の水路</h2>
+<p>ホースが一本道で、途中にバルブ（抵抗）が2つ並んでいるイメージ。水は同じホースを通るので、<strong>どこで測っても電流は同じ</strong>。ただしバルブを通るたびに水圧（電圧）が使われるので、<strong>各抵抗での電圧の合計＝電源の電圧</strong>。全体の抵抗はR₁＋R₂の足し算です。直列だと抵抗が増えるほど電流は流れにくくなる。クリスマスのイルミネーションで1つ切れると全部消えるのは直列回路だからです。</p>
+
+<h2>並列回路——分岐する水路</h2>
+<p>ホースが途中で2本に分かれるイメージ。分かれた先のどちらにも<strong>同じ水圧（電圧）</strong>がかかる。でも水の量（電流）は分かれるので、<strong>各枝の電流の合計＝全体の電流</strong>。全体の抵抗は個々の抵抗より小さくなる。パイプが増えると全体として水が流れやすくなるのと同じです。</p>
+<p>家のコンセントは全部並列回路です。だからテレビを消してもエアコンは動くし、1つのコンセントが壊れても他は使える。もし家全体が直列だったら、1か所の故障で家中の電気が止まります。</p>
+
+<div class="tip-box"><div class="tip-title">💡 電流計と電圧計のつなぎ方</div>
+<strong>電流計は回路に直列につなぐ</strong>：水の量を測るならホースの中にメーターを入れる。<strong>＋端子→電源の＋側</strong>に。端子は<strong>大きい方から</strong>つなぐ（5A→500mA→50mA）。<br>
+<strong>電圧計は測りたい部分に並列につなぐ</strong>：2点間の水圧差を横から測る。端子は<strong>大きい方から</strong>（300V→15V→3V）。<br>
+つなぎ方を逆にすると針が逆に振れて壊れます。入試では回路図から「正しいつなぎ方を選べ」という問題がよく出ます。</div>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①直列</strong>：電流は同じ。電圧は分かれる。抵抗は足し算。<br>
+<strong>②並列</strong>：電圧は同じ。電流は分かれる。抵抗は小さくなる。<br>
+<strong>③電流計は直列、電圧計は並列</strong>に接続。端子は大きい方から。<br>
+<strong>④回路図の記号</strong>：電池、スイッチ、抵抗（電球）、電流計(A)、電圧計(V)を正確に描く。</div>
+`},
+
+{id:7,section:'physics',title:'V＝IRですべてが解ける——オームの法則と電気エネルギー',desc:'たった1つの公式を使いこなせれば、電気の計算問題は怖くない',tag:'physics',tagLabel:'物理',time:9,
+content:`
+<h2>理科のテストで最も出る公式、それがV＝IR</h2>
+<p><strong>V＝I×R</strong>。電圧（V）＝電流（I）×抵抗（R）。これがオームの法則です。19世紀のドイツの物理学者ゲオルク・オームが発見しました。たった1つの式なのに、ここから3つの変形が生まれます。</p>
+<div class="example-block">
+<span class="en">V ＝ I × R （電圧を求めたいとき）</span><br>
+<span class="en">I ＝ V ÷ R （電流を求めたいとき）</span><br>
+<span class="en">R ＝ V ÷ I （抵抗を求めたいとき）</span>
+</div>
+<p>たとえば、抵抗が10Ωの電球に0.5Aの電流が流れているとき、電球にかかる電圧は？ V＝0.5×10＝<strong>5V</strong>。</p>
+
+<h2>計算でミスしないための鉄則</h2>
+<p>電気の計算問題で一番多いミスは<strong>単位の変換忘れ</strong>。問題文で「500mA」と書いてあるのにそのまま計算してしまう。1A＝1000mAなので、500mA＝<strong>0.5A</strong>に直してから代入。もうひとつのコツは、<strong>まず回路図に「わかっている数値」を全部書き込む</strong>こと。電源の電圧、各抵抗の値、わかっている電流。書き込むだけで「あ、ここが求まるな」と見えてきます。</p>
+
+<div class="callout"><div class="callout-title">⚡ 直列＋並列の合体問題の解き方</div>入試で差がつくのは、直列と並列が組み合わさった回路。手順はこうです。<br><br>
+<strong>①まず並列部分の合成抵抗を求める</strong>。20Ωと20Ωの並列なら、1÷(1/20+1/20)＝10Ω。<br>
+<strong>②並列部分を1つの抵抗として、全体を直列回路にする</strong>。<br>
+<strong>③全体の抵抗から全体の電流を求める</strong>（I＝V÷R）。<br>
+<strong>④あとは各部分の電圧・電流をV＝IRで芋づる式に求める</strong>。<br><br>
+「並列を先にまとめて、直列にしてから解く」。この手順さえ覚えておけば、どんな複雑な回路も怖くありません。</div>
+
+<h2>電力と電力量——電気料金の正体</h2>
+<p>ドライヤーの箱に「1200W」と書いてあるのを見たことがありますよね。この<strong>W（ワット）</strong>が<strong>電力</strong>＝「1秒間に使う電気エネルギーの量」。<strong>電力＝電圧×電流（W＝V×A）</strong>。</p>
+<p><strong>電力量</strong>は「合計でどれだけ電気を使ったか」。<strong>電力量＝電力×時間（J＝W×s）</strong>。1200Wのドライヤーを5分（300秒）使ったら、1200×300＝360,000J。電熱線で水を温める実験では、<strong>水の温度上昇＝電力×時間÷(水の質量×4.2)</strong>で計算できます。入試ではこの水の温度上昇の計算がよく出ます。</p>
+
+<p>たとえば、抵抗が10Ωの電熱線に2Aの電流が流れているとき、電圧は V＝2×10＝<strong>20V</strong>。逆に電圧が12Vで抵抗が6Ωなら、電流は I＝12÷6＝<strong>2A</strong>。電圧を上げれば電流も増えるし、抵抗を大きくすれば電流は減る。水道の蛇口に例えると、水圧（電圧）を上げれば水（電流）がたくさん流れる。蛇口を絞れば（抵抗を増やせば）流れが弱くなる。この感覚がつかめれば、どんな計算問題でも怖くありません。</p>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①V＝IR</strong>：3つの変形を自在に。<strong>②単位変換</strong>：mA→A(÷1000)、kΩ→Ω(×1000)。<br>
+<strong>③電力W＝V×I</strong>。<strong>電力量J＝W×s</strong>。<br>
+<strong>④水の温度上昇の計算</strong>：電熱線の実験。</div>
+`},
+
+{id:8,section:'physics',title:'モーターはなぜ回るのか——電流と磁界',desc:'コイルに電流を流すと力が生まれる。この原理がモーターの心臓',tag:'physics',tagLabel:'物理',time:9,
+content:`
+<h2>磁石の近くで方位磁針が動く——「磁界」の正体</h2>
+<p>棒磁石の近くに方位磁針を置くと、針がくるっと動きます。磁石のまわりに<strong>目に見えない力の場＝磁界</strong>が広がっているからです。磁界の方向は「方位磁針のN極が指す向き」。磁力線というラインで表すと、<strong>N極から出てS極に入る</strong>曲線になります。磁力線の間隔が狭いところほど磁力が強い。</p>
+
+<h2>電流が磁界をつくる</h2>
+<p>磁石だけでなく、<strong>電流が流れている導線のまわりにも磁界ができます</strong>。まっすぐな導線に電流を流すと、導線を中心にぐるぐると同心円の磁界ができます。</p>
+<p>コイル（導線をぐるぐる巻いたもの）に電流を流すと、コイルの中に強い磁界ができて棒磁石のようになる。これが<strong>電磁石</strong>です。電磁石のすごさは電流を切れば磁力がゼロになること。クレーン車が鉄くずを持ち上げて、目的地で電流を切ってポトンと落とす——あれは電磁石のON/OFF機能です。</p>
+<p>電磁石を強くする方法は3つ。<strong>①電流を大きくする ②コイルの巻き数を増やす ③鉄心を入れる</strong>。この3つを変える実験は入試の定番です。</p>
+
+<h2>フレミングの左手の法則——モーターの原理</h2>
+<p>磁界の中で電流が流れる導線には<strong>力</strong>がはたらきます。この力の向きを知る方法が<strong>フレミングの左手の法則</strong>。左手を開いて、<strong>人差し指＝磁界の向き、中指＝電流の向き</strong>にすると、<strong>親指＝力の向き</strong>。3本の指が互いに直角になるように開きます。この力でコイルがくるくる回り続ける装置が<strong>モーター</strong>。扇風機、洗濯機、電車、電気自動車——モーターなしでは現代の生活は成り立ちません。</p>
+
+<h2>電磁誘導——磁石を動かすと電気ができる</h2>
+<p>モーターに電気を流すと回転する。では逆に、<strong>コイルの近くで磁石を動かしたら</strong>？ じつはコイルに電流が流れます。これが<strong>電磁誘導</strong>、流れる電流が<strong>誘導電流</strong>。</p>
+<p>発電機はまさにこの原理です。水力発電所では水の力でタービンを回し、磁界の中でコイルが動くことで電気をつくっています。磁石を<strong>速く動かす</strong>ほど、<strong>コイルの巻き数が多い</strong>ほど、誘導電流は大きくなります。</p>
+
+<div class="callout"><div class="callout-title">🔄 直流と交流</div>電池の電流は一方向＝<strong>直流（DC）</strong>。コンセントの電流は向きが1秒間に50回or60回切り替わる＝<strong>交流（AC）</strong>。日本は家庭用100V交流。東日本50Hz、西日本60Hz。沖縄は60Hzです。発電所のコイルが回転するたびに電流の向きが変わるので、交流が自然に生まれるのです。</div>
+
+<p>フレミングの左手の法則は、<strong>左手を実際に使って確認する</strong>のが一番の覚え方です。人差し指を磁界の向き（N→S）に向け、中指を電流の向きに曲げる。すると親指が勝手に力の向きを指します。テストの最中でも、自分の手を見ればいつでも確認できる。これが「手で覚える物理」の強みです。</p>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①磁力線</strong>：N極→S極。方位磁針のN極が指す向き。<br>
+<strong>②フレミングの左手</strong>：人差し＝磁界、中指＝電流、親指＝力。<br>
+<strong>③電磁誘導</strong>：速く動かす・巻き数増やす→誘導電流が大きい。<br>
+<strong>④電磁石を強くする3つの方法</strong>。</div>
+`},
+
+{id:9,section:'physics',title:'下敷きで髪が逆立つのはなぜ——静電気と電流',desc:'プラスとマイナスの電気が引き合い、反発する。電気の「もと」の話',tag:'physics',tagLabel:'物理',time:9,
+content:`
+<h2>冬にドアノブでバチッとくるアレ</h2>
+<p>冬の乾燥した日、ドアノブに触った瞬間「バチッ！」と痛い。あれは<strong>静電気</strong>の放電です。体にたまった電気が金属のドアノブに一気に流れ出した。では、なぜ体に電気がたまるのか。</p>
+<p>歩くとき靴の底と床がこすれます。このとき、片方の物質からもう片方に<strong>電子</strong>が移動する。電子を失った側は<strong>＋（プラス）に帯電</strong>し、電子をもらった側は<strong>−（マイナス）に帯電</strong>。これが<strong>摩擦による帯電</strong>＝静電気です。下敷きで髪をこすると髪が逆立つのも同じ。下敷きが電子を奪って−に帯電し、髪は電子を失って＋に帯電。＋と−は引き合うので、髪が下敷きに向かって持ち上がるのです。</p>
+<p>帯電した2つの物体の間に働く力には2種類あります。<strong>同じ符号どうし（＋と＋、−と−）は反発</strong>する。<strong>異なる符号（＋と−）は引き合う</strong>。まるで磁石のN極とS極の関係に似ていますよね。</p>
+
+<h2>電気の正体は電子の移動</h2>
+<p>静電気も、電池の電流も、雷も、すべて<strong>電子の移動</strong>です。原子は中心の原子核（＋の陽子と中性子）のまわりを電子（−）がまわっている構造。ふだんは＋と−が同数でバランスしていますが、こすったり化学反応が起きたりすると電子が移動してバランスが崩れる。これが「帯電」であり「電流」の根っこです。</p>
+
+<div class="callout"><div class="callout-title">⚡ 電流の向きと電子の向きは「逆」</div>歴史的な理由で、<strong>電流の向きは＋極から−極へ</strong>と決められました。でも実際に動いている電子は−から＋へ流れている。つまり<strong>電流と電子の流れる向きは逆</strong>。ややこしいですが、テストでは「電流は＋極から−極」と覚えておけばOK。なぜ逆になったかというと、電子が発見される前に電流の向きが決められてしまったからです。</div>
+
+<h2>放電と雷——クルックス管の実験</h2>
+<p>たまった静電気が一気に流れ出す＝<strong>放電</strong>。ドアノブのバチッは小さな放電。雷は、雲にたまった膨大な静電気が空気を突き破って地面に流れる巨大な放電です。</p>
+<p>入試で重要なのは<strong>クルックス管</strong>の実験。真空に近い管に高電圧をかけると、−極（陰極）から<strong>陰極線</strong>が飛び出します。陰極線は蛍光板を光らせ、磁石を近づけると曲がり、＋極に引き寄せられる。このことから、陰極線の正体は<strong>−の電気を帯びた粒子＝電子</strong>だと判明しました。電子の発見は物理学の大革命でした。</p>
+
+<p>ここで大事なのは、<strong>動くのはつねに電子（−の電気）のほうだけ</strong>ということ。＋の電気（陽子）は原子の中心にがっちり固定されていて動けません。「＋に帯電した」というのは、電子が出ていって＋が余った状態。「−に帯電した」は電子をもらって−が多くなった状態。電子がどちらに移動したかを追えば、帯電のしくみが見えてきます。</p>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①摩擦による帯電</strong>：電子が移動。同種→反発、異種→引き合う。<br>
+<strong>②電流の向き＝＋→−、電子の向き＝−→＋（逆）</strong>。<br>
+<strong>③放電</strong>：たまった電気が一気に流れる。雷＝巨大な放電。<br>
+<strong>④クルックス管</strong>：陰極線の正体は電子。磁石で曲がる。＋極に引かれる。</div>
+`},
+
+{id:10,section:'physics',title:'ジェットコースターはなぜ怖い——物体の運動',desc:'記録タイマーと速さの変化。加速・減速・等速を見分ける力',tag:'physics',tagLabel:'物理',time:9,
+content:`
+<h2>ジェットコースターの「あの感覚」の正体</h2>
+<p>遊園地のジェットコースター。頂上からゆっくり傾いていく瞬間、胃が浮くようなあの感覚。そしてどんどんスピードが上がって、風が顔に叩きつけてくる。怖いのに楽しい。あの興奮の裏には物理法則がはたらいています。頂上から落ちるとき、重力によってどんどん加速する。1秒後より2秒後、2秒後より3秒後のほうが速い。この<strong>速さがだんだん増えていく運動</strong>を<strong>等加速度運動</strong>と言います。</p>
+
+<h2>速さの基本</h2>
+<p><strong>速さ＝距離÷時間</strong>。100mを10秒で走ったら10m/s。これは<strong>平均の速さ</strong>。でも実際にはスタートはゆっくりで途中が一番速い。瞬間瞬間の速さを<strong>瞬間の速さ</strong>と言い、車のスピードメーターが示しているのがこれです。単位変換も重要：<strong>m/sをkm/hに変えるには×3.6</strong>（10m/s＝36km/h）。</p>
+
+<h2>記録タイマーのテープ——入試の超定番</h2>
+<p>記録タイマーはテープに一定間隔で打点を打つ装置。東日本50Hz（0.02秒ごと）、西日本60Hz。テープを<strong>5打点ごとに切って</strong>台紙に貼ると棒グラフのようになります。</p>
+<div class="callout"><div class="callout-title">📏 テープの読み方3パターン</div>
+<strong>①棒がだんだん長くなる＝加速</strong>（斜面を下る台車）<br>
+<strong>②棒がすべて同じ長さ＝等速直線運動</strong>（力がつり合っている）<br>
+<strong>③棒がだんだん短くなる＝減速</strong>（摩擦で止まる台車）<br><br>
+5打点＝0.1秒間隔（50Hzの場合）。棒の長さ(cm)÷0.1秒＝その区間の平均の速さ(cm/s)。</div>
+
+<h2>速さ-時間グラフの読み方</h2>
+<p>テストではテープだけでなく、速さと時間のグラフもよく出ます。<strong>横ばいの直線＝等速直線運動</strong>。<strong>右上がりの直線＝一定の割合で加速</strong>（等加速度運動）。<strong>グラフの下の面積＝移動した距離</strong>。この「面積＝距離」のテクニックは知っているだけで得点が取れます。</p>
+<p>等速直線運動は「力がつり合っている（合力ゼロ）」とき。加速や減速が起きるのは「力が加わっている」とき。<strong>運動の変化と力の関係を理解すること</strong>が物理の中心です。</p>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①速さ＝距離÷時間</strong>。m/sとkm/hの変換（×3.6 or ÷3.6）。<br>
+<strong>②記録タイマーのテープ</strong>：5打点ごと→0.1秒。棒の長さから速さを計算。<br>
+<strong>③等速直線運動</strong>：速さ一定→距離は時間に比例（直線グラフ）。<br>
+<strong>④速さ-時間グラフ</strong>：面積＝移動距離。</div>
+`},
+
+{id:11,section:'physics',title:'階段を上るのがツラい理由——エネルギーと仕事',desc:'「仕事」は理科の世界では計算できる。力×距離、それだけ',tag:'physics',tagLabel:'物理',time:9,
+content:`
+<h2>5階まで階段で上がるのがツラいのは「仕事」をしているから</h2>
+<p>エレベーターが故障して5階まで階段を上がったとしましょう。息が切れて足がパンパンになります。理科の言葉で言うと、あなたは<strong>「仕事」をした</strong>のです。理科での「仕事」は日常の言葉とは少し意味が違い、<strong>力を加えて物体を動かしたとき、そこに「仕事」が発生する</strong>と言います。</p>
+<p>式はとてもシンプルです。<strong>仕事(J) ＝ 力(N) × 力の向きに動いた距離(m)</strong>。体重60kg（重力約600N）の人が10m上がったら、仕事は600×10＝<strong>6000J</strong>。</p>
+<p>ここで大事なルール。<strong>力の向きと動く向きが同じでないと「仕事」にならない</strong>のです。荷物を持ったまま水平に歩いても、荷物に対する上向きの力と水平の移動は方向が違うので、理科的には荷物に対して「仕事をしていない」ことになります。感覚的には疲れるのに。理科ってたまに冷たいですよね。</p>
+
+<h2>仕事の原理——ズルはできない</h2>
+<p>重い荷物を2階に上げたい。直接持ち上げるのは大変。じゃあ斜面（スロープ）を使えば楽になりますよね。スロープを使うと、<strong>力は小さくて済むが、移動する距離が長くなる</strong>。結果として<strong>仕事の量は同じ</strong>になります。これが<strong>仕事の原理</strong>。</p>
+<p>滑車を使っても、てこを使っても同じ。力を半分にできれば距離は2倍になる。<strong>道具を使って仕事そのものを減らすことはできない</strong>——これが自然の掟です。</p>
+
+<h2>位置エネルギーと運動エネルギー</h2>
+<p>高い場所にある物体は、落ちれば下のものを壊せます。つまり<strong>高い位置にいること自体が「仕事をする能力」を持っている</strong>。これを<strong>位置エネルギー</strong>と言います。位置が高いほど、質量が大きいほど、位置エネルギーは大きい。</p>
+<p>動いている物体は、ぶつかれば相手を動かせます。これが<strong>運動エネルギー</strong>。速さが速いほど、質量が大きいほど、運動エネルギーは大きい。</p>
+<p>ジェットコースターが頂上にいるとき、位置エネルギーは最大、運動エネルギーはほぼゼロ（ゆっくりだから）。坂を下ると位置エネルギーが減り、そのぶん運動エネルギーが増えてスピードが上がる。底に来たとき、位置エネルギーはゼロ、運動エネルギーは最大。<strong>2つのエネルギーの合計は常に一定</strong>です。</p>
+
+<div class="callout"><div class="callout-title">🎢 力学的エネルギーの保存</div>位置エネルギー ＋ 運動エネルギー ＝ <strong>力学的エネルギー</strong>（一定）。<br><br>
+高い位置→位置エネルギー大、運動エネルギー小。<br>
+低い位置→位置エネルギー小、運動エネルギー大。<br><br>
+摩擦や空気抵抗がなければ、この合計は変わりません。振り子が同じ高さまで戻るのも、この法則のおかげです。</div>
+
+<h2>仕事率——「速さ」も大事</h2>
+<p>同じ6000Jの仕事をするのに、10秒で上がる人と30秒で上がる人。速い人のほうが「パワーがある」ですよね。このパワーが<strong>仕事率（W）＝仕事(J)÷時間(s)</strong>。6000J÷10s＝600W。6000J÷30s＝200W。仕事率の大きい人のほうが「馬力がある」のです。</p>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①仕事(J)＝力(N)×距離(m)</strong>。力の向きと動く向きが同じでないと仕事ゼロ。<br>
+<strong>②仕事の原理</strong>：道具を使っても仕事の総量は変わらない。<br>
+<strong>③力学的エネルギーの保存</strong>：位置E＋運動E＝一定（摩擦なし）。<br>
+<strong>④仕事率(W)＝仕事(J)÷時間(s)</strong>。</div>
+`},
+
+{id:12,section:'physics',title:'ジェットコースターから発電所まで——エネルギーの移り変わり',desc:'エネルギーは形を変える。でも総量は絶対に変わらない',tag:'physics',tagLabel:'物理',time:9,
+content:`
+<h2>エネルギーは「消える」のではなく「変わる」</h2>
+<p>スマホのバッテリーが0%になったとき、「エネルギーが消えた」と思いがちです。でもじつは消えていません。バッテリーの化学エネルギーが、画面の光エネルギー、スピーカーの音エネルギー、本体の熱エネルギーに変わっただけ。<strong>エネルギーは消滅しない。形を変えるだけ</strong>。これが<strong>エネルギー保存の法則</strong>です。宇宙全体のエネルギーの総量は、宇宙が始まってから一度も変わったことがありません。</p>
+
+<h2>エネルギーの種類と変換チェーン</h2>
+<p>エネルギーには<strong>運動・位置・熱・光・音・電気・化学・核</strong>などの種類があり、互いに変換されます。火力発電所のエネルギー変換チェーンを見てみましょう。</p>
+<p>燃料の<strong>化学エネルギー</strong>→燃焼で<strong>熱エネルギー</strong>→蒸気でタービンを回す<strong>運動エネルギー</strong>→発電機で<strong>電気エネルギー</strong>→送電線を通って家庭へ→ドライヤーで<strong>熱＋運動（風）</strong>、テレビで<strong>光＋音</strong>。</p>
+<p>何段階もの変換を経て、もとの化学エネルギーが私たちの生活に届いているのです。太陽光発電なら<strong>光→電気</strong>。水力発電なら<strong>位置→運動→電気</strong>。それぞれ変換のルートが違います。</p>
+
+<div class="callout"><div class="callout-title">🔄 身近なエネルギー変換</div>
+<strong>電球</strong>：電気→光＋熱。<strong>光合成</strong>：光→化学（デンプン）。<strong>電池</strong>：化学→電気。<strong>太陽光パネル</strong>：光→電気。<strong>人間が走る</strong>：化学（食べ物）→運動＋熱。<br><br>
+どの変換でも一部が<strong>熱エネルギーとして逃げる</strong>のがポイント。LED電球は電気の約40%を光にできますが、白熱電球はたった5%。残りは全部熱になる。この効率の差が「省エネ」の本質です。<strong>100%変換できる装置は存在しません</strong>。</div>
+
+<h2>力学的エネルギー保存との違い</h2>
+<p>前の章で学んだ「位置E＋運動E＝一定」は、摩擦がない場合の話でした。摩擦があると力学的エネルギーは減る——でも消えたわけではなく熱に変わっただけ。<strong>力学的エネルギーは減ることがあるが、全エネルギーは常に保存される</strong>。この区別は入試でよく問われます。</p>
+
+<p>身近なエネルギー変換を追ってみましょう。<strong>火力発電所</strong>では、石油を燃やす（化学エネルギー→熱エネルギー）→蒸気でタービンを回す（運動エネルギー）→発電機で電気に（電気エネルギー）→家庭のドライヤー（熱と運動）。何段階も変わっていますが、<strong>エネルギーの総量は最初から最後まで同じ</strong>。ただし変換のたびに一部が使えない熱（排熱）になるので、実際に使えるエネルギーは減っていく。変換効率が100%になることは絶対にありません。</p>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①エネルギー保存の法則</strong>：総量は変換の前後で同じ。<br>
+<strong>②エネルギー変換の具体例</strong>：各発電方式の変換チェーン。<br>
+<strong>③変換効率</strong>：必ず一部が熱で逃げる。100%変換は不可能。<br>
+<strong>④力学的E保存との違い</strong>：摩擦で力学的Eは減るが全Eは保存。</div>
+`},
+
+{id:13,section:'physics',title:'沖縄の赤瓦屋根は科学的に正しい——エネルギー資源と熱',desc:'伝導・対流・放射と、日本のエネルギー問題',tag:'physics',tagLabel:'物理',time:9,
+content:`
+<h2>味噌汁に入れたスプーンの持ち手が熱くなるのはなぜ？</h2>
+<p>熱い味噌汁にスプーンを入れると、しばらくして持ち手まで熱くなります。味噌汁に触れているのは先端だけなのに、なぜでしょう？ 金属の中では原子がブルブル振動しています。熱いところの原子は激しく振動して、その振動が隣の原子に伝わり、さらに隣に……と<strong>バケツリレーのように熱が移動</strong>していく。これが<strong>熱伝導</strong>です。</p>
+<p>金属は原子の並びが規則的なので、バケツリレーが超高速。だからフライパンはすぐ熱くなる。一方、木やプラスチックは原子の並びが不規則でスカスカなので、バケツリレーが遅い。だから木の箸は熱くならない。<strong>熱を伝えやすい物質＝導体（金属など）、伝えにくい物質＝不導体（木、空気、プラスチックなど）</strong>です。</p>
+
+<h2>エアコンが部屋全体を暖めるのは「対流」</h2>
+<p>暖まった空気は軽い（密度が小さい）ので上に行きます。上にたまった暖かい空気に押されて冷たい空気が下に移動する。その冷たい空気がエアコンで暖められてまた上に行く。このぐるぐるの循環が<strong>対流</strong>です。味噌汁の具がくるくる回るのも対流。お風呂のお湯が上だけ熱くて下が冷たいのも対流（上が熱い）。</p>
+<p>対流は<strong>液体と気体でだけ起こる</strong>現象です。固体では分子が動き回れないので、対流は起こりません。</p>
+
+<h2>焚き火が暖かいのは「放射」</h2>
+<p>焚き火のそばに立つと暖かい。でも焚き火とあなたの間には空気しかない。伝導？ 空気は熱を伝えにくい。対流？ 暖かい空気は上に行くので、横にいるあなたには届きにくい。</p>
+<p>答えは<strong>放射（ほうしゃ）</strong>。すべての物体は温度に応じて<strong>赤外線</strong>を出しています。焚き火の赤外線があなたの肌に当たり、皮膚の分子が振動して暖かくなる。太陽の熱が宇宙空間を超えて地球に届くのも放射です。宇宙は真空なので伝導も対流も起きませんが、<strong>放射だけは真空中でも伝わります</strong>。</p>
+
+<div class="callout"><div class="callout-title">🏠 沖縄の赤瓦屋根は科学の結晶</div>沖縄の伝統的な赤瓦屋根は、じつは科学的に非常に合理的です。瓦は熱伝導率が低い（伝導しにくい）。瓦と瓦の間には空気層があり、空気は最も優秀な不導体のひとつ。さらに赤瓦の表面は太陽の赤外線を反射しやすい性質がある。<strong>昔の沖縄の人たちは、科学を知らなくても経験から科学的に正しい家づくりをしていた</strong>のです。</div>
+
+<h2>日本のエネルギー資源</h2>
+<p>日本はエネルギー資源の約9割を海外から輸入しています。石油、天然ガス、石炭。これらは<strong>化石燃料</strong>と呼ばれ、数億年前の生物が地中で変化したものです。使えばなくなる有限の資源であり、燃やすとCO₂を出して地球温暖化の原因にもなります。</p>
+<p>そこで注目されているのが<strong>再生可能エネルギー</strong>。太陽光、風力、水力、地熱、バイオマス。これらは使ってもなくならず、CO₂の排出が少ない。沖縄は太陽光に恵まれているので、太陽光発電の可能性が大きい地域です。</p>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①熱の3つの伝わり方</strong>：伝導（固体内）・対流（液体・気体の移動）・放射（電磁波＝真空OK）。<br>
+<strong>②真空中で伝わるのは放射のみ</strong>。<br>
+<strong>③化石燃料と再生可能エネルギーの違い</strong>：有限vs無限、CO₂排出の有無。<br>
+<strong>④各発電方法のエネルギー変換</strong>：火力（化学→熱→運動→電気）、水力（位置→運動→電気）、太陽光（光→電気）。</div>
+`},
+
+{id:14,section:'chemistry',title:'鉄・プラスチック・ガラス——物質の見分け方',desc:'密度で物質を特定する。同じ大きさでも重さが違う理由',tag:'chemistry',tagLabel:'化学',time:9,
+content:`
+<h2>金色に輝く塊を見つけたら、どうやって「本物の金」と証明する？</h2>
+<p>もしあなたが金色の塊を拾ったとしましょう。「これは金だ！」と喜ぶ前に、本物かどうか確かめたいですよね。見た目がそっくりの真鍮（しんちゅう）かもしれません。答えは<strong>密度を測る</strong>こと。</p>
+<p><strong>密度＝質量÷体積</strong>。同じ1cm³でも、水は1g、鉄は7.87g、金は19.3g。密度は物質の「指紋」のようなもので、この数値を計算すれば何の物質か特定できます。</p>
+<p>実験では<strong>上皿天びん</strong>で質量を測り、<strong>メスシリンダー</strong>で体積を測ります。メスシリンダーに水を入れ、物体を静かに沈めて水面の上昇分を読む。メスシリンダーは<strong>目盛りの最小単位の1/10まで</strong>読むのがルール。目の高さを液面に合わせ、水面の一番低いところ（メニスカス）を読むのもポイントです。</p>
+
+<div class="tip-box"><div class="tip-title">🔍 密度の計算をやってみよう</div>
+問題：体積が5cm³、質量が39.5gの金属がある。密度を求めて、何か当てよう。<br><br>
+密度 ＝ 39.5 ÷ 5 ＝ <strong>7.9g/cm³</strong><br><br>
+鉄の密度が約7.87g/cm³。ぴったり一致！これは鉄です。密度を一覧表と照らし合わせるだけで物質を特定できる。これが「密度は物質の指紋」と言われる理由です。</div>
+
+<table class="ref-table">
+<tr><th>物質</th><th>密度(g/cm³)</th><th>見分け方</th></tr>
+<tr><td>水</td><td>1.0</td><td>基準</td></tr>
+<tr><td>アルミニウム</td><td>2.7</td><td>軽い金属（空き缶）</td></tr>
+<tr><td>鉄</td><td>7.9</td><td>磁石につく</td></tr>
+<tr><td>銅</td><td>8.9</td><td>赤っぽい金属（10円玉）</td></tr>
+<tr><td>金</td><td>19.3</td><td>重くて変色しない</td></tr>
+</table>
+
+<h2>有機物と無機物——「燃やす」とわかる</h2>
+<p>白い粉が2種類。砂糖と食塩。見た目はそっくりですが、火にかけると砂糖は黒くこげて甘い匂いがする。食塩は何も変わらない。砂糖は<strong>有機物</strong>（炭素を含む物質）で、燃やすと<strong>CO₂と水</strong>が出ます。紙、プラスチック、エタノール、ろうも有機物。食塩やガラス、鉄など炭素を含まない物質は<strong>無機物</strong>です。</p>
+<p>「有機物は燃える、無機物は燃えない」——とざっくり覚えておけばOK。より正確には「有機物は炭素を含むので、燃えると必ずCO₂が発生する」です。有機物か無機物かを調べるとき、燃やしてCO₂が出るか確認する（石灰水が白くにごるか）という方法もあります。</p>
+
+<p>金属には共通の性質があります。この4つは全部満たして初めて「金属」と判定されます。</p>
+
+<table class="ref-table">
+<tr><th>金属の共通性質</th><th>具体例</th></tr>
+<tr><td>①電気をよく通す</td><td>銅線、アルミ缶で電気回路が作れる</td></tr>
+<tr><td>②熱をよく伝える</td><td>鍋がすぐ熱くなる</td></tr>
+<tr><td>③磨くと光る（金属光沢）</td><td>金属製品がキラキラしている</td></tr>
+<tr><td>④たたくと広がる（展性）・引くと伸びる（延性）</td><td>アルミホイルが薄く伸ばせる、銅線が細く引き延ばせる</td></tr>
+</table>
+
+<div class="callout"><div class="callout-title">🔥 ガスバーナーの正しい使い方——手順を声に出して覚えよう</div>
+<strong>点火の手順</strong>：①元栓を開く → ②ガス調節ねじを開く → ③マッチで点火 → ④空気調節ねじで青い炎にする<br>
+<strong>消火は逆順</strong>：空気調節ねじを閉じる → ガス調節ねじを閉じる → 元栓を閉じる<br><br>
+空気が少ない → <strong>黄色の炎</strong>（不完全燃焼、有害なCO発生）<br>
+空気が十分 → <strong>青い炎</strong>（完全燃焼）<br><br>
+「<strong>ガスが先、空気は後（点火時）。空気が先、ガスは後（消火時）</strong>」と覚えましょう。</div>
+
+<div class="tip-box"><div class="tip-title">⚗️ 実験器具の基本操作</div>上皿天びん：水平な台の上で使い、左に物体・右に分銅を置く。分銅は<strong>ピンセット</strong>で扱う。薬品は直接乗せず<strong>薬包紙</strong>を使う。メスシリンダーは目盛りを目の高さで読む（メニスカスの底を読む）。これらはすべて入試の記述問題で理由を聞かれることがあるので、なぜそうするのかを理解しておこう。</div>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①密度＝質量÷体積(g/cm³)</strong>。メスシリンダーの読み方（最小目盛りの1/10まで。メニスカスの底を読む）。<br>
+<strong>②有機物</strong>：炭素を含む。燃やすとCO₂と水が出る。砂糖・プラスチック・紙・エタノール。<br>
+<strong>③無機物</strong>：炭素を含まない。金属・食塩・ガラス・水など。<br>
+<strong>④金属の共通性質4つ</strong>：電気を通す・熱を伝える・金属光沢・展性と延性。<br>
+<strong>⑤ガスバーナーの操作手順</strong>と炎の色の調節。黄色＝空気不足、青＝正常。</div>
+`},
+
+{id:15,section:'chemistry',title:'プールの匂いは塩素——気体の性質',desc:'酸素・水素・CO₂・アンモニア。4つの気体を完全マスター',tag:'chemistry',tagLabel:'化学',time:9,
+content:`
+<h2>目に見えない気体を「ある」と証明する方法</h2>
+<p>酸素は無色透明で匂いもない。見えないし触れない。でも火のついた線香を近づけると<strong>激しく燃え上がる</strong>。これが酸素の「証拠」。科学では目に見えなくても、<strong>特定の反応で存在を証明</strong>できるのです。気体にはそれぞれ「これをやればバレる」という固有の性質がある。それを知っているかどうかが、入試の得点を左右します。</p>
+<p>気体の勉強でよくある失敗は「バラバラに暗記しようとすること」。発生方法・性質・集め方を個別に暗記しようとすると混乱します。コツは<strong>「1つの気体ごとにセットで」覚えること</strong>。1つの気体について「どうやって作るか」「どんな性質か」「どうやって集めるか」「どうやって確認するか」を1まとまりとして頭に入れましょう。</p>
+
+<h2>入試に出る4大気体——発生法・性質・集め方・確認法をセットで</h2>
+
+<table class="ref-table">
+<tr><th>気体</th><th>発生方法</th><th>主な性質</th><th>集め方</th><th>確認方法</th></tr>
+<tr><td class="en-cell">酸素(O₂)</td><td>二酸化マンガン＋オキシドール</td><td>助燃性（ものを燃やすのを助ける）、空気より少し重い</td><td>水上置換</td><td>火のついた線香→激しく燃える</td></tr>
+<tr><td class="en-cell">二酸化炭素(CO₂)</td><td>石灰石＋うすい塩酸</td><td>水に少し溶けて酸性、空気より重い</td><td>水上置換・下方置換</td><td>石灰水→白くにごる</td></tr>
+<tr><td class="en-cell">水素(H₂)</td><td>亜鉛（鉄）＋うすい塩酸</td><td>最も軽い気体、燃えると水ができる</td><td>水上置換</td><td>火をつける→ポンッと音</td></tr>
+<tr><td class="en-cell">アンモニア(NH₃)</td><td>塩化アンモニウム＋水酸化カルシウムを加熱</td><td>強い刺激臭、水に非常に溶ける、アルカリ性、空気より軽い</td><td>上方置換</td><td>刺激臭＋リトマス紙が青くなる</td></tr>
+</table>
+
+<p><strong>酸素（O₂）</strong>の発生：二酸化マンガン＋オキシドール（過酸化水素水）。二酸化マンガンは<strong>触媒</strong>（自分は変化せず反応速度を上げる物質）。酸素の性質は<strong>助燃性</strong>＝ものを燃やすのを助ける。酸素自体が燃えるわけではないのがポイント。「燃える」と「燃やすのを助ける」は別物です。</p>
+<p><strong>二酸化炭素（CO₂）</strong>の発生：石灰石＋うすい塩酸。性質は<strong>石灰水を白くにごらせる</strong>。水に少し溶けて弱い酸性を示す。炭酸飲料のシュワシュワの正体もCO₂です。</p>
+<p><strong>水素（H₂）</strong>の発生：亜鉛（や鉄）＋うすい塩酸。性質は<strong>火をつけるとポンッと音を出して燃える</strong>。最も軽い気体。空気中で燃えると水ができる（2H₂＋O₂→2H₂O）。最初に出てくる気体は空気が混じっているので<strong>捨てる</strong>（空気と混ざると爆発の危険）。</p>
+<p><strong>アンモニア（NH₃）</strong>の発生：塩化アンモニウム＋水酸化カルシウムを加熱。<strong>強い刺激臭</strong>。水にものすごくよく溶ける（アルカリ性）。空気より軽い。トイレの臭いの原因物質の一つ。</p>
+
+<h2>気体の集め方——「水に溶けるか」と「密度」で決める</h2>
+<div class="callout"><div class="callout-title">💨 3つの集め方の使い分け——理由を理解すれば自然に覚えられる</div>
+<strong>①水上置換法</strong>（水中で集める）：水に溶けにくい気体に使う。純粋な気体が集まるので最も正確。O₂、H₂に最適。CO₂もOK（少し水に溶けるが許容範囲）。<br>
+<strong>②上方置換法</strong>：水に溶けやすく空気より軽い気体。容器を上向きに。NH₃用。「軽い気体は上にたまる、だから容器も上向き」という理屈で理解できる。<br>
+<strong>③下方置換法</strong>：水に溶けやすく空気より重い気体。容器を下向きに。CO₂も可。「重い気体は下にたまる、だから容器も下向き」。<br><br>
+アンモニアは水に溶けすぎるので水上置換は使えません。<strong>噴水実験</strong>ではフラスコ内のNH₃が水に溶けて気体が減り、気圧差で水が吹き上がります。フェノールフタレイン液を入れておくとアルカリ性で赤く変色します。</div>
+
+<p>集め方を選ぶ手順：まず「水に溶けにくいか？」→Yes→水上置換。No→「空気より軽いか？」→Yes→上方置換。No→下方置換。この判断フローを頭に入れておけばどの気体でも対応できます。</p>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①4大気体の発生法・性質・集め方・確認法をセット</strong>で覚える。バラバラは危険。<br>
+<strong>②特定法</strong>：石灰水にごる＝CO₂、ポンッ＝H₂、線香激しく燃える＝O₂、刺激臭＋アルカリ＝NH₃。<br>
+<strong>③触媒＝二酸化マンガン</strong>（自分は変化しない。反応速度を上げるだけ）。<br>
+<strong>④「なぜ水上置換を選んだか」を記述で説明する問題</strong>：「水に溶けにくいので水上置換が適切」という説明をできるようにする。</div>
+`},
+
+{id:16,section:'chemistry',title:'砂糖が水に「消える」わけではない——水溶液の性質',desc:'濃度計算と溶解度。入試頻出の計算問題を攻略する',tag:'chemistry',tagLabel:'化学',time:9,
+content:`
+<h2>砂糖水を舐めたら甘い。つまり砂糖は消えていない</h2>
+<p>砂糖を水に入れてかき混ぜると見えなくなります。消えたのでしょうか？ いいえ。舐めれば甘い。砂糖は<strong>分子レベルまで細かくなって水中に均一に散らばった</strong>だけです。これが「溶ける」ということ。目に見えなくなっても、物質はそこにあります。</p>
+<p><strong>溶質</strong>（溶けている物質）＝砂糖。<strong>溶媒</strong>（溶かしている液体）＝水。<strong>溶液</strong>（溶質＋溶媒）＝砂糖水。溶媒が水のときは特に<strong>水溶液</strong>と言います。水溶液の特徴は<strong>透明</strong>で<strong>均一</strong>。牛乳は白く濁っているので水溶液ではありません。味噌汁も上下で濃さが違うので均一ではない。「透明」と「無色」は違います。麦茶は茶色だけど透明＝水溶液です。</p>
+
+<h2>質量パーセント濃度——入試の計算必出</h2>
+<div class="example-block">
+<span class="en">濃度(%) ＝ 溶質の質量(g) ÷ 溶液の質量(g) × 100</span><br><br>
+<span class="ja">例：水180gに砂糖20gを溶かした場合</span><br>
+<span class="ja">溶液の質量＝180＋20＝200g（<strong>溶媒＋溶質＝溶液！</strong>）</span><br>
+<span class="ja">濃度＝20÷200×100＝<strong>10%</strong></span>
+</div>
+<p>一番やりがちなミスは<strong>分母を「水の質量」にしてしまう</strong>こと。分母は水ではなく「水＋砂糖」です。何度も言います。<strong>溶液＝溶媒＋溶質</strong>。</p>
+
+<h2>溶解度と再結晶</h2>
+<p><strong>溶解度</strong>＝水100gに溶ける最大量。温度で大きく変わる物質と変わらない物質がある。硝酸カリウムは20℃で約32g、60℃で約110g。60℃の飽和水溶液を20℃に冷やすと110−32＝<strong>78gの結晶が出てくる</strong>。これが<strong>再結晶</strong>。食塩（NaCl）は温度で溶解度がほとんど変わらないので、冷やしても結晶は出ない。食塩の結晶を取り出すには<strong>水を蒸発</strong>させる。沖縄の塩づくりが天日干しなのはこの原理です。</p>
+
+<div class="callout"><div class="callout-title">📈 溶解度曲線の読み取り——入試の鉄板</div>温度と溶解度のグラフ（溶解度曲線）を使った問題は毎年出ます。<br>
+①ある温度での溶解度を読む。<br>
+②飽和水溶液を冷やしたとき出てくる結晶の量を求める（高温の溶解度−低温の溶解度）。<br>
+③曲線が急な物質（硝酸カリウムなど）→<strong>再結晶で精製</strong>。<br>
+④曲線がほぼ水平な物質（食塩）→<strong>蒸発で取り出す</strong>。<br>
+⑤「水100gあたり」の数値なので、水が200gなら溶ける量も2倍になる。ここも忘れやすいので注意。</div>
+
+<p>濃度の計算でよくある間違いは<strong>分母を「水の量」にしてしまう</strong>こと。正しくは「溶液全体の量（水＋溶けたもの）」が分母です。たとえば、水190gに食塩10gを溶かしたとき、溶液の質量は200g。濃度＝10÷200×100＝<strong>5%</strong>。「10÷190」としてしまう人が続出するので、<strong>「分母は溶液（全体）」</strong>とつねに意識してください。</p>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①濃度の計算</strong>：分母は溶液の質量（溶媒＋溶質）。<br>
+<strong>②溶解度曲線</strong>の読み取りと再結晶量の計算。<br>
+<strong>③飽和水溶液</strong>：これ以上溶けない状態。<br>
+<strong>④蒸留</strong>：沸点の違いで混合物を分離。温度計は枝の付け根に。冷却水は下→上。</div>
+`},
+
+{id:17,section:'chemistry',title:'氷が水に浮く奇跡——状態変化',desc:'固体・液体・気体。分子の動きが変わるだけで姿が変わる',tag:'chemistry',tagLabel:'化学',time:9,
+content:`
+<h2>チョコレートは溶かしても戻せる。でも燃やしたら戻らない</h2>
+<p>チョコレートを電子レンジで溶かして型に入れ、冷やせば元のチョコに戻ります。水を凍らせて氷にしても、温めれば水に戻る。これが<strong>状態変化</strong>——温度によって物質の「姿」（固体・液体・気体）が変わること。大事なのは、<strong>物質そのものは変わっていない</strong>ということ。H₂Oは氷でも水でも水蒸気でもH₂Oです。</p>
+<p>では何が変わっているのか。<strong>分子の動き方</strong>です。固体では分子がきちんと整列して振動するだけ。液体では分子が自由に動き回る。気体では分子が高速で飛び回り、どこまでも広がる。体積は<strong>気体＞液体＞固体</strong>の順に大きくなります（ただし水は例外——後述）。</p>
+
+<h2>融点と沸点——加熱曲線の読み方</h2>
+<p>氷を加熱し続けるとどうなるか。最初は温度が上がりますが、<strong>0℃になると温度が上がらなくなる</strong>。氷が溶けている最中、加えた熱エネルギーは「固体→液体の変化」に全部使われるので温度が変わらないのです。この温度が<strong>融点</strong>。全部溶けたら再び温度上昇。<strong>100℃でまた止まる</strong>。水→水蒸気の変化に熱が使われている。これが<strong>沸点</strong>。</p>
+<p>純粋な物質は融点と沸点が決まっているので、<strong>融点や沸点で物質を特定</strong>できます。混合物は融点・沸点が一定にならない。この違いで純粋か混合かを判定する問題がよく出ます。</p>
+
+<div class="callout"><div class="callout-title">🧊 氷が水に浮く——じつはこれ、奇跡なんです</div>ふつう固体は液体より密度が大きい（重い）ので沈みます。でも水は例外。<strong>氷の密度(0.92g/cm³)＜水の密度(1.0g/cm³)</strong>だから浮く。もし氷が沈んだら、湖は底から凍って魚が全滅する。氷が浮くから湖の表面だけが凍り、その下で魚が生きられる。<strong>水のこの「異常な性質」が地球の生命を守っている</strong>のです。</div>
+
+<h2>蒸留——混合物を分ける技術</h2>
+<p>赤ワインを加熱するとエタノール（沸点78℃）が水（沸点100℃）より先に蒸発します。この蒸気を冷やして集めればエタノールを取り出せる。<strong>沸点の違いを利用して混合物を分ける方法</strong>が<strong>蒸留</strong>。実験のポイントは、温度計の球部を枝つきフラスコの<strong>枝の付け根</strong>に置くこと（出ていく蒸気の温度を測るため）。冷却水は<strong>下から上に流す</strong>（管全体を効率よく冷やすため）。</p>
+<p>ドライアイスを水に入れるとモクモクと白い煙が出ますよね。あれはCO₂が固体から直接気体になる<strong>昇華</strong>。ナフタレン（防虫剤）が小さくなるのも昇華。液体を経由しない状態変化です。</p>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①状態変化≠化学変化</strong>：状態変化は物質そのものが変わらない。化学変化は別の物質ができる。<br>
+<strong>②加熱曲線</strong>：水平部分＝状態変化中（温度一定）。<br>
+<strong>③蒸留の装置</strong>：温度計の位置、冷却水は下→上。<br>
+<strong>④氷は水より密度が小さい</strong>（例外的性質）。</div>
+`},
+
+{id:18,section:'chemistry',title:'水を電気で分解すると爆発する気体が出る——物質の分解',desc:'化学変化の第一歩。1つの物質を2つ以上に分ける',tag:'chemistry',tagLabel:'化学',time:9,
+content:`
+<h2>安全な水から、危険な気体が生まれる不思議</h2>
+<p>水。毎日飲むし、手を洗うし、プールにも入る。とても安全な物質。ところがこの水に電気を流すと、<strong>爆発する気体（水素）</strong>と<strong>ものを激しく燃やす気体（酸素）</strong>に分かれてしまう。安全な物質が危険な物質に変わるなんて、信じられますか？ でもこれが化学の面白さ。物質は別の物質に変わることができる。それが<strong>化学変化</strong>の世界です。</p>
+<p>水は安全な物質ですよね。火をつけても燃えないし、飲んでも大丈夫。ところが水に電気を流すと、<strong>水素</strong>と<strong>酸素</strong>という2つの気体に分かれます。水素は火をつけるとポンッと爆発するし、酸素はものを激しく燃やす。安全な水が危険な気体に変わるなんて、不思議ですよね。これが<strong>分解</strong>——1つの物質が2つ以上の別の物質に分かれる化学変化です。</p>
+<p>水の電気分解では、陰極（−側）から<strong>水素</strong>、陽極（＋側）から<strong>酸素</strong>が発生。体積比は<strong>水素：酸素＝2：1</strong>。H₂Oの化学式を見ればわかります。Hが2つ、Oが1つだから水素のほうが2倍多い。「陰極に水素」は「<strong>水の陰に水素</strong>（みずのいんにすいそ）」というダジャレで覚えられます。</p>
+
+<h2>炭酸水素ナトリウム（重曹）の加熱分解</h2>
+<p>ホットケーキがふくらむ理由を知っていますか？ 生地に入った<strong>炭酸水素ナトリウム（重曹）</strong>が加熱で分解され、CO₂が発生するからです。炭酸水素ナトリウムを試験管で加熱すると、<strong>炭酸ナトリウム＋水＋二酸化炭素</strong>に分かれます。CO₂の確認は石灰水が白くにごること。水の確認は<strong>塩化コバルト紙が青→赤（桃色）</strong>になること。</p>
+<p>この実験では試験管の口を<strong>下に傾ける</strong>のがルール。なぜか？ 発生した水が加熱部に流れると、温度差でガラスが割れるから。「操作の理由」を答えさせる問題は記述の定番です。</p>
+
+<div class="callout"><div class="callout-title">🧪 酸化銀の加熱分解</div>酸化銀（黒色の粉末）を加熱すると、銀（白色の金属）と酸素に分解されます。残った白い物質が金属かどうかは、<strong>①こすると金属光沢 ②電気を通す ③たたくと広がる</strong>で確認。酸素が出たことは線香が激しく燃えることで確認。「加熱だけで分解する」「電気で分解する」など、分解の方法もいろいろあります。</div>
+
+<p>実験では<strong>操作の「理由」を書く問題</strong>がよく出ます。「試験管の口を下げる理由は？」→加熱部分に水が流れてガラスが割れるのを防ぐ。「石灰水が白くにごったことから何がわかるか？」→CO₂が発生したことがわかる。「塩化コバルト紙が青→赤に変わったら？」→水が発生した証拠。ひとつひとつの操作に理由がある。その「なぜ」を理解していれば、暗記しなくても答えが導けます。</p>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①水の電気分解</strong>：陰極→H₂（体積2）、陽極→O₂（体積1）。<br>
+<strong>②炭酸水素ナトリウムの分解</strong>：CO₂確認は石灰水、水の確認は塩化コバルト紙。<br>
+<strong>③試験管の口を下に傾ける理由</strong>：水が加熱部に流れてガラスが割れるのを防ぐ。<br>
+<strong>④酸化銀の分解</strong>：銀＋酸素。金属の確認方法3つ。</div>
+`},
+
+{id:19,section:'chemistry',title:'水は本当にH₂Oなのか——化学変化と原子・分子',desc:'原子の組み合わせが変わるのが化学変化。化学式と化学反応式を攻略',tag:'chemistry',tagLabel:'化学',time:9,
+content:`
+<h2>コップの水をどこまで細かく分けられるか</h2>
+<p>コップの水を半分に分ける。まだ水。さらに半分。まだ水。でも、どこまでも半分にしていけるのか？ 実は限界がある。<strong>水分子（H₂O）1個</strong>が限界です。これ以上分けると水素原子と酸素原子になって、もう「水」ではなくなる。<strong>分子＝その物質の性質を持つ最小の粒</strong>。<strong>原子＝物質をつくる最小の粒子</strong>で、化学変化ではこれ以上分けられません。</p>
+<p>水は酸素原子1個と水素原子2個が結びついてできている。だからH₂O。この「原子の組み合わせが変わること」が化学変化の本質です。</p>
+
+<h2>化学式の読み方</h2>
+<p>H₂Oの「₂」は水素原子が2個という意味。CO₂は炭素1個＋酸素2個。では<strong>2H₂O</strong>の「2」は何か？ これは水分子が<strong>2個</strong>あるという意味。<strong>式の前の大きな数字＝分子の数</strong>、<strong>右下の小さな数字＝分子内の原子数</strong>。この区別が超重要です。</p>
+<p><strong>単体</strong>＝1種類の原子だけでできている（O₂、Fe、C）。<strong>化合物</strong>＝2種類以上の原子でできている（H₂O、CO₂、NaCl）。<strong>混合物</strong>＝複数の物質が混ざったもの（空気、食塩水）。<strong>純粋な物質</strong>＝1種類の物質だけ（水、鉄）。</p>
+
+<h2>化学反応式のつくり方</h2>
+<p>化学反応式では左辺と右辺で<strong>各原子の数を一致させる</strong>必要があります。原子は化学変化で増えも減りもしない＝<strong>質量保存の法則</strong>。</p>
+<div class="example-block">
+<span class="en">水素の燃焼：2H₂ + O₂ → 2H₂O</span><br>
+<span class="ja">左辺：H=4, O=2 ／ 右辺：H=4, O=2 ✓ バランス！</span>
+</div>
+
+<div class="callout"><div class="callout-title">✏️ 係数合わせの手順</div>①まず化学式を正しく書く（<strong>係数はいじるが化学式は絶対に変えない</strong>）。<br>②一番複雑な化合物から合わせる。<br>③水素と酸素は最後に合わせる。<br>④全部の原子数が一致したか確認。<br>最初は時間がかかりますが、入試で出る反応式のパターンは限られています。水の分解、鉄と硫黄、酸化銅の還元、中和——この数パターンを書けるようにしておけば対応できます。</div>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①原子と分子の違い</strong>：原子はそれ以上分けられない最小の粒。分子は原子が結びついた「物質の最小単位」。<br>
+<strong>②単体と化合物と混合物</strong>：1種類の原子だけ＝単体（O₂、Fe）。2種類以上の原子が結合＝化合物（H₂O、CO₂）。複数の物質が混ざった＝混合物（空気、食塩水）。<br>
+<strong>③化学反応式の係数合わせ</strong>：化学式は変えず、係数だけで原子数を合わせる。<br>
+<strong>④質量保存の法則</strong>：密閉容器なら反応の前後で質量は同じ。開放容器だと気体が逃げて変わったように見えるだけ。</div>
+`},
+
+{id:20,section:'chemistry',title:'カイロが温かいのは「ゆっくりした火」——いろいろな化学変化',desc:'酸化・還元・発熱反応・吸熱反応。身近な現象の裏側',tag:'chemistry',tagLabel:'化学',time:9,
+content:`
+<h2>使い捨てカイロは冬の必需品。袋から出すだけで温かくなる。あの魔法のような現象の中身は鉄粉——「急速さび装置」</h2>
+<p>冬にカイロを袋から出すと温かくなります。中身は鉄粉・水・塩・活性炭。袋を開けると鉄粉が空気中の酸素と反応して<strong>酸化鉄</strong>になる。</p>
+<p>この反応が<strong>発熱反応</strong>で、熱が出るのです。自転車のチェーンがさびるのと化学的には同じ反応。違いはスピードだけ。カイロは鉄粉にして表面積を増やし、塩と水で反応を加速して、猛烈な速さでさびを起こしている「<strong>急速さび装置</strong>」なのです。りんごの切り口が茶色くなるのも酸化。鉄がさびるのも酸化。ものが燃えるのも激しい酸化。全部<strong>酸素と結びつく反応</strong>です。</p>
+
+<h2>酸化と還元は必ずセットで起こる</h2>
+<p><strong>酸化＝酸素と結びつく</strong>。では<strong>還元</strong>とは？ <strong>酸素を失うこと</strong>です。そして重要なのは、<strong>酸化と還元は必ず同時に起こる</strong>ということ。酸化銅(CuO)と炭素(C)を混ぜて加熱するとどうなるか。</p>
+<p>2CuO + C → 2Cu + CO₂。銅は酸素を失った→<strong>還元された</strong>。炭素は酸素を得た→<strong>酸化された</strong>。一方が酸素を失えば、相手がそれを受け取る。化学変化はこのように「あげる・もらう」が同時に起こるのです。</p>
+
+<h2>発熱反応と吸熱反応</h2>
+<p><strong>発熱反応</strong>：熱を外に出す。カイロ、燃焼（ものが燃える反応すべて）、中和反応。手をこすり合わせて温かくなるのも発熱。<br>
+<strong>吸熱反応</strong>：まわりから熱を吸収する（冷たくなる）。冷却パック（硝酸アンモニウム＋水）。炭酸水素ナトリウム＋クエン酸の反応も吸熱で、混ぜると手で持てないほど冷たくなります。</p>
+
+<div class="callout"><div class="callout-title">🧪 酸化銅の還元実験——入試の超定番</div>酸化銅（黒色）と炭素粉末を混ぜて加熱→発生した気体を石灰水に通すと<strong>白くにごる（CO₂の証拠）</strong>→試験管に<strong>赤い金属（銅）</strong>が残る。この実験で問われるポイント：①石灰水がにごった理由 ②赤い物質は何か ③酸化された物質と還元された物質はどれか ④加熱をやめる前にガラス管を石灰水から抜く理由（石灰水が逆流するのを防ぐ）。</div>
+
+<p>酸化銅の還元実験を詳しく見てみましょう。黒い粉末の<strong>酸化銅（CuO）</strong>と<strong>炭素（C）</strong>の粉末を混ぜて加熱します。すると炭素が酸化銅の酸素を奪い取り、<strong>赤い銅（Cu）</strong>が残る。奪われた酸素は炭素とくっついて<strong>CO₂</strong>になり、石灰水を白くにごらせる。酸化銅は酸素を失ったから「還元された」、炭素は酸素を得たから「酸化された」。<strong>1つの反応の中で酸化と還元は必ず同時に起きる</strong>——これが最も大事なポイントです。</p>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①酸化と還元は必ずセット</strong>：一方が酸素を得る（酸化）とき、相手は酸素を失う（還元）。CuOから炭素がOを奪うと、銅は還元・炭素は酸化。<br>
+<strong>②発熱反応と吸熱反応</strong>：発熱＝カイロ、燃焼、中和。吸熱＝冷却パック。<br>
+<strong>③酸化銅の還元実験</strong>：黒い酸化銅＋炭素→赤い銅＋CO₂。石灰水が白くにごればCO₂の証拠。<br>
+<strong>④燃焼とさびの違い</strong>：どちらも酸化。反応の速さだけが違う。</div>
+`},
+
+{id:21,section:'chemistry',title:'なぜ0.6gのマグネシウムが1.0gになるのか——化学変化と質量',desc:'質量保存の法則と、金属の酸化の質量比計算',tag:'chemistry',tagLabel:'化学',time:9,
+content:`
+<h2>マグネシウムを燃やすと「重くなる」——えっ、なぜ？</h2>
+<p>ものを燃やすと灰になって軽くなる——そう思いますよね。でもマグネシウムを燃やすと、まぶしい白い光を出して燃え、白い粉が残る。その白い粉の質量を測ると、なんと<strong>もとのマグネシウムより重い</strong>。燃えたのに重くなるなんてどういうこと？ 答えは「空気中の酸素がくっついたから」。</p>
+<p>マグネシウムリボンをバーナーで燃やすと、まぶしい白い光を出して燃え、白い粉（酸化マグネシウム）が残ります。質量を測ると、<strong>元のマグネシウムより重くなっている</strong>。「燃えたのに重くなるって変じゃない？」——当然の疑問です。</p>
+<p>答えは簡単。<strong>空気中の酸素がくっついたから</strong>。Mg＋O→MgO。マグネシウムの質量に酸素の質量が加わったぶん重くなった。逆に炭を燃やすとCO₂が気体として逃げるので軽くなる。でも<strong>密閉容器</strong>で実験すれば、逃げたCO₂も含めた全体の質量は変わらない。これが<strong>質量保存の法則</strong>です。</p>
+
+<h2>金属の酸化の質量比——マジック比率</h2>
+<p>マグネシウム0.3gを完全に酸化→酸化マグネシウム0.5g。結びついた酸素＝0.5−0.3＝0.2g。つまり<strong>Mg：O＝0.3：0.2＝3：2</strong>。この比率は<strong>常に一定</strong>で絶対に変わりません。</p>
+<div class="example-block">
+<span class="en">問題：マグネシウム0.6gを完全に酸化すると何gになる？</span><br>
+<span class="ja">Mg：O＝3：2なので、0.6：O＝3：2 → O＝0.4g</span><br>
+<span class="ja">酸化マグネシウム＝0.6＋0.4＝<strong>1.0g</strong></span>
+</div>
+<p>銅の酸化も同様。<strong>Cu：O＝4：1</strong>。銅0.8gを完全酸化→酸化銅1.0g。比率が違うだけで計算のやり方は同じです。</p>
+
+<div class="callout"><div class="callout-title">📈 加熱回数と質量のグラフ——必勝パターン</div>銅粉を何度も加熱する実験のグラフがよく出ます。最初は加熱するたびに質量が増える。でもあるところで<strong>グラフが水平（横ばい）になる</strong>。これは<strong>すべての銅が酸化し終わった</strong>ということ。水平になったときの質量−元の質量＝結びついた酸素の質量。<br><br>
+もう1つの定番パターン：「マグネシウム0.9gを加熱したが完全に酸化せず、質量が1.3gだった。未反応のMgは何gか？」→結びついたO＝1.3−0.9＝0.4g。Mg：O＝3：2なのでMg＝0.6g反応。未反応＝0.9−0.6＝<strong>0.3g</strong>。</div>
+
+<p>入試で最もよく出るのが<strong>質量比の計算</strong>。マグネシウム0.6gを完全に燃焼させると酸化マグネシウムが1.0gできた。増えた0.4gが結合した酸素。Mg：O＝0.6：0.4＝<strong>3：2</strong>。では1.2gのマグネシウムなら？ 3：2＝1.2：x → x＝0.8g。酸素は0.8g結合する。<strong>比例計算</strong>さえできれば、数字が変わっても解ける。銅の場合はCu：O＝<strong>4：1</strong>。この2つの比率は必ず覚えてください。</p>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①質量保存の法則</strong>：密閉容器なら前後で質量は同じ。<br>
+<strong>②Mg：O＝3：2、Cu：O＝4：1</strong>の質量比で計算する問題は毎年出る。<br>
+<strong>③グラフの水平部分＝反応完了</strong>。<br>
+<strong>④「未反応分」の計算</strong>。</div>
+`},
+
+{id:22,section:'chemistry',title:'食塩水が電気を通す理由——水溶液とイオン',desc:'原子が電気を帯びたもの、それがイオン',tag:'chemistry',tagLabel:'化学',time:9,
+content:`
+<h2>なぜ食塩水は電気を通すのに、砂糖水は通さないのか</h2>
+<p>同じ透明な水溶液なのに、食塩水には電気が流れて砂糖水には流れない。この不思議な違いの裏には<strong>イオン</strong>という目に見えない粒子の存在がありました。</p>
+<p>食塩水に電極を入れて電圧をかけると電流が流れます。でも砂糖水ではほぼ流れない。同じ「透明な水溶液」なのになぜ？ 答えは<strong>イオン</strong>にあります。</p>
+<p>食塩（NaCl）は水に溶けるとナトリウムイオン（Na⁺）と塩化物イオン（Cl⁻）に分かれます。これを<strong>電離</strong>と言います。＋と−の電気を帯びた粒子が水中に自由に動き回っているから、電気が流れるのです。砂糖は水に溶けてもイオンにならない（分子のまま散らばる）から電気を通さない。</p>
+<p>水に溶けてイオンに分かれる物質＝<strong>電解質</strong>（食塩、塩酸、水酸化ナトリウムなど）。イオンにならない物質＝<strong>非電解質</strong>（砂糖、エタノールなど）。</p>
+
+<h2>イオンとは何か——原子が電気を帯びた状態</h2>
+<p>原子は中心の原子核（＋の陽子）のまわりを電子（−）がまわっている構造。ふだんは＋と−が同数でバランスしている。ところが<strong>電子を失う</strong>と＋に帯電＝<strong>陽イオン</strong>（Na⁺、Mg²⁺、Cu²⁺）。<strong>電子を得る</strong>と−に帯電＝<strong>陰イオン</strong>（Cl⁻、OH⁻）。イオンの右上の＋や−の数が大事です。Mg²⁺は電子を2個失ったということ。</p>
+
+<div class="callout"><div class="callout-title">📝 入試に出るイオンの電離式</div>
+<strong>NaCl → Na⁺ + Cl⁻</strong>（食塩）<br>
+<strong>HCl → H⁺ + Cl⁻</strong>（塩酸）<br>
+<strong>NaOH → Na⁺ + OH⁻</strong>（水酸化ナトリウム）<br>
+<strong>H₂SO₄ → 2H⁺ + SO₄²⁻</strong>（硫酸）<br>
+矢印の左に化学式、右にイオンを書く。左辺と右辺で電荷の合計が一致しているか確認。</div>
+
+<h2>塩酸の電気分解</h2>
+<p>塩酸に電圧をかけると、陰極から<strong>水素</strong>、陽極から<strong>塩素</strong>が発生。陰極ではH⁺が電子を受け取ってH₂に。陽極ではCl⁻が電子を放出してCl₂に。<strong>陽イオン（＋）は陰極（−）に引かれ、陰イオン（−）は陽極（＋）に引かれる</strong>。「＋と−は引き合う」——この原則を覚えておけばどんな電気分解も理解できます。</p>
+
+<p>電離式を書くのは難しそうに見えますが、ルールはシンプルです。<strong>NaCl → Na⁺ + Cl⁻</strong>。食塩は水に溶けるとNa（ナトリウムイオン、＋）とCl（塩化物イオン、−）にバラバラになる。この＋と−のイオンが水中を自由に動き回るから電流が流れるのです。砂糖は水に溶けても分子のままイオンにならないから電流が流れない。<strong>「イオンに分かれるかどうか」が電解質と非電解質の境目</strong>です。</p>
+
+<p>入試では<strong>電気分解</strong>もよく出ます。塩化銅水溶液に電流を流すと、陰極に赤い銅が付着し、陽極から塩素の泡が出る。Cu²⁺は＋なので−極（陰極）に引き寄せられ、Cl⁻は−なので＋極（陽極）に引き寄せられる。<strong>＋のイオンは−極へ、−のイオンは＋極へ</strong>。逆に見えますが、＋と−が引き合うのは磁石と同じ原理です。</p>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①電解質vs非電解質</strong>。<strong>②電離式の書き方</strong>。<br>
+<strong>③原子とイオンの違い</strong>：電子の数が違う。Na原子（電子11個）→Na⁺（電子10個）。<br>
+<strong>④陽イオンは陰極へ、陰イオンは陽極へ</strong>移動する。</div>
+`},
+
+{id:23,section:'chemistry',title:'レモンから電気を取り出す——電池のしくみ',desc:'イオン化傾向の違いが電流を生む。化学→電気エネルギー変換',tag:'chemistry',tagLabel:'化学',time:9,
+content:`
+<h2>レモン電池のしくみ——なぜ果物から電気が？</h2>
+<p>レモンに2枚の金属板を刺すとLEDが光る。果物から電気が出るなんて、まるで魔法みたいですよね。でもこれにはちゃんとした科学の原理があります。カギは「金属がイオンになりやすさ」の違いです。</p>
+<p>レモンに亜鉛板と銅板を刺して導線でつなぐと、小さな電球やLEDが光ります。なぜ果物から電気が出るのか。カギは<strong>イオン化傾向</strong>——金属がイオンになりやすい順番です。</p>
+<p>亜鉛は銅より「イオンになりやすい」。亜鉛板がレモン汁（酸性の電解質水溶液）に触れると、亜鉛原子が電子を2個置いてZn²⁺としてレモン汁に溶け出す。残された電子が導線を通って銅板へ流れる。これが<strong>電流</strong>。電池とは、<strong>2種類の金属のイオン化傾向の差を利用</strong>して、化学エネルギーを電気エネルギーに変換する装置なのです。</p>
+
+<div class="callout"><div class="callout-title">🔋 イオン化傾向の並び——語呂合わせで覚える</div>
+<strong>K＞Ca＞Na＞Mg＞Al＞Zn＞Fe＞(H)＞Cu＞Ag＞Au</strong><br>
+「<strong>貸そうかな、まあ当てにするな、ひどすぎる借金</strong>」<br><br>
+左にいるほどイオンになりやすい＝反応しやすい＝さびやすい。金（Au）は右端＝最もイオンになりにくい＝さびない。何千年前の金のアクセサリーが今でも輝いているのはこのため。<br><br>
+電池では<strong>イオン化傾向が大きいほうが−極</strong>（溶ける側）。亜鉛と銅なら、亜鉛が−極。</div>
+
+<h2>電池の条件と種類</h2>
+<p>電池をつくるには<strong>3つの条件</strong>が必要。①<strong>イオン化傾向の異なる2種の金属</strong> ②<strong>電解質水溶液</strong> ③<strong>導線でつなぐ</strong>。砂糖水ではダメ（電解質ではない）。同じ金属2枚でもダメ（イオン化傾向の差がない）。</p>
+<p>使い捨て電池（マンガン電池など）＝<strong>一次電池</strong>。充電式電池（リチウムイオン電池）＝<strong>二次電池</strong>（電気分解の原理で逆反応を起こして充電）。水素と酸素から電気をつくる<strong>燃料電池</strong>は、排出物が水だけのクリーンエネルギーとして注目されています。</p>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①電池の3条件</strong>：異なる金属＋電解質水溶液＋導線。<br>
+<strong>②−極＝イオン化傾向が大きい方</strong>（溶ける側）。<br>
+<strong>③水の電気分解</strong>：陰極→H₂(体積2)、陽極→O₂(体積1)。電池の逆。<br>
+<strong>④燃料電池</strong>：H₂+O₂→H₂O＋電気。排出物が水だけのクリーンエネルギー。</div>
+
+<p>電池の−極は<strong>イオン化傾向が大きい方の金属</strong>（溶けやすい方）。例えば亜鉛と銅を使うと、亜鉛のほうが溶けやすいので亜鉛板が−極になる。亜鉛が溶けるとき電子を残していくので、その電子が導線を通って銅板に流れる。これが電流の正体です。<strong>2種類の金属の「溶けやすさの差」がエネルギーを生み出している</strong>のです。</p>
+
+<div class="tip-box"><div class="tip-title">💡 なぜ果物で電池ができるのか</div>レモンだけでなく、ジャガイモやリンゴでも電池はつくれます。大事なのは果物ではなく「果汁が電解質水溶液」であること。砂糖水では電池にならないのは、砂糖がイオンにならない（非電解質）だから。金属板も同じ種類を2枚使ってはダメ。イオン化傾向に差がないと電子が移動しないからです。</div>
+`},
+
+{id:24,section:'chemistry',title:'胃薬が胃酸を治す理由——酸・アルカリとイオン',desc:'pHスケールと中和反応。水素イオンvs水酸化物イオンの戦い',tag:'chemistry',tagLabel:'化学',time:9,
+content:`
+<h2>レモンが酸っぱいのは「水素イオン」のせい</h2>
+<p>レモンをかじると酸っぱい。あの酸味の正体は<strong>水素イオン（H⁺）</strong>。舌がH⁺を検出して「酸っぱい」と脳に伝えているのです。H⁺が多い水溶液＝<strong>酸性</strong>。石鹸を触るとヌルヌルしますよね。あれは<strong>水酸化物イオン（OH⁻）</strong>のしわざ。OH⁻が多い水溶液＝<strong>アルカリ性</strong>。</p>
+<p>酸性・アルカリ性の強さを数値で表すのが<strong>pH（ピーエイチ）</strong>。pH7が<strong>中性</strong>。それより小さいと酸性（数字が小さいほど強い酸）。大きいとアルカリ性（大きいほど強いアルカリ）。胃液はpH約1〜2の強酸。食べ物を溶かすほどの強さです。胃が自分自身を溶かさないのは、胃壁が粘液バリアで守られているから。胃酸が出すぎて痛いとき飲む胃薬は水酸化マグネシウムなどのアルカリ性物質で、胃酸を<strong>中和</strong>しています。</p>
+
+<h2>中和反応——酸＋アルカリ＝水＋塩</h2>
+<p><strong>H⁺ + OH⁻ → H₂O</strong>。これが中和の本質。酸の水素イオンとアルカリの水酸化物イオンが出会うと水ができる。同時に<strong>塩（えん）</strong>もできます（食卓の「塩（しお）」とは違う化学用語）。</p>
+<div class="example-block">
+<span class="en">HCl + NaOH → NaCl + H₂O</span><br>
+<span class="ja">（塩酸＋水酸化ナトリウム→食塩＋水）</span>
+</div>
+
+<h2>指示薬——色の変化で酸性・アルカリ性を見分ける</h2>
+<p><strong>リトマス紙</strong>：青→赤なら酸性。赤→青ならアルカリ性。<br>
+<strong>BTB溶液</strong>：黄＝酸性、緑＝中性、青＝アルカリ性。<strong>信号の色</strong>（黄色→注意＝酸性、緑→OK＝中性、青→安全＝アルカリ性）で覚えると忘れません。<br>
+<strong>フェノールフタレイン</strong>：無色→赤になるのは<strong>アルカリ性のときだけ</strong>。酸性や中性では無色のまま。</p>
+
+<div class="callout"><div class="callout-title">🧪 中和の量的関係——グラフ問題の攻略</div>水酸化ナトリウム水溶液にBTB溶液を入れて青色にする。そこに塩酸を少しずつ加えると、青→緑→黄と変化。<strong>緑になった瞬間が完全中和</strong>（H⁺とOH⁻が過不足なく反応し終わった点）。加えた塩酸の量と、BTBの色変化・水溶液中のイオンの種類をグラフで読み取る問題は入試の超定番です。完全中和点を過ぎてさらに塩酸を加えると、余ったH⁺で溶液は酸性（黄色）になります。</div>
+
+<p>指示薬の色変化は、表で丸暗記するより<strong>イメージで覚える</strong>のがコツ。<strong>BTB液</strong>は信号機と同じ。酸性＝黄色、中性＝緑、アルカリ性＝青。「酸性の黄信号→危ない！」と覚えると忘れにくい。<strong>リトマス紙</strong>は「酸で赤」だけ覚えればOK。青→赤に変わる＝酸性を検出。赤→青に変わる＝アルカリ性を検出。<strong>フェノールフタレイン</strong>はアルカリ性のときだけ赤くなる（酸性・中性では無色）。</p>
+
+<p>中和の計算では、<strong>完全中和点</strong>がポイント。塩酸にNaOH水溶液を少しずつ加えていくと、H⁺とOH⁻が結合して水になる。ちょうどH⁺がすべてOH⁻と反応し終わった点が完全中和。このときBTB液は緑色になり、さらにNaOHを加えると青色になります。グラフから完全中和点を読み取る問題は頻出です。</p>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①酸性の正体＝H⁺、アルカリ性の正体＝OH⁻</strong>。<br>
+<strong>②中和＝H⁺+OH⁻→H₂O＋塩（えん）</strong>。<br>
+<strong>③指示薬の色変化</strong>を正確に。BTBは信号。<br>
+<strong>④中和のグラフ</strong>：完全中和点での塩酸の量を求める計算。</div>
+`},
+
+{id:25,section:'biology',title:'ルーペの向こうに広がる世界——身近な生物の観察',desc:'「見る」と「観察する」はまったく違う。科学の目を手に入れる第一歩',tag:'biology',tagLabel:'生物',time:9,
+content:`
+<h2>「見る」と「観察する」はまったく違う</h2>
+<p>校庭に出て花を見る。「きれいだな」——これは「見る」。でも「花びらは5枚あって、直径は約3cm。薄紫色で、先端にいくほど色が薄くなっている」——これが「<strong>観察する</strong>」です。理科でいう観察は、対象の特徴を<strong>正確に、客観的に記録</strong>すること。「大きい」「きれい」は人によって感じ方が違う。でも「直径3cm」「5枚」は誰が見ても同じ。理科は<strong>「だれが見ても同じ」事実を積み重ねる学問</strong>なのです。</p>
+<p>スケッチにもルールがあります。<strong>1本の線で輪郭を描く</strong>。何度もなぞったり影をつけたりしない。芸術作品ではないので、うまい絵を描く必要はありません。大事なのは<strong>特徴が正確に伝わること</strong>。気づいたことは文章でメモしておく。「花びらに細い筋が入っている」「茎に毛が生えている」——こうした小さな気づきが、のちのち分類のカギになったりするのです。</p>
+
+<h2>ルーペは目に近づけて使う</h2>
+<p>ルーペ（虫めがね）の使い方。意外と間違える人が多い。ルーペを目に近づけた状態で固定し、<strong>観察するもののほうを前後に動かして</strong>ピントを合わせます。「ルーペを動かすんじゃないの？」と思うかもしれませんが、目からルーペの距離が変わると見え方が不安定になるのです。ただし、木の幹の模様など動かせないものを見るときは、ルーペのほうを前後に動かしてOKです。</p>
+
+<h2>顕微鏡——ミクロの世界への入り口</h2>
+<p>肉眼では見えない世界を見せてくれる顕微鏡。操作の手順がそのまま入試問題になるほど重要です。</p>
+<p>まず、レンズの取り付け。<strong>接眼レンズを先に、対物レンズを後に</strong>取り付けます。なぜこの順番か？ 接眼レンズがない状態で対物レンズをつけると、筒の中にホコリが落ちてしまうからです。観察は<strong>低倍率から</strong>始めます。高倍率のほうがよく見えそうですが、視野が狭くて暗いので、まず低倍率で見たいものを探してから倍率を上げるのが正解です。</p>
+<p>ピント合わせが一番緊張する場面。<strong>横から見ながら対物レンズをプレパラートに近づけて</strong>いき、<strong>接眼レンズを覗きながらゆっくり遠ざけて</strong>ピントを合わせます。近づけながら覗くと、うっかりレンズがプレパラートにぶつかって壊してしまう。だから「まず近づけて、遠ざけながら合わせる」。この順番には理由があるのです。</p>
+
+<div class="callout"><div class="callout-title">🔬 プレパラートのつくり方</div>スライドガラスに試料を置き、水を1滴。カバーガラスを斜めにあてて、端からそーっと下ろす。一気に落とすと空気の泡（気泡）が入って観察のじゃまになります。染色するときは、カバーガラスの端から<strong>酢酸カーミン液</strong>をたらし、反対側からろ紙で吸い取る。核が<strong>赤く</strong>染まって見やすくなります。</div>
+
+<p>顕微鏡で一番面白いのは「上下左右が逆に見える」こと。プレパラートを右に動かすと、覗いた像は左に動く。だから「右にあるものを中央に持ってきたい」ときは、プレパラートを右に動かす。ちょっと頭がこんがらがりますが、実際にやってみると感覚でわかります。</p>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①レンズの取り付け順</strong>：接眼レンズが先、対物レンズが後。筒にホコリが入るのを防ぐため。<br>
+<strong>②ピント合わせの手順</strong>：横から見て対物レンズを近づける→覗きながらゆっくり遠ざけて合わせる。近づけながら覗くとプレパラートを壊す。<br>
+<strong>③像の動く方向はプレパラートと逆</strong>：見たいものを中央に持ってくるには、プレパラートをその方向に動かす。</div>
+`},
+
+{id:26,section:'biology',title:'花はなぜ咲くのか——花のつくりとはたらき',desc:'花は「きれい」のためにあるのではない。子孫を残す真剣勝負の場',tag:'biology',tagLabel:'生物',time:9,
+content:`
+<h2>花は「看板」であり「工場」である</h2>
+<p>道端に咲く花を見て「きれいだな」と思ったことがありますよね。でも、植物が花を咲かせる理由は「きれいでいたいから」ではありません。<strong>花は子孫を残すための「生殖器官」</strong>です。あの華やかな色は虫を呼び寄せるための<strong>看板</strong>、甘い蜜は虫に来てもらうための<strong>報酬</strong>。花と虫は「蜜をあげるかわりに花粉を運んでね」という取引をしているのです。</p>
+
+<h2>花を分解してみよう——4つのパーツ</h2>
+<p>花を外側からそっと分解すると、4つの部品でできていることがわかります。</p>
+<p>一番外側が<strong>がく</strong>。つぼみのときに中を守るカバーの役割をしていた部分です。その内側に<strong>花びら（花弁）</strong>。虫に「ここにおいしい蜜があるよ！」とアピールするための派手な看板。花びらの内側にあるのが<strong>おしべ</strong>。おしべの先端にある袋のような部分を<strong>やく</strong>と呼び、ここに花粉が入っています。そして一番内側、花の中心にあるのが<strong>めしべ</strong>。めしべの先端を<strong>柱頭</strong>、根元のふくらみを<strong>子房</strong>、子房の中にある小さな粒を<strong>胚珠</strong>と言います。</p>
+<p>名前が多くて大変に感じるかもしれませんが、「外から内へ：がく→花びら→おしべ→めしべ」この順番だけまず覚えてください。あとは「やく＝花粉が入ってる場所」「子房の中に胚珠がある」の2つ。これだけで花の問題の8割は解けます。</p>
+
+<h2>花粉がめしべに届いてからのドラマ</h2>
+<p>花粉がめしべの柱頭にくっつくこと＝<strong>受粉</strong>。ここからがドラマチック。花粉から細い管（<strong>花粉管</strong>）がにょきにょき伸びていき、めしべの中を通って胚珠に到達します。花粉管の中の精細胞と胚珠の中の卵細胞が合体＝<strong>受精</strong>。受精すると、胚珠は<strong>種子</strong>に、子房は<strong>果実</strong>に変化します。りんごの果肉は子房が大きくなったもの。りんごの種は胚珠が成長したものなのです。</p>
+
+<div class="callout"><div class="callout-title">🌺 沖縄のハイビスカスで確認してみよう</div>ハイビスカスの花はとても大きくて、構造が肉眼でよく見えます。めしべが長く飛び出していて、おしべの花粉も指で触れるほど。もし機会があれば、実際にハイビスカスを分解して「がく→花びら→おしべ→めしべ」を確認してみてください。教科書の図が一気に立体的になりますよ。</div>
+
+<p>ところで、マツやイチョウには「子房」がありません。胚珠がむき出し（裸）のまま。だから果実ができない。こういう植物を<strong>裸子植物</strong>と呼びます。子房がある植物は<strong>被子植物</strong>。サクラ、チューリップ、りんご——果実ができる植物は被子植物です。</p>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①花の構造は外から内へ</strong>：がく→花弁→おしべ→めしべの順。おしべの先端の「やく」に花粉が入っている。<br>
+<strong>②受精後の変化</strong>：胚珠→種子、子房→果実。りんごの実は子房が育ったもの、種は胚珠が育ったもの。この対応は必ず覚える。<br>
+<strong>③被子植物と裸子植物の違い</strong>：子房があるかないか。子房がある＝被子植物（果実ができる）。子房がない＝裸子植物（マツ、イチョウなど）。</div>
+`},
+
+{id:27,section:'biology',title:'植物にも「家系図」がある——植物の分類',desc:'見た目がバラバラでも、根っこや葉脈で仲間がわかる',tag:'biology',tagLabel:'生物',time:9,
+content:`
+<h2>イネとサクラ、どっちがユリに近い？</h2>
+<p>イネは稲穂でお米を作る植物。サクラはピンクの花が咲く木。ユリは大きな花が咲く草。見た目は全然違います。でも、<strong>根っこを掘り起こしてみると</strong>、イネとユリは「ひげ根」というモジャモジャした根を持っている。サクラには太い「主根」とそこから枝分かれした「側根」がある。根の形で判断すると、<strong>イネとユリのほうが「近い仲間」</strong>なのです。見た目ではなく、<strong>体のつくり</strong>で仲間分けする。これが科学の分類です。</p>
+
+<h2>被子植物を2つに分ける——双子葉類と単子葉類</h2>
+<p>被子植物（子房がある植物）は、芽が出たとき最初に出る葉＝<strong>子葉</strong>の枚数で2つに分かれます。子葉が2枚＝<strong>双子葉類</strong>、1枚＝<strong>単子葉類</strong>。そしてこの違いは子葉だけではなく、植物の体のあちこちに現れます。</p>
+<p><strong>双子葉類</strong>（サクラ、アサガオ、タンポポ）：葉脈が<strong>網の目状</strong>（網状脈）。根は<strong>太い主根＋側根</strong>。茎の維管束は<strong>輪のように</strong>きれいに並ぶ。</p>
+<p><strong>単子葉類</strong>（イネ、トウモロコシ、ユリ）：葉脈が<strong>平行</strong>（平行脈）。根は<strong>ひげ根</strong>。茎の維管束は<strong>バラバラに散らばる</strong>。</p>
+<p>この4つの違い（子葉・葉脈・根・維管束）は入試で本当によく出ます。でも丸暗記は大変なので、<strong>「整っているのが双子葉、バラバラが単子葉」</strong>とイメージで覚えると楽です。双子葉は根も維管束も整然としていて、単子葉はひげ根もバラバラ維管束もワイルドな感じ。</p>
+
+<h2>種子をつくらない植物たち</h2>
+<p>世の中には花も種子もつくらない植物がいます。</p>
+<p><strong>シダ植物</strong>（イヌワラビなど）は、根・茎・葉の区別があり水を運ぶ管（維管束）もあるけれど、種子ではなく<strong>胞子</strong>で増えます。葉の裏に茶色いブツブツがあったら、それが胞子のう（胞子が入った袋）です。<strong>コケ植物</strong>（ゼニゴケ、スギゴケ）は、維管束すらない。根のようなものはあるけれど水を運ぶ機能がないので「仮根」と呼ばれます。体全体で水分を吸収するため、湿った場所でしか生きられません。</p>
+
+<div class="callout"><div class="callout-title">🌿 分類の大きな流れ</div>種子をつくる？→Yes→子房がある？→Yes→<strong>被子植物</strong>（双子葉/単子葉）　→No→<strong>裸子植物</strong><br>
+→No→維管束がある？→Yes→<strong>シダ植物</strong>　→No→<strong>コケ植物</strong><br>
+「種子→子房→子葉」の順に質問を絞っていくフローチャートをイメージすると、分類問題がサクサク解けます。</div>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①双子葉と単子葉の4つの違い</strong>：子葉（2枚/1枚）、葉脈（網状脈/平行脈）、根（主根＋側根/ひげ根）、茎の維管束（輪状/バラバラ）。<br>
+<strong>②シダとコケの違い</strong>：シダは維管束があり根・茎・葉の区別がある。コケは維管束がなく仮根で体を固定するだけ。どちらも胞子で増える。<br>
+<strong>③分類のフローチャート</strong>：「種子をつくるか→子房があるか→子葉は何枚か」と順番に質問を絞っていく。</div>
+`},
+
+{id:28,section:'biology',title:'クジラは魚じゃない——動物の分類',desc:'海を泳いでいても「哺乳類」。見た目ではなく体のしくみで分ける',tag:'biology',tagLabel:'生物',time:9,
+content:`
+<h2>「海にいるから魚」は間違い</h2>
+<p>クジラは海を泳いでいます。ヒレがあって、魚みたいな形をしている。でもクジラは<strong>哺乳類</strong>。なぜか？ <strong>肺で呼吸</strong>している（だから水面に出て息をする）。<strong>赤ちゃんを産んでお乳で育てる</strong>。体温を一定に保つ<strong>恒温動物</strong>。これらは全部、哺乳類の特徴です。コウモリだって空を飛ぶけど鳥ではなく哺乳類。ペンギンは泳ぐのが上手いけど魚ではなく鳥類。<strong>住んでいる場所や見た目で判断しない</strong>のが科学の分類です。</p>
+
+<h2>背骨がある動物——5つのグループ</h2>
+<p>背骨（脊椎）を持つ動物＝<strong>脊椎動物</strong>は、5つのグループに分かれます。分け方のポイントは<strong>体温・呼吸方法・子の生まれ方</strong>の3つです。</p>
+<p><strong>魚類</strong>は水中でえら呼吸。卵は水中に産んで殻はない。<strong>両生類</strong>（カエル、イモリ）は子ども時代はえら呼吸、大人になると肺と皮膚で呼吸。カエルのオタマジャクシを思い出してください。最初はえらで水中生活、やがて肺が発達して陸に上がる。<strong>呼吸方法が劇的に変わる唯一のグループ</strong>です。卵に殻はなく、乾燥に弱いので水辺に産みます。</p>
+<p><strong>は虫類</strong>（トカゲ、ヘビ、カメ）は完全に肺呼吸で、卵には<strong>殻がある</strong>。この殻のおかげで水辺から離れた陸上にも卵を産める。進化的に大きな一歩です。<strong>鳥類</strong>はは虫類と似ていますが、体温を一定に保つ<strong>恒温動物</strong>。<strong>哺乳類</strong>も恒温で、さらに卵ではなく母親のお腹の中で育ててから産む<strong>胎生</strong>。</p>
+
+<div class="callout"><div class="callout-title">🐸 なぜ「変温」と「恒温」が大事なのか</div>変温動物（魚・両生・は虫類）は外の温度で体温が変わります。冬の寒い日にトカゲが動けなくなるのは体温が下がって代謝が落ちるから。恒温動物（鳥・哺乳類）は自分でエネルギーを燃やして体温を保てるので、冬でも活動できる。でもそのぶんたくさん食べないといけない。どちらも一長一短。恒温が「進化的に上」というわけではないのです。</div>
+
+<h2>背骨がない動物——実は動物界の多数派</h2>
+<p>じつは地球の動物の約<strong>97%</strong>は背骨がない<strong>無脊椎動物</strong>です。昆虫、エビ、カニ、クモは<strong>節足動物</strong>（体が節に分かれていて外骨格を持つ）。昆虫の足は6本、クモは8本。「クモは昆虫じゃない」はよく出る問題です。イカやタコ、貝は<strong>軟体動物</strong>。骨格を持たず、柔らかい体を外套膜で包んでいます。ダンゴムシは丸くなるからダンゴ虫ですが、実はエビやカニの仲間（甲殻類）なのが面白いですよね。</p>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①脊椎動物5類の分け方</strong>：体温（変温/恒温）・呼吸（えら/肺/皮膚）・子の生まれ方（卵生/胎生）の3基準で分ける。<br>
+<strong>②両生類の特徴</strong>：子はえら呼吸、大人は肺＋皮膚呼吸。卵に殻がない（水中に産む）。呼吸方法が変わる唯一のグループ。<br>
+<strong>③節足動物の分類</strong>：昆虫類＝足6本。甲殻類＝エビ・カニ・ダンゴムシ。クモ類＝足8本。「クモは昆虫ではない」は定番問題。</div>
+`},
+
+{id:29,section:'biology',title:'あなたの体は37兆個の「部屋」でできている——細胞のつくり',desc:'生きている「部屋」。植物細胞と動物細胞の違いがわかると理科が見える',tag:'biology',tagLabel:'生物',time:9,
+content:`
+<h2>「細胞」という名前の由来</h2>
+<p>17世紀のイギリスの科学者ロバート・フックが、コルクの薄片を顕微鏡で見たとき、小さな「部屋」がたくさん並んでいるのを発見しました。修道院の小部屋（cell）に似ていたので「cell＝細胞」と名づけた。それから約350年。今では<strong>すべての生き物が細胞でできている</strong>ことがわかっています。人間の体は約<strong>37兆個</strong>。筋肉を動かす細胞、食べ物を消化する細胞、酸素を運ぶ細胞——それぞれが専門の仕事をしています。</p>
+
+<h2>すべての細胞に共通する3つの部品</h2>
+<p><strong>核</strong>：細胞の「司令塔」。DNAという遺伝情報が入っている。染色液で染めると赤く見える。<br>
+<strong>細胞膜</strong>：細胞の外側を覆う薄い膜。何を入れて何を出すかをコントロールする「門番」。<br>
+<strong>細胞質</strong>：核と細胞膜の間を満たすゼリー状の物質。ここでいろいろな化学反応が起こります。</p>
+
+<h2>植物細胞にだけある3つの特別装備</h2>
+<p>植物細胞を顕微鏡で見ると、動物細胞にはないものが3つ見つかります。<br>
+<strong>①細胞壁</strong>：細胞膜の外側にある固い壁。植物が支え棒なしでまっすぐ立てるのは、何億個もの細胞の壁が合わさって植物全体を支えているからです。</p>
+<p><strong>②葉緑体</strong>：光合成をする緑色の粒。太陽の光エネルギーを使って栄養（デンプン）をつくる「工場」。葉が緑色に見えるのは葉緑体が緑色だから。</p>
+<p><strong>③液胞</strong>：水や養分、色素をためている大きな袋。成長した植物細胞ほど液胞が大きい。花が赤いのは液胞の中にアントシアニンという色素が入っているからです。</p>
+<p>動物細胞にはこの3つがないので、顕微鏡で見ると植物細胞は<strong>四角い形</strong>（細胞壁があるから）、動物細胞は<strong>丸っぽい形</strong>。見た目だけで植物か動物かわかるのです。</p>
+
+<div class="callout"><div class="callout-title">🔬 タマネギの細胞を見てみよう</div>タマネギの薄皮をはがしてプレパラートに乗せ、酢酸カーミン液で染色して顕微鏡で見ると、四角い細胞がきれいに並んでいます。真ん中に赤く染まった核が見える。でも<strong>タマネギの細胞には葉緑体がない</strong>。なぜか？ 地下に埋まっている部分なので光が当たらず、光合成の必要がないからです。「葉緑体は光合成をする場所」ということがここからもわかりますね。</div>
+
+<p>体のレベルにも階層があります。<strong>細胞→組織→器官→個体</strong>。同じ仕事をする細胞の集まりが「組織」、いくつかの組織が協力して働く塊が「器官」（心臓、胃、葉など）、器官が集まったのが「個体」。でも中にはアメーバのように、<strong>たった1個の細胞で全部をやってのける生物</strong>（単細胞生物）もいます。</p>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①植物細胞だけにある3つ</strong>：細胞壁（固い壁で形を保つ）、葉緑体（光合成の場所）、大きな液胞（水・養分を貯める）。<br>
+<strong>②体の構造の階層</strong>：細胞→組織→器官（心臓、葉など）→個体。<br>
+<strong>③植物細胞は四角、動物細胞は丸</strong>：細胞壁の有無で形が決まる。顕微鏡で見た形だけで植物か動物かわかる。</div>
+`},
+
+{id:30,section:'biology',title:'植物は「光」を食べている——光合成と呼吸',desc:'昼はCO₂を吸い、夜はO₂を吸う。植物の24時間に迫る',tag:'biology',tagLabel:'生物',time:9,
+content:`
+<h2>動物は食べ物を探して走り回る。植物はその場で栄養をつくる</h2>
+<p>私たち動物は、食べ物を見つけないと生きていけません。でも植物はその場から一歩も動かずに、自分で栄養をつくれます。太陽の光エネルギーを使って、空気中のCO₂（二酸化炭素）と根から吸い上げた水から、<strong>デンプン</strong>（栄養）と<strong>酸素</strong>をつくる。この反応を<strong>光合成</strong>と呼びます。場所は葉の細胞の中にある緑色の粒＝<strong>葉緑体</strong>。光合成ができるのは葉緑体を持つ細胞だけです。</p>
+<p>そして、ここがすごく大事なポイント。<strong>植物も呼吸をしています</strong>。24時間ずっと。昼も夜も。「えっ、植物って酸素を出すんじゃないの？」と思うかもしれませんが、それは昼間の話。昼は光合成で出す酸素のほうが、呼吸で使う酸素より多いので、全体として「酸素を出してCO₂を吸う」ように見える。でも夜は光合成がゼロになるので、呼吸だけが残って「酸素を吸ってCO₂を出す」のです。</p>
+
+<h2>光合成を証明する実験——「対照実験」の完璧なお手本</h2>
+<p>「光合成には光が必要だ」ということを証明する実験を見てみましょう。</p>
+<p>①まず、実験する植物を<strong>前日から暗い場所に置く</strong>。なぜ？ 葉にもともと入っているデンプンを呼吸で使い切らせて、<strong>ゼロの状態からスタート</strong>するため。これをしないと「もとから入っていたデンプン」と「新しくできたデンプン」の区別がつきません。</p>
+<p>②次に、1枚の葉の一部を<strong>アルミホイルで覆う</strong>。覆った部分は光が当たらない。覆っていない部分は光が当たる。<strong>変えている条件は「光の有無」だけ</strong>。他の条件（温度、CO₂の量など）は同じ。これが<strong>対照実験</strong>の基本です。</p>
+<p>③数時間光を当てた後、葉を摘んで<strong>エタノールで煮る</strong>（葉の緑色を抜く。色が残るとヨウ素液の色変化が見えにくいから）→<strong>ヨウ素液</strong>につける。すると、<strong>光が当たった部分だけが青紫色に変化</strong>。デンプンができた証拠です。アルミホイルで覆った部分は色が変わらない。つまり、<strong>光がないとデンプンはできない＝光合成には光が必要</strong>。</p>
+<p>この実験は入試で何度も出ます。「なぜ暗所に置いたか」「なぜエタノールで煮たか」「なぜアルミホイルを使ったか」——すべての操作に理由がある。その理由を説明できるかどうかが勝負です。</p>
+
+<div class="callout"><div class="callout-title">🌿 蒸散と気孔——植物のエアコン</div>葉の表面（特に裏側）には<strong>気孔</strong>という小さな穴がたくさんあります。2つの<strong>孔辺細胞</strong>がペアになって穴を開け閉めしている。気孔からCO₂を取り入れ、O₂を出す。同時に水蒸気も出ていく＝<strong>蒸散</strong>。蒸散は2つの役割を持っています。①水が蒸発するときに熱を奪って<strong>体温を下げる（植物のエアコン）</strong>。②根から水を引き上げる<strong>ポンプ</strong>の役割。ワセリンで気孔をふさぐ実験で、「葉の裏にたくさん気孔がある」ことが確かめられます。</div>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①光合成の反応式と場所</strong>：CO₂＋水→デンプン＋O₂。葉緑体で行われる。光がないと起きない。<br>
+<strong>②呼吸は24時間すべての細胞で</strong>：植物も動物もすべての生きた細胞で呼吸している。昼間は光合成が上回るので目立たないだけ。<br>
+<strong>③対照実験の操作理由</strong>：「暗所に置く理由」→もとのデンプンをゼロにする。「エタノールで煮る理由」→緑色を抜いてヨウ素液の変化を見やすくする。</div>
+`},
+
+{id:31,section:'biology',title:'根っこは水を吸い、茎はパイプ——植物のからだ',desc:'道管と師管。植物の体の中を走る2本の「パイプライン」',tag:'biology',tagLabel:'生物',time:9,
+content:`
+<h2>植物の中には水道管が通っている</h2>
+<p>植物に水をやると、根から吸い上げた水が茎を通って葉まで届きます。高さ100mを超えるセコイアの木でも、根から吸った水がてっぺんの葉まで届く。ポンプもないのにどうやって？ 植物の体には<strong>2本のパイプライン</strong>が通っています。</p>
+<p><strong>道管（どうかん）</strong>：根から吸い上げた水と、土の中の無機養分（ミネラル）を<strong>上に運ぶパイプ</strong>。<br>
+<strong>師管（しかん）</strong>：葉で光合成によってつくったデンプン（有機養分）を<strong>体中に運ぶパイプ</strong>。<br>
+この2つのパイプの束を<strong>維管束</strong>と言います。</p>
+<p>茎の断面を見ると、道管は<strong>内側</strong>、師管は<strong>外側</strong>にあります。「道は内」と覚えてください。セロリの茎を赤い色水に浸けると、<strong>道管の部分だけが赤く染まる</strong>のが目で見えます。道管が水の通り道である証拠を自分の目で確認できる、感動的な実験です。</p>
+
+<h2>根のつくり——表面積を稼ぐ戦略</h2>
+<p>根の先端近くには<strong>根毛</strong>という細い毛のような突起がたくさん生えています。この根毛があることで根の<strong>表面積が大きく</strong>なり、効率よく水を吸い上げられる。限られた体積で表面積を最大化する——この「表面積を増やす戦略」は、小腸の柔毛（消化と吸収の章で出てきます）とまったく同じ発想です。</p>
+
+<h2>葉のつくり——光合成のための工場</h2>
+<p>葉の断面を顕微鏡で見ると、きれいな層構造が見えます。表側の表皮の下には<strong>柵状組織</strong>（さくじょうそしき）——細胞が柵のようにきちんと並んでいて、葉緑体がたくさん詰まっている。光合成の主力部隊。その下には<strong>海綿状組織</strong>——細胞がスカスカに並んでいて、空気の通り道がある。裏側の表皮には<strong>気孔</strong>。</p>
+
+<div class="callout"><div class="callout-title">🔬 双子葉と単子葉は茎の断面でわかる</div>双子葉類の茎では維管束が<strong>輪のようにきれいに並ぶ</strong>。単子葉類では維管束が<strong>バラバラに散らばる</strong>。顕微鏡の写真を見せて「これは双子葉か単子葉か？」と聞くのは入試の定番問題です。維管束が輪になっていれば双子葉。散らばっていれば単子葉。</div>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①道管と師管の位置と役割</strong>：道管＝内側・水と無機養分を上へ。師管＝外側・有機養分を全身へ。「道は内」と覚える。<br>
+<strong>②根毛の役割</strong>：根の先端にある突起で、表面積を大きくして水を効率よく吸収する。小腸の柔毛と同じ「表面積の戦略」。<br>
+<strong>③茎の断面の見分け方</strong>：維管束が輪状に並ぶ＝双子葉類。バラバラに散らばる＝単子葉類。顕微鏡写真で判別する問題が頻出。</div>
+`},
+
+{id:32,section:'biology',title:'食べたラーメンはどこへ行くのか——消化と吸収',desc:'口から肛門まで約9mの旅。大きな栄養を小さく分解する「消化」のドラマ',tag:'biology',tagLabel:'生物',time:9,
+content:`
+<h2>ラーメンの形のまま血液に入れるわけがない</h2>
+<p>今日のお昼にラーメンを食べたとします。麺にはデンプン、チャーシューにはタンパク質、スープには脂肪。でもこれらはそのままでは大きすぎて体に吸収できません。<strong>消化</strong>とは、食べ物を体が吸収できるほど小さな分子に分解する作業のこと。口から肛門まで約9mの消化管を旅する間に、食べ物はどんどん小さくなっていきます。</p>
+<p>なぜそのままでは吸収できないのか？ たとえば、ラーメンの麺一本のままでは血管（直径0.01mmの毛細血管）を通り抜けられません。「分子レベルまで小さくする」ことで初めて血管に入れるようになるのです。消化は「大きいものを小さくする作業」と覚えておきましょう。</p>
+
+<h2>消化のリレー——口からスタート</h2>
+<p><strong>口</strong>：だ液に含まれる<strong>アミラーゼ</strong>という酵素がデンプンを分解し始める。だ液が出る前と後でご飯の味が変わった経験はありませんか？ ご飯をよく噛んでいると甘くなるのは、デンプンが麦芽糖（甘い糖）に分解されているからです。</p>
+<p><strong>胃</strong>：強い酸性の胃液と<strong>ペプシン</strong>という酵素がタンパク質を分解。胃の中は pH1〜2という塩酸レベルの強酸。なのに胃自身が溶けないのは、胃壁が粘液のバリアで守られているから。</p>
+<p><strong>肝臓がつくる胆汁</strong>：胆汁は脂肪を細かい粒にする「体内の食器用洗剤」。酵素は入っていません。肝臓でつくられて胆のうに貯蔵され、十二指腸に分泌されます。<strong>「胆汁は消化酵素を含まない」</strong>は入試でよく出る引っかけポイントです。</p>
+<p><strong>すい臓がつくるすい液</strong>：デンプン、タンパク質、脂肪の<strong>3つ全部を分解できる万能選手</strong>。</p>
+<p><strong>小腸</strong>：最終的に、デンプンは<strong>ブドウ糖</strong>に、タンパク質は<strong>アミノ酸</strong>に、脂肪は<strong>脂肪酸とモノグリセリド</strong>にまで分解されます。</p>
+
+<div class="tip-box"><div class="tip-title">📊 消化をまとめよう——消化・酵素・分解後の物質</div>
+<table class="ref-table">
+<tr><th>栄養素</th><th>どこで消化？</th><th>消化酵素</th><th>分解後の物質</th></tr>
+<tr><td>デンプン</td><td>口・小腸</td><td>アミラーゼ（だ液・すい液）</td><td>ブドウ糖</td></tr>
+<tr><td>タンパク質</td><td>胃・小腸</td><td>ペプシン（胃液）・すい液の酵素</td><td>アミノ酸</td></tr>
+<tr><td>脂肪</td><td>小腸</td><td>胆汁（酵素なし）＋すい液の酵素</td><td>脂肪酸＋モノグリセリド</td></tr>
+</table>
+</div>
+
+<h2>小腸の柔毛——吸収の天才</h2>
+<p>小腸の内壁には<strong>柔毛（じゅうもう）</strong>という細かい突起が無数にあります。柔毛のおかげで小腸の内壁の表面積はテニスコート約1面分にもなる。この巨大な表面積で効率よく栄養を吸収するのです。</p>
+<p>柔毛の中には<strong>毛細血管</strong>と<strong>リンパ管</strong>が通っていて、</p>
+<p>・ブドウ糖とアミノ酸は<strong>毛細血管に入って肝臓へ</strong></p>
+<p>・脂肪酸とモノグリセリドは<strong>リンパ管に入る</strong></p>
+<p>吸収ルートが違うのがポイントです。「水に溶けやすいものは血管、溶けにくい脂肪はリンパ管」というイメージで覚えましょう。</p>
+
+<div class="callout"><div class="callout-title">🧪 だ液の実験——対照実験の完璧な手順</div>
+試験管Aにデンプンのり＋だ液、Bにデンプンのり＋水を入れて約37℃の湯に10分つける。ヨウ素液を加えると、<strong>Aは変化なし</strong>（デンプンが分解された）、<strong>Bは青紫色</strong>（デンプンが残っている）。<br><br>
+「なぜ37℃か？」→ 体温付近で酵素が最もよくはたらくから。<br>
+「Bはなぜ必要？」→ だ液の効果と比較するため（対照実験）。<br>
+「なぜだ液の代わりに水を使う？」→ 「だ液がなかったらどうなるか」を比較するため。</div>
+
+<p>消化器官を整理すると——食べ物が通る「消化管」（口→食道→胃→小腸→大腸→肛門）と、消化液を出す「消化腺」（だ液腺・胃腺・肝臓・胆のう・すい臓）の2種類があります。肝臓はとくに大切で、消化（胆汁をつくる）以外にも解毒・グリコーゲン貯蔵など多くの仕事をする「体の化学工場」です。</p>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①胆汁は消化酵素を含まない</strong>：脂肪を細かい粒にする（乳化）だけ。肝臓でつくられ胆のうに貯蔵。「酵素を含まない」は引っかけポイント。<br>
+<strong>②吸収ルートの違い</strong>：ブドウ糖とアミノ酸→柔毛の毛細血管→肝臓へ。脂肪酸とモノグリセリド→リンパ管へ。ルートが2種類あることを覚える。<br>
+<strong>③柔毛の役割</strong>：小腸の内壁の無数の突起。表面積をテニスコート約1面分まで広げて栄養を効率よく吸収する。<br>
+<strong>④デンプン→ブドウ糖、タンパク質→アミノ酸、脂肪→脂肪酸＋モノグリセリド</strong>という変化をセットで覚える。</div>
+`},
+
+{id:33,section:'biology',title:'血液は体の「宅配便」——呼吸・循環・排出',desc:'心臓は1日10万回。酸素と栄養を届け、ゴミを回収する血液のはたらき',tag:'biology',tagLabel:'生物',time:9,
+content:`
+<h2>心臓は2つのポンプが合体したもの</h2>
+<p>心臓を握りこぶしくらいの大きさだと思ってみてください。この小さな臓器が、1日に約10万回、休みなく血液を送り出しています。心臓には4つの部屋があります。右心房・右心室・左心房・左心室。右側のポンプは血液を<strong>肺に送る</strong>（肺循環）。左側のポンプは血液を<strong>全身に送る</strong>（体循環）。左心室の壁が特に厚いのは、全身に血液を押し出すために強い力が必要だからです。</p>
+
+<h2>血液の旅——2つのルート</h2>
+<p><strong>肺循環</strong>：右心室→肺動脈→<strong>肺</strong>→肺静脈→左心房。肺でCO₂を捨てて、新鮮なO₂をもらう。<br>
+<strong>体循環</strong>：左心室→大動脈→<strong>全身</strong>→大静脈→右心房。全身の細胞にO₂と栄養を届け、CO₂と老廃物を回収する。</p>
+
+<div class="callout"><div class="callout-title">⚠️ 最大の落とし穴——「動脈血」と「動脈」は別物！</div>
+<strong>動脈血</strong>＝酸素をたくさん含んだ鮮やかな赤い血液。<strong>静脈血</strong>＝CO₂が多く暗い赤の血液。ここまではわかりやすい。問題は次です。<br><br>
+<strong>肺静脈</strong>を流れているのは——<strong>動脈血</strong>。肺でO₂をたっぷりもらった直後の血液だから。<strong>肺動脈</strong>を流れているのは——<strong>静脈血</strong>。全身からCO₂を持ち帰った血液だから。<br><br>
+つまり<strong>「血管の名前」と「血液の種類」は一致しない</strong>。肺の近くではひっくり返る。これは入試で最もよく間違えるポイントです。</div>
+
+<h2>血液の成分——それぞれに役割がある</h2>
+<p><strong>赤血球</strong>：ヘモグロビンという物質で酸素を運ぶ。核がない（そのぶんヘモグロビンをたくさん積める）。<strong>白血球</strong>：病原菌を食べて退治する免疫部隊。核がある。<strong>血小板</strong>：傷口で血を固めて止血する。<strong>血しょう</strong>：液体成分。栄養やCO₂や老廃物を溶かして運ぶ。毛細血管からしみ出して<strong>組織液</strong>となり、細胞に直接栄養を届けます。</p>
+
+<h2>排出——体の中のゴミ処理</h2>
+<p>細胞が活動するとアンモニアなどの老廃物が出ます。アンモニアは有毒なので、血液で<strong>肝臓</strong>に運ばれて無害な<strong>尿素</strong>に変換。尿素は血液で<strong>腎臓</strong>に運ばれてろ過され、<strong>尿</strong>として排出。「アンモニア→肝臓で尿素に→腎臓でろ過→尿」。この流れを覚えてください。腎臓は1日に約180Lもの血液をろ過しますが、そのうち99%は再吸収されて体に戻ります。実際に尿として出るのは1〜2L程度です。</p>
+
+<p>血液の旅を追いかけると、こうなります。左心室から勢いよく送り出された血液（動脈血）は、大動脈を通って全身の毛細血管に行き渡り、細胞にO₂と栄養を届け、代わりにCO₂を受け取って静脈血になる。大静脈を通って右心房に戻り、右心室から肺動脈で肺へ。肺でCO₂を捨てて新鮮なO₂をもらい、また動脈血に生まれ変わって肺静脈で左心房に帰ってくる。<strong>全身をぐるっと一周して戻ってくるまでに約1分</strong>。1日に約10万回の拍動で、血液はこのルートを繰り返し巡っています。</p>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①肺静脈は動脈血、肺動脈は静脈血</strong>：血管の名前と血液の種類が逆転する最大の落とし穴。肺でO₂をもらった直後だから肺静脈は動脈血。<br>
+<strong>②血液成分の役割</strong>：赤血球＝ヘモグロビンでO₂を運ぶ（核なし）。白血球＝免疫（核あり）。血小板＝止血。血しょう＝液体成分。<br>
+<strong>③排出の流れ</strong>：アンモニア→肝臓で尿素に→腎臓でろ過→尿として排出。</div>
+`},
+
+{id:34,section:'biology',title:'熱いものに触れたら手が勝手に引っ込む——神経と運動',desc:'考える前に体が動く「反射」。脳とせきずいの役割分担',tag:'biology',tagLabel:'生物',time:9,
+content:`
+<h2>脳より先に体が動く——「反射」のすごさ</h2>
+<p>熱いフライパンにうっかり触った瞬間、「熱い！」と考える前に手を引っ込めていた——こんな経験はありませんか？ ふつう体を動かすときは「刺激→感覚神経→<strong>脳</strong>→運動神経→筋肉」というルートで信号が伝わります。でも危険な刺激のときは脳を経由していたら間に合わない。そこで「刺激→感覚神経→<strong>せきずい</strong>→運動神経→筋肉」というショートカットが発動する。これが<strong>反射</strong>です。<strong>脳を通らないから速い</strong>。手を引っ込めてから「熱い！」と感じるのは、脳への信号が遅れて届くからなのです。</p>
+<p>膝の少し下を軽く叩くと足がピクッと跳ねる（膝蓋腱反射）。まぶしい光を見ると瞳が小さくなる。これも反射です。意識して止めることができないのが反射の特徴。</p>
+
+<h2>神経の2つのグループ</h2>
+<p><strong>中枢神経</strong>＝脳＋せきずい。判断や命令を出す「司令部」。<strong>末しょう神経</strong>＝感覚神経＋運動神経。信号を伝える「ケーブル」。感覚神経は感覚器官から中枢へ信号を伝え、運動神経は中枢から筋肉へ命令を伝えます。</p>
+
+<h2>目と耳のしくみ</h2>
+<p><strong>目</strong>：光→角膜→<strong>水晶体</strong>（レンズの役割。厚みを変えてピントを調節。近くを見るとき厚く、遠くは薄く）→<strong>網膜</strong>（スクリーン。ここに像が映る）→視神経→脳。カメラとまったく同じ仕組みです。<br>
+<strong>耳</strong>：音（空気の振動）→鼓膜（振動を受け取る）→耳小骨（振動を増幅）→<strong>うずまき管</strong>（振動を電気信号に変換）→聴神経→脳。</p>
+
+<h2>筋肉と骨——「縮む」しかできない筋肉</h2>
+<p>うでを曲げるとき、内側の筋肉（屈筋）が<strong>縮み</strong>、外側の筋肉（伸筋）は<strong>ゆるむ</strong>。伸ばすときは逆。なぜ2つの筋肉がペアで動くかというと、<strong>筋肉は「縮む」ことしかできない</strong>から。自力で「伸びる」ことができないので、反対側の筋肉が縮むことで引っ張ってもらう必要があるのです。筋肉は<strong>けん</strong>で骨につながっていて、骨は<strong>関節</strong>で曲がります。</p>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①反射の経路</strong>：刺激→感覚神経→<strong>せきずい</strong>→運動神経→筋肉。脳を通らないから速い。「熱い」と感じるのは脳への信号が遅れて届くため。<br>
+<strong>②中枢神経と末しょう神経</strong>：中枢＝脳＋せきずい（判断する司令部）。末しょう＝感覚神経＋運動神経（信号を伝えるケーブル）。<br>
+<strong>③うでの筋肉</strong>：曲げるとき内側が縮み外側がゆるむ。伸ばすときは逆。筋肉は「縮む」しかできないからペアで動く。</div>
+
+<div class="tip-box"><div class="tip-title">📷 目はカメラ、耳はマイク</div><strong>目</strong>：光→角膜→水晶体（レンズ。近くは厚く、遠くは薄く調節）→網膜（スクリーン）→視神経→脳。カメラとまったく同じしくみです。<br><strong>耳</strong>：音→鼓膜（振動を受け取る）→耳小骨（振動を増幅）→うずまき管（電気信号に変換）→聴神経→脳。</div>
+`},
+
+{id:35,section:'biology',title:'1つの細胞が2つに分かれる——細胞分裂と成長',desc:'体が大きくなるしくみ。染色体が正確にコピーされるドラマ',tag:'biology',tagLabel:'生物',time:9,
+content:`
+<h2>赤ちゃんから大人へ——「数が増える＋大きくなる」の繰り返し</h2>
+<p>生まれたばかりの赤ちゃんは約3kg。大人は50〜70kg。体重が10倍以上になるこの劇的な成長。いったいどうやって起きるのか。じつはとてもシンプルで、細胞が「分裂して数を増やす」→「大きく成長する」を何兆回も繰り返しただけ。でもその「分裂」をよく見ると、遺伝情報をコピーして正確に配る驚異的なメカニズムが動いています。</p>
+<p>生まれたばかりの赤ちゃんは約3kg。大人は50〜70kg。この10倍以上の成長はどうやって起きるのか。答えは<strong>2つのステップの繰り返し</strong>です。まず1つの細胞が<strong>細胞分裂</strong>で2つに分かれる（数が増える）。次に、分かれた小さな細胞がそれぞれ大きく成長する（サイズが増える）。これを何兆回も繰り返して、私たちの体は大きくなりました。</p>
+
+<h2>染色体——遺伝情報の運び屋</h2>
+<p>細胞が分裂するとき、一番大事なのは<strong>遺伝情報を正確にコピーして配ること</strong>です。</p>
+<p>遺伝情報はDNAに書かれていて、分裂のときDNAはギュッと折りたたまれて<strong>染色体</strong>というひも状の構造になります。分裂の前に染色体は<strong>自分のコピーをつくって2倍になる</strong>。そして分裂のときに、コピーが左右均等に分配される。だから分裂後の2つの細胞は、もとの細胞と<strong>まったく同じ数の染色体</strong>を持ちます。人間は46本。分裂しても46本のまま。情報が欠けたり多くなったりしない、驚異的に正確なコピーシステムです。</p>
+
+<h2>タマネギの根で分裂を見る</h2>
+<p>入試でよく出るのは、タマネギの根の先端の細胞分裂を顕微鏡で観察する実験です。<strong>根の先端ほど細胞分裂がさかん</strong>で、いろいろな段階の細胞が見えます。</p>
+<p>染色体を見やすくするために<strong>酢酸カーミン</strong>や<strong>酢酸オルセイン</strong>で染色します。</p>
+<p>顕微鏡をのぞくと、分裂していない細胞（核が丸く見える）が大半です。でも注意深く探すと、ひも状の染色体が見えたり、染色体が真ん中に整列していたり、両端に引っ張られていたりする細胞が見つかります。</p>
+<p>これらを分裂の順番に並べ替える問題は入試の定番。染色体が見えない→ひも状に見える→中央に並ぶ→両端に分かれる→2つの核ができる→細胞がくびれて2つに分かれる。植物細胞の場合、最後は<strong>細胞板</strong>（しきり）ができて仕切られます。</p>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①成長の2ステップ</strong>：細胞分裂で数が増える＋細胞が大きくなる。この繰り返しで体が成長する。<br>
+<strong>②染色体は分裂前にコピーされる</strong>：DNAが複製されて2倍→分裂で均等に分配→分裂後も染色体数は同じ（人間46本）。<br>
+<strong>③観察のポイント</strong>：根の先端ほど分裂がさかん。酢酸カーミンや酢酸オルセインで染色体を赤く染めて観察する。</div>
+
+<div class="callout"><div class="callout-title">🔬 分裂の順番を並べ替える問題のコツ</div>①まず核が丸い細胞を見つける（分裂前の間期）。②ひも状の染色体が現れたら前期。③染色体が中央にきれいに並んだら中期。④両端に引っ張られていたら後期。⑤2つの核が見えたら終期。この順番で並べればOKです。</div>
+`},
+
+{id:36,section:'biology',title:'なぜオスとメスがいるのか——生物のふえ方',desc:'有性生殖と無性生殖。遺伝子を「混ぜる」ことの意味',tag:'biology',tagLabel:'生物',time:9,
+content:`
+<h2>自分のコピーをつくるか、遺伝子を混ぜるか</h2>
+<p>なぜ多くの生物にオスとメスがいるのか。考えてみると不思議です。自分のコピーをつくれれば（無性生殖）、パートナーを探す手間がない。でも地球上の多くの生物はわざわざオスとメスに分かれて、2個体の遺伝子を混ぜている。その理由は、<strong>多様性こそが生存戦略</strong>だから。全員が同じ体質だと、ある病気が来たら全滅する。でもバラバラなら、誰かが生き残れる。</p>
+<p>生物がふえる方法は大きく2つ。1個体だけで自分のコピーをつくる<strong>無性生殖</strong>と、2個体の遺伝子を混ぜ合わせる<strong>有性生殖</strong>。無性生殖のほうが簡単で速いのに、なぜわざわざ手間のかかる有性生殖が進化したのか。その答えは<strong>多様性</strong>にあります。</p>
+
+<h2>有性生殖——「減数分裂」がカギ</h2>
+<p>有性生殖では卵（卵細胞）と精子（精細胞）が合体して新しい個体が生まれます。ここで重要なのが<strong>減数分裂</strong>。ふつうの細胞分裂（体細胞分裂）では染色体の数は変わりませんが、卵や精子をつくるときの特別な分裂では染色体が<strong>半分になる</strong>。人間の体細胞は46本→卵と精子はそれぞれ23本ずつ。受精で合わさって46本に戻る。</p>
+<p>なぜ半分にする必要があるのか？ もし卵が46本、精子も46本のまま合体したら、子どもは92本になってしまう。世代を重ねるたびに倍々に増えてしまいますよね。だから合体する前に半分にしておくのです。</p>
+<p>有性生殖のすごさは<strong>両親の遺伝子が混ざる</strong>こと。だから兄弟でも一人ひとり違う。環境が変化したとき、みんなが同じ体質だと全滅するリスクがある。でも多様な個体がいれば、誰かが生き残れる可能性が高い。</p>
+
+<h2>無性生殖——親のクローン</h2>
+<p>アメーバは体が2つに分裂して増えます。ジャガイモは芽から新しい個体が育つ（<strong>栄養生殖</strong>）。イソギンチャクは体が分裂して増える。酵母菌は表面にぽこっと小さなコブができて独立する（<strong>出芽</strong>）。どれも親の遺伝子のコピー＝<strong>クローン</strong>。速く増えられるメリットがあるが、全員同じ体質なので環境変化に弱いのがデメリットです。</p>
+
+<div class="callout"><div class="callout-title">🐸 カエルの発生を追ってみよう</div>受精卵が細胞分裂を繰り返して2→4→8→…と増えていきます。最初はどの細胞も同じに見えますが、やがてそれぞれの細胞が神経や筋肉など決まった役割を持つようになる（<strong>分化</strong>）。オタマジャクシが足を生やし、しっぽが消え、カエルになる。この劇的な変化を<strong>発生</strong>と言います。</div>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①有性生殖と減数分裂</strong>：卵や精子をつくるとき染色体が半分になる特別な分裂。受精で合わさって元の数に戻る。<br>
+<strong>②無性生殖はクローン</strong>：分裂、栄養生殖（ジャガイモの芽）、出芽（酵母菌）。親と同じ遺伝子→速く増えるが多様性がない。<br>
+<strong>③人間の染色体</strong>：体細胞46本。卵と精子はそれぞれ23本。受精で46本に戻る。</div>
+`},
+
+{id:37,section:'biology',title:'なぜ親に似るのか——遺伝の規則性と進化',desc:'メンデルのエンドウ豆実験。3:1の比率に隠された遺伝の法則',tag:'biology',tagLabel:'生物',time:9,
+content:`
+<h2>メンデルのエンドウ豆実験——「3:1の謎」</h2>
+<p>19世紀のオーストリアの修道士メンデルは、エンドウ豆をひたすら交配し続けました。丸い種子としわの種子を交配すると、子（F₁世代）はすべて丸。しわは1つも出ない。でもそのF₁同士を交配すると、孫（F₂世代）では丸としわが約<strong>3:1</strong>の比率で出てきた。消えたはずのしわが孫の代で復活した。これはどういうことか？</p>
+<p>メンデルの答えはこうです。遺伝子は<strong>2つ1組</strong>で持っている。丸の遺伝子をA、しわの遺伝子をaとする。純粋な丸はAA、純粋なしわはaa。交配するとF₁はAa。AとAaが両方あるとき、<strong>見た目に現れるのはA（丸）だけ</strong>。a（しわ）は隠れている。Aを<strong>優性（顕性）</strong>、aを<strong>劣性（潜性）</strong>と呼びます。「優性」は「優れている」という意味ではなく、「見た目に出やすい」という意味です。</p>
+<p>F₁（Aa）同士を交配すると、卵と精子をつくるとき遺伝子のペアが分かれる（<strong>分離の法則</strong>）。Aの卵×Aの精子＝AA、Aの卵×aの精子＝Aa、aの卵×Aの精子＝Aa、aの卵×aの精子＝aa。4パターンのうちaaだけがしわになるので、<strong>丸:しわ＝3:1</strong>。</p>
+
+<div class="callout"><div class="callout-title">✏️ 遺伝の計算問題のコツ</div>①親の遺伝子型を書く（例：Aa × Aa）。②生殖細胞をつくるとき遺伝子が分かれる（AとA、aとa）。③表を書いてすべての組み合わせを出す。④数えて比率を出す。<br><br>「両親ともに二重まぶた（Aa）なのに一重まぶた（aa）の子が生まれた」。こんな問題も3:1の応用です。</div>
+
+<h2>進化の証拠——相同器官</h2>
+<p>クジラのヒレ、コウモリの翼、ヒトの腕。見た目はまったく違いますが、骨の基本構造を比べるとびっくりするほど似ている。これを<strong>相同器官</strong>と言い、<strong>共通の祖先から進化した証拠</strong>だと考えられています。環境に応じて形を変えてきたけれど、もとの設計図は同じ。ダーウィンの<strong>自然選択</strong>の考え方では、環境に適した個体が生き残り、その特徴が次の世代に受け継がれる。何万年も繰り返した結果が、今の多様な生物の姿なのです。</p>
+
+<p>「両親ともに二重まぶた（Aa）なのに、子どもが一重まぶた（aa）だった」——こんな話を聞いたことはありませんか？ これもまさに3:1の法則。Aa×Aaの組み合わせでは、4人に1人の割合でaaが生まれる。見た目（表現型）には現れなくても、aの遺伝子は親の体の中にちゃんと隠れていた。「劣性（潜性）」とは「弱い」という意味ではなく、<strong>「見た目に出にくいけど、ちゃんと受け継がれている」</strong>という意味なのです。</p>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①F₂世代の比3:1</strong>：Aa×Aaの交配で、AA:Aa:aa＝1:2:1。AAとAaは優性形質が出るので見た目は3:1。<br>
+<strong>②分離の法則</strong>：対になった遺伝子が生殖細胞をつくるとき分かれて別々の細胞に入る。<br>
+<strong>③相同器官は進化の証拠</strong>：クジラのヒレ、コウモリの翼、ヒトの腕は骨の基本構造が共通。共通の祖先から環境に応じて姿を変えた。</div>
+`},
+
+{id:38,section:'biology',title:'すべてのいのちはつながっている——生態系と食物連鎖',desc:'草→バッタ→カエル→ヘビ→タカ。1種の変化が全体に波及する',tag:'biology',tagLabel:'生物',time:9,
+content:`
+<h2>あなたが今日食べたものは、もとをたどれば太陽の光</h2>
+<p>お昼に食べたごはん。もとをたどれば、お米はイネが太陽の光でつくった。つまり<strong>あなたが食べたエネルギーの大元は太陽の光</strong>です。牛肉も、牛が食べた草が太陽で育った。チョコレートも、カカオが光合成で育った。どこまでたどっても太陽にたどり着く。すべてのいのちは太陽エネルギーでつながっているのです。</p>
+
+<h2>食物連鎖と食物網</h2>
+<p>草→バッタ→カエル→ヘビ→タカ。「食べる・食べられる」の一直線のつながりが<strong>食物連鎖</strong>。でも実際の自然界では、バッタはカエルだけでなく鳥にも食べられるし、カエルは魚にも食べられる。こうした複雑な網の目のようなつながりを<strong>食物網</strong>と言います。</p>
+<p>この中で、光合成で有機物をつくる植物は<strong>生産者</strong>。植物や他の動物を食べる動物は<strong>消費者</strong>。死んだ生物を無機物に分解する菌類や細菌は<strong>分解者</strong>。分解者がいなければ、地球上は動物や植物の死骸だらけになってしまいます。分解者は地味だけど、生態系にとってなくてはならない存在です。</p>
+
+<h2>もしヘビが急に増えたら？</h2>
+<p>生態系ではエネルギーは上のレベルにいくほど呼吸で減るので、<strong>ピラミッド型</strong>になります（生産者が一番多く、上位の消費者ほど少ない）。このバランスが崩れるとどうなるか。ヘビが急に増えた→カエルがたくさん食べられて減る→バッタが食べられなくなって増える→草が大量に食べられて減る。<strong>1種の変化が連鎖的に波及</strong>する。</p>
+<p>これがまさに「生態系はつながっている」ということです。でも自然界には、時間をかけてバランスを取り戻す力もあります。</p>
+
+<div class="callout"><div class="callout-title">🔄 炭素の循環——物質はぐるぐるまわる</div>CO₂→植物が光合成で有機物にする→動物が食べる→呼吸でCO₂を出す→また植物が吸収する。死んだ生物は分解者が無機物に戻す。<strong>物質は生態系の中をぐるぐる循環</strong>している。エネルギーは太陽から入り最終的に熱として宇宙に逃げるけど、物質はリサイクルされ続ける。人間が化石燃料を大量に燃やすと、この循環にため込まれていた炭素が一気にCO₂として放出される——これが地球温暖化の原因です。</div>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①生産者・消費者・分解者</strong>：生産者＝植物（光合成で有機物をつくる）。消費者＝動物。分解者＝菌類・細菌類（死骸を無機物に戻す）。<br>
+<strong>②1種の増減が他種に与える影響</strong>：ヘビが増える→カエルが減る→バッタが増える→草が減る。この連鎖的な変化を説明する記述問題。<br>
+<strong>③炭素の循環</strong>：CO₂→光合成→有機物→呼吸→CO₂。物質は生態系の中をぐるぐる循環している。</div>
+`},
+
+{id:39,section:'earth',title:'マグマが地形をつくる——火をふく大地',desc:'火山の形はマグマの粘り気で決まる。溶岩の色と噴火の激しさはセット',tag:'earth',tagLabel:'地学',time:9,
+content:`
+<h2>富士山とハワイの火山がまったく違う形をしているのはなぜ？</h2>
+<p>日本の象徴・富士山。きれいな円すい形。でも地球上の火山はみんなこの形ではない。ハワイのキラウエア火山はだらーんと平べったいし、雲仙普賢岳はこんもりドーム型。なぜ同じ「火山」なのにこんなに形が違うのか。その秘密はマグマの「ネバネバ度」にありました。</p>
+<p>富士山はきれいな円すい形。でもハワイのキラウエア火山はだらーんと平べったい。同じ「火山」なのに形がまるで違う。その理由は<strong>マグマの粘り気（ねばりけ）</strong>の違いです。</p>
+<p>サラサラのマグマ→溶岩が遠くまで流れて<strong>平べったい火山</strong>に。噴火は穏やかで、ハワイではツアーで見に行けるほど。ドロドロのネバネバマグマ→溶岩が流れにくくてこんもり盛り上がった<strong>ドーム型</strong>に。ガスが抜けにくいので圧力がたまって<strong>爆発的に噴火</strong>。雲仙普賢岳の火砕流はこのタイプ。その中間が富士山のような<strong>円すい形（成層火山）</strong>。溶岩と火山灰が交互に積み重なってできた美しい形です。</p>
+<p>面白いことに、<strong>岩石の色</strong>とも対応しています。サラサラマグマ→<strong>黒っぽい</strong>岩石。ドロドロマグマ→<strong>白っぽい</strong>岩石。白い岩石ほど二酸化ケイ素（SiO₂）が多く、これが粘り気の原因です。</p>
+
+<h2>火成岩——マグマが冷えてできた岩石</h2>
+<p>マグマが冷えると岩石になります。冷え方の違いで2タイプに分かれます。地表近くで<strong>急に冷えた</strong>→<strong>火山岩</strong>。結晶が育つ時間がないので、大きな結晶（斑晶）とガラス質の部分が混在した<strong>斑状組織</strong>になる。地下深くで<strong>ゆっくり冷えた</strong>→<strong>深成岩</strong>。結晶が十分に成長するので、大きな結晶だけでできた<strong>等粒状組織</strong>になる。</p>
+<p>ゆっくり冷やすと結晶が大きく育つのは、砂糖の結晶を作る実験と同じ原理。砂糖水をゆっくり蒸発させると大きなザラメができますよね。急冷すると細かい粒のグラニュー糖になる。岩石も同じなのです。</p>
+
+<div class="callout"><div class="callout-title">🪨 6つの火成岩を色で覚える</div>
+火山岩（急冷）：<strong>流紋岩</strong>（白っぽい）・<strong>安山岩</strong>（灰色）・<strong>玄武岩</strong>（黒っぽい）<br>
+深成岩（ゆっくり）：<strong>花こう岩</strong>（白っぽい）・<strong>閃緑岩</strong>（灰色）・<strong>斑れい岩</strong>（黒っぽい）<br>
+白い岩＝SiO₂が多い＝粘り気が大きい＝爆発的噴火。黒い岩＝SiO₂が少ない＝粘り気が小さい＝穏やかな噴火。<strong>色と粘り気と噴火の激しさはセット</strong>で覚えましょう。</div>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①マグマの粘り気と火山の関係</strong>：粘り気小→平べったい・穏やか・黒い岩。粘り気大→ドーム型・爆発的・白い岩。中間→円すい形（富士山）。<br>
+<strong>②火山岩と深成岩の組織の違い</strong>：斑状組織（大きな結晶＋ガラス質）＝火山岩（急冷）。等粒状組織（大きな結晶だけ）＝深成岩（ゆっくり冷却）。<br>
+<strong>③6つの火成岩を色と冷え方で分類</strong>：火山岩は流紋岩（白）・安山岩（灰）・玄武岩（黒）。深成岩は花こう岩（白）・閃緑岩（灰）・斑れい岩（黒）。</div>
+`},
+
+{id:40,section:'earth',title:'なぜ日本は地震が多いのか——ゆれ動く大地',desc:'4つのプレートがぶつかる「地震の十字路」に日本はある',tag:'earth',tagLabel:'地学',time:9,
+content:`
+<h2>日本は世界でも有数の「地震多発地帯」</h2>
+<p>日本にいると地震は身近ですが、世界的に見れば地震がこんなに多い国は珍しいのです。理由は、<strong>日本が4つのプレートの境界に位置している</strong>から。地球の表面は「プレート」という十数枚の巨大な岩盤でできていて、年間数cmずつ動いています。日本はユーラシア、北アメリカ、太平洋、フィリピン海の4枚のプレートが集まる場所にある「地震の十字路」なのです。</p>
+<p>海のプレートが陸のプレートの下に沈み込む。陸のプレートが引きずられてひずむ。限界に達すると一気に跳ね返る——この跳ね返りが地震。揺れが始まった地下の点を<strong>震源</strong>、その真上の地表の点を<strong>震央</strong>と呼びます。</p>
+<p>震源と震央の違いは意外と忘れやすい。「震源は地下の点、震央は地図上に示す地表の点」です。地震のニュースで「震源の深さ10km」と言うのは震源のこと。地図に×印で示す場所が震央です。</p>
+
+<h2>P波とS波——なぜ揺れは2回来るのか</h2>
+<p>地震のとき、最初にカタカタと小さく揺れ、しばらくしてユサユサと大きく揺れる。最初の小さな揺れは<strong>P波（初期微動）</strong>。後から来る大きな揺れは<strong>S波（主要動）</strong>。P波は速い（約7km/s）、S波は遅い（約4km/s）。だから先にP波が届き、遅れてS波が届く。</p>
+
+<table class="ref-table">
+<tr><th></th><th>P波（初期微動）</th><th>S波（主要動）</th></tr>
+<tr><td>速さ</td><td>約7km/s（速い）</td><td>約4km/s（遅い）</td></tr>
+<tr><td>揺れ方</td><td>小さく揺れる</td><td>大きく揺れる（被害が出るのはほぼこちら）</td></tr>
+<tr><td>伝わる場所</td><td>固体・液体・気体すべて</td><td>固体のみ（液体中は伝わらない）</td></tr>
+</table>
+
+<p><strong>初期微動継続時間</strong>（P波からS波が届くまでの差）は、<strong>震源から遠いほど長くなる</strong>。2人の走者が同時にスタートして、速い走者が先にゴールし、遅い走者が後から着く。ゴールまでの距離が長いほど到着時間の差は大きくなる。地震波も同じ原理です。</p>
+
+<div class="tip-box"><div class="tip-title">⏱️ 初期微動継続時間から震源距離を求める計算</div>
+P波とS波が同時に震源を出発して、P波が先に届くまでの時間が「初期微動継続時間」。<br><br>
+震源距離を d、P波速度を Vp、S波速度を Vs とすると：<br>
+<strong>初期微動継続時間 ＝ d/Vs − d/Vp</strong><br><br>
+例：P波速度7km/s、S波速度4km/s、初期微動継続時間が10秒なら？<br>
+10 ＝ d/4 − d/7 → d = 10 ÷ (1/4 − 1/7) = 10 ÷ (3/28) = <strong>約93km</strong><br><br>
+式を覚えるより「初期微動継続時間が長い＝遠い場所」という関係を理解しておく方が大切。</div>
+
+<div class="callout"><div class="callout-title">📊 マグニチュードと震度——よく混同される2つの数字</div>
+<strong>マグニチュード(M)</strong>：地震そのもののエネルギーの大きさ。1つの地震にはMの値は1つだけ。Mが1増えるとエネルギーは約32倍、M2増えると1000倍。<br>
+<strong>震度</strong>：ある地点での揺れの強さ。同じ地震でも場所によって値が違う。震源に近いほど大きい。0〜7（7は7強ではなく「7」だけ）。<br><br>
+イメージ：マグニチュード＝「爆弾の大きさ」、震度＝「その場所での被害の程度」。大きな爆弾でも遠ければ被害は小さい。近くの小さな地震でも震度が大きく感じることがある。</div>
+
+<h2>緊急地震速報——理科の知識が命を守る</h2>
+<p>P波が先に届きS波が後から届く。この時間差を利用したのが<strong>緊急地震速報</strong>。震源近くの観測点がP波を検知した瞬間に、まだS波が届いていない遠くの地域に「大きな揺れが来ます」と警告する。あの数秒のおかげで机の下に隠れたり、ガスを止めたりできる。P波とS波の速さの違いという理科の知識が、人の命を守っているのです。</p>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①P波とS波の計算</strong>：P波（約7km/s）が先に届き、S波（約4km/s）が後から届く。初期微動継続時間は震源距離に比例。グラフから距離を計算する問題が頻出。<br>
+<strong>②マグニチュードと震度の違い</strong>：M＝地震エネルギーの大きさ（1つの地震に1つ）。震度＝ある地点での揺れの強さ（場所で違う）。混同しないこと。<br>
+<strong>③震源と震央の違い</strong>：震源＝地下で地震が発生した点。震央＝震源の真上の地表の点。地図上に示すのは震央。<br>
+<strong>④プレートの沈み込みと地震の関係</strong>：海のプレートが陸のプレートの下に沈み込み、陸側が限界でバネのように跳ね返る。これが地震の原因。</div>
+`},
+
+{id:41,section:'earth',title:'地層は地球の日記帳——変動する大地',desc:'何百万年もの時間を読む。化石は「いつ」と「どんな環境」を教えてくれる',tag:'earth',tagLabel:'地学',time:9,
+content:`
+<h2>崖に見える縞模様——あれは何百万年分の「時間の記録」</h2>
+<p>道路工事で切り開かれた崖にきれいな縞模様が見えることがあります。あの1本1本の線は、何十万年、何百万年という途方もない時間の記録。砂が積もり、泥が積もり、火山灰が降り積もり、それが押し固められて岩になった。地層は地球が書いた「日記」のようなものです。</p>
+<p>崖や道路の切り通しで見えるあの縞模様が<strong>地層</strong>です。川が山を削り、砂や泥を海に運ぶ。海底に積もる。長い年月をかけて上から押されて固い岩（<strong>堆積岩</strong>）になる。<strong>下の層ほど古く、上の層ほど新しい</strong>（地層累重の法則）。地層は地球の日記帳のようなもので、1枚1枚が「このときこんな環境だった」と教えてくれます。</p>
+<p>堆積岩は「何が固まったか」で名前が変わります。大きな粒（2mm以上）が固まった＝<strong>れき岩</strong>。中くらい（0.06〜2mm）＝<strong>砂岩</strong>。細かい粒（0.06mm以下）＝<strong>泥岩</strong>。川の流れで運ばれるとき、重い大きな粒は河口近くに沈み、軽い小さな粒は遠くまで運ばれる。だから<strong>地層を読むと昔の海の深さがわかる</strong>のです。</p>
+
+<h2>化石が教えてくれる2つのこと</h2>
+<p>地層の中から見つかる昔の生物の痕跡＝<strong>化石</strong>。化石は「<strong>いつの時代か</strong>」と「<strong>どんな環境だったか</strong>」を教えてくれます。</p>
+<p><strong>示準化石</strong>（時代を特定）：短い期間だけ生き、広い範囲にいた生物の化石。三葉虫→古生代。アンモナイト→中生代。ビカリア（巻貝の仲間）→新生代。「短く広く」がポイント。<br>
+<strong>示相化石</strong>（環境を特定）：特定の環境でしか生きられなかった生物の化石。サンゴ→暖かく浅い海。シジミ→河口付近の汽水域。ブナの葉→涼しい陸地。</p>
+
+<div class="callout"><div class="callout-title">🏝️ 沖縄の琉球石灰岩</div>沖縄の地面の多くは<strong>琉球石灰岩</strong>でできています。サンゴの化石がたっぷり含まれている。サンゴは暖かく浅い海にしか住めないから、琉球石灰岩があるということは、<strong>昔ここが暖かい浅い海だった証拠</strong>。首里城の石垣にも使われていて、沖縄そのものが地学の教材です。石灰岩に<strong>うすい塩酸をかけると泡が出る</strong>（CO₂が発生）。これが石灰岩の見分け方です。</div>
+
+<p>離れた場所の地層を比べるとき、同じ時代に広い範囲に降った<strong>火山灰の層（凝灰岩）</strong>が目印になります。これを<strong>鍵層</strong>と呼び、異なる場所の地層の「同じ時代」を対応づけることができます。</p>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①堆積岩の分類は粒の大きさ</strong>：2mm以上＝れき岩、0.06〜2mm＝砂岩、0.06mm以下＝泥岩。石灰岩は生物の殻で、塩酸をかけるとCO₂が出る。<br>
+<strong>②示準化石と示相化石</strong>：示準化石＝時代を特定（三葉虫→古生代、アンモナイト→中生代）。示相化石＝環境を特定（サンゴ→暖かく浅い海）。<br>
+<strong>③柱状図の読み取り</strong>：鍵層（火山灰の層など）で離れた場所の地層を対比して、同じ時代の地層を特定する問題が頻出。</div>
+`},
+
+{id:42,section:'earth',title:'なぜ天気は高気圧だと晴れるのか——気象の観測',desc:'空気が下がれば晴れ、上がれば雨。気圧と天気のシンプルな関係',tag:'earth',tagLabel:'地学',time:9,
+content:`
+<h2>天気の9割は「気圧」で説明できる</h2>
+<p>明日の天気は？ 傘は持っていくべき？ 天気予報がなかった時代、人々は空を見上げて天気を予測していました。でも現代は科学で天気を読み解ける。その最大のカギが<strong>気圧</strong>です。気圧の変化を理解すれば、なぜ晴れるのか、なぜ雨が降るのかがわかります。「高気圧は晴れ、低気圧は雨」——このシンプルなルールの裏にある理由を知ると、天気図が「読める」ようになります。</p>
+<p>天気予報をよく見てみてください。「高気圧に覆われて晴れるでしょう」「低気圧が近づいて雨になるでしょう」——天気のほとんどは<strong>気圧</strong>で説明できます。なぜでしょうか。</p>
+<p><strong>高気圧</strong>の中心では空気が<strong>下降</strong>する。下降する空気は圧縮されて温まり、雲ができにくい。だから<strong>晴れ</strong>。<strong>低気圧</strong>の中心では空気が<strong>上昇</strong>する。上昇する空気は膨張して冷え、水蒸気が水滴に変わって雲ができる。だから<strong>曇りや雨</strong>。高気圧＝下降＝晴れ。低気圧＝上昇＝雨。このシンプルなルールが天気の基本です。</p>
+<p>気圧の単位は<strong>hPa（ヘクトパスカル）</strong>。1気圧＝約1013hPa。天気図の等圧線は<strong>4hPaごと</strong>に引かれていて、<strong>等圧線の間隔が狭い場所ほど風が強い</strong>。台風の中心付近で等圧線がギュッと詰まっているのは、気圧差が急激に変わっていて猛烈な風が吹いているからです。</p>
+
+<h2>風は高気圧から低気圧に吹く</h2>
+<p>空気は気圧の高いところから低いところに流れます。これが<strong>風</strong>。海辺で昼に海から風が吹くのは、陸が太陽に暖められて上昇気流が起き（低圧に）、海の冷たい空気が流れ込んでくるから（<strong>海風</strong>）。夜は逆に陸のほうが冷えるので、陸から海に向かって風が吹く（<strong>陸風</strong>）。</p>
+
+<div class="callout"><div class="callout-title">📐 圧力の計算</div><strong>圧力(Pa)＝力(N)÷面積(m²)</strong>。同じ体重でもハイヒールで踏まれると痛いのは、かかとの面積が小さくて圧力が大きいから。スノーシュー（かんじき）は面積を大きくして雪に沈まないようにする。この「圧力」の考え方を理解していれば、大気圧や水圧の問題も同じ発想で解けます。</div>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①高気圧と低気圧</strong>：高気圧＝下降気流→雲ができにくい→晴れ。低気圧＝上昇気流→雲ができる→雨。しくみの理由を説明できるように。<br>
+<strong>②等圧線の読み方</strong>：間隔が狭いほど気圧差が大きく風が強い。台風の中心付近で等圧線が詰まるのはそのため。<br>
+<strong>③圧力の計算</strong>：圧力(Pa)＝力(N)÷面積(m²)。同じ力でも面積が小さいほど圧力が大きい。</div>
+
+<div class="tip-box"><div class="tip-title">🌊 海風と陸風を体感しよう</div>沖縄の海辺に立つと、昼間は海から涼しい風が吹いてきます（海風）。夕方になると風が弱まり、夜は逆に陸から海に向かって風が吹く（陸風）。陸は太陽に暖められやすく冷めやすい。海は暖まりにくく冷めにくい。この温まり方の差が気圧差を生み、風が生まれるのです。</div>
+`},
+
+{id:43,section:'earth',title:'温暖前線と寒冷前線——天気の変化',desc:'暖かい空気と冷たい空気がぶつかると天気が劇的に変わる',tag:'earth',tagLabel:'地学',time:9,
+content:`
+<h2>天気が急変するのは「前線」が通過するとき</h2>
+<p>朝は気持ちよく晴れていたのに、午後から急に空が暗くなって雷を伴う激しい雨。夕方にはカラッと晴れて、空気がひんやり冷たくなっていた——こんな経験はありませんか？ こういう天気の急変は偶然ではなく、<strong>前線</strong>という暖かい空気と冷たい空気の境界線が通過したときに起こる、予測可能な現象なのです。</p>
+<p>朝は晴れていたのに午後から急に大雨になった。夕方にはカラッと晴れて気温がグッと下がった——こういう天気の急変は<strong>前線</strong>の通過で起こります。前線とは、暖かい空気の塊（暖気団）と冷たい空気の塊（寒気団）がぶつかる<strong>境界線</strong>のことです。</p>
+
+<h2>温暖前線——じわじわと天気が崩れる</h2>
+<p><strong>温暖前線</strong>は暖かい空気が冷たい空気の上に<strong>ゆっくり乗り上げていく</strong>前線。暖かい空気は軽いので冷たい空気の上をすべるように進む。だから遠くの高いところから薄い雲が広がりはじめ、だんだん雲が厚くなって、<strong>広い範囲でしとしとと穏やかな雨</strong>が降る。通過後は暖かくなる。</p>
+
+<h2>寒冷前線——突然の激しい変化</h2>
+<p><strong>寒冷前線</strong>は冷たい空気が暖かい空気の下に<strong>急にもぐり込む</strong>前線。暖かい空気が一気に持ち上げられるので、<strong>狭い範囲で激しい雨</strong>（雷雨になることも）。通過後は<strong>気温がガクッと下がり</strong>、風向きが変わる。寒冷前線は温暖前線より速く進むので、やがて温暖前線に追いつく（<strong>閉塞前線</strong>）。</p>
+<p><strong>停滞前線</strong>は暖気と寒気の勢力が拮抗して動かないもの。梅雨前線や秋雨前線がこれ。長い間ぐずぐずとした天気が続く原因です。</p>
+
+<div class="callout"><div class="callout-title">🌀 台風と沖縄</div>台風は赤道近くの暖かい海で発生した<strong>熱帯低気圧</strong>が発達したもの。中心に向かって反時計回りに風が吹き込みます。進行方向の<strong>右側のほうが風が強い</strong>（台風の風と進む速さが合わさるため）。沖縄は日本一の台風銀座。天気図で台風の位置を追いかけて「明日どこに来るか」を予測する問題は入試でも出ます。</div>
+
+<h2>天気は西から東に変わる</h2>
+<p>日本の上空には<strong>偏西風</strong>という西から東に吹く強い風があり、低気圧や前線はこの風に乗って西→東に移動します。だから天気図で今日西にある低気圧は、明日にはあなたの上空にやってくる。「西の天気が明日の天気」と言われるのはこのためです。</p>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①温暖前線</strong>：暖気が寒気の上にゆっくり乗り上げる。広い範囲でしとしと雨。通過後は暖かくなる。<br>
+<strong>②寒冷前線</strong>：寒気が暖気の下に急にもぐり込む。狭い範囲で激しい雨。通過後は急に寒くなり風向きが変わる。<br>
+<strong>③天気は西から東に変わる</strong>：偏西風に乗って低気圧や前線が移動するため。天気図で西にある低気圧は明日こちらに来る。<br>
+<strong>④温帯低気圧の構造</strong>：中心から南に温暖前線、南西に寒冷前線がセットで伸びる。</div>
+`},
+
+{id:44,section:'earth',title:'なぜ梅雨があるのか——日本の四季と気団',desc:'冬は西高東低で日本海側に雪。夏は太平洋高気圧で蒸し暑い。天気図で季節がわかる',tag:'earth',tagLabel:'地学',time:9,
+content:`
+<h2>日本の四季は「気団の勢力争い」で生まれる</h2>
+<p>日本には四季がある。当たり前のように感じるかもしれませんが、世界的に見ると、こんなにはっきりした四季がある国は珍しいのです。赤道近くの国はずっと暑いし、北欧は冬が長い。</p>
+<p>日本に四季があるのは、<strong>4つの空気の塊（気団）が季節ごとにパワーバランスを変える</strong>からです。</p>
+<p>日本は四季がはっきりしている珍しい国です。春の穏やかさ、梅雨のじめじめ、夏の暑さ、冬の寒さ。この全部を<strong>気団</strong>（大きな空気のかたまり）のパワーバランスで説明できます。</p>
+<h2>季節ごとの天気パターン</h2>
+<p><strong>冬</strong>：シベリア方面から<strong>冷たく乾いた空気</strong>（シベリア気団）が張り出す。天気図は<strong>西高東低</strong>の気圧配置で、等圧線が南北に縦縞に並ぶのが特徴。北西の季節風が日本海を渡るとき<strong>大量の水蒸気を吸い上げ</strong>、山脈にぶつかって日本海側に大雪を降らせます。山を越えた空気は水分を使い果たしているので、太平洋側は<strong>乾燥した晴れ</strong>。</p>
+<p>同じ日本なのに日本海側は大雪、太平洋側は快晴。これが冬の天気パターンです。</p>
+<p><strong>梅雨</strong>：北から<strong>オホーツク海気団</strong>（冷たく湿った空気）、南から<strong>小笠原気団</strong>（暖かく湿った空気）がぶつかり合って<strong>停滞前線（梅雨前線）</strong>ができる。勢力が拮抗しているので前線が動かず、長い間じめじめした天気が続く。沖縄は本土より約1か月早く梅雨入り・梅雨明けします。</p>
+<p><strong>夏</strong>：小笠原気団が強くなって太平洋高気圧が日本列島を覆う＝<strong>南高北低</strong>。蒸し暑い晴天が続く。沖縄の夏の暑さはまさにこのパターン。<strong>春・秋</strong>：高気圧と低気圧が交互に西から東に通過するので、天気が<strong>周期的に変化</strong>する。</p>
+
+<div class="callout"><div class="callout-title">📋 天気図から季節を当てる方法</div>等圧線が縦縞＝<strong>冬</strong>（西高東低）。太平洋側に大きな高気圧＝<strong>夏</strong>（南高北低）。東西に横たわる前線＝<strong>梅雨</strong>（停滞前線）。高気圧と低気圧が交互＝<strong>春か秋</strong>。天気図の「見た目」だけで季節が判断できます。この問題は入試でとてもよく出ます。</div>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①天気図から季節を判定</strong>：縦縞の等圧線＝冬（西高東低）。太平洋側に大きな高気圧＝夏（南高北低）。横たわる前線＝梅雨。高気圧と低気圧が交互＝春か秋。<br>
+<strong>②冬型の天気の説明</strong>：北西の季節風が日本海で水蒸気を含む→山脈にぶつかり日本海側に雪→太平洋側は乾燥して晴れ。<br>
+<strong>③偏西風の役割</strong>：日本の上空を西から東に吹く風。天気が西から変わる原因。</div>
+`},
+
+{id:45,section:'earth',title:'コップの水滴はどこから来た——水蒸気と雲のでき方',desc:'空気中の見えない水が見える水に変わる瞬間。それが雲の誕生',tag:'earth',tagLabel:'地学',time:9,
+content:`
+<h2>冷たいコップの水滴の正体</h2>
+<p>夏の暑い日。冷たい麦茶をコップに注ぐと、あっという間にコップの外側に水滴がびっしりつく。あの水滴はどこから来たのか？ コップに穴が開いて漏れた？</p>
+<p>いいえ、<strong>空気中に含まれていた目に見えない水蒸気が、冷たいコップに触れて冷やされ、液体の水に変わった</strong>のです。空気の中には常に水蒸気が漂っている。温度が下がると持ちきれなくなって目に見える水滴になる。この「見えない水が見える水に変わる瞬間」、じつはこれがまさに<strong>雲の誕生の原理</strong>でもあるのです。</p>
+<p>冷たい飲み物をコップに入れると外側に水滴がつく。あれはコップの中から漏れたのではありません。<strong>空気中の水蒸気が冷たいコップで冷やされて液体に変わった</strong>のです。この変化を<strong>凝結</strong>と言います。空気には目に見えない水蒸気が含まれていて、温度が下がると持ちきれなくなって液体に戻る。凝結が始まる温度が<strong>露点</strong>です。</p>
+<h2>湿度の計算</h2>
+<p><strong>湿度(%)＝空気1m³中の水蒸気量÷その温度の飽和水蒸気量×100</strong>。飽和水蒸気量とは「その温度で空気が最大で含める水蒸気の量」。温度が高いほど大きい。20℃なら17.3g/m³。今10.4gの水蒸気があれば、10.4÷17.3×100≒<strong>60%</strong>。</p>
+<p>大事なのは、<strong>温度が下がっても水蒸気量そのものは変わらない</strong>こと。でも飽和水蒸気量（分母）が小さくなるから湿度は上がる。100%に達した瞬間に凝結＝水滴が出現。朝の草に露がつくのも、夜の冷え込みで気温が露点を下回ったからです。</p>
+<h2>雲のでき方</h2>
+<p>地面が暖められて空気が上昇→上空は気圧が低いので空気が膨張→膨張すると温度が下がる→露点に達する→水蒸気が凝結→<strong>雲</strong>の誕生。雲は空中に浮かぶ微小な水滴（や氷の粒）の集まりです。</p>
+
+<div class="callout"><div class="callout-title">☁️ 雲をつくる実験</div>丸底フラスコに少量の水と線香の煙を入れ、ピストンで空気を引くと白くくもります（雲ができる！）。押し込むと消える。空気を引く＝膨張＝冷える＝凝結、というしくみを目の前で再現できます。線香の煙は<strong>凝結核</strong>（水蒸気がくっつく足場）の役割。実際の空でもホコリや微粒子が核になっています。</div></p>
+<p>実際の計算をやってみましょう。気温25℃、空気1m³あたりの水蒸気量が13.8g。25℃の飽和水蒸気量は23.1g。湿度＝13.8÷23.1×100≒<strong>60%</strong>。この空気を冷やしていくと、飽和水蒸気量が小さくなっていく。15℃の飽和水蒸気量は12.8g。13.8gのうち12.8gしか持てないから、差の1.0gが水滴になる。これが<strong>結露</strong>であり、朝の草の露であり、コップの水滴の正体です。</p>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①湿度の計算</strong>：湿度(%)＝水蒸気量÷飽和水蒸気量×100。飽和水蒸気量は温度が高いほど大きい。表を使う計算問題が頻出。<br>
+<strong>②雲のでき方</strong>：地面が暖まる→空気が上昇→膨張→温度低下→露点に達して凝結→雲。<br>
+<strong>③露点の測定実験</strong>：コップに水を入れて氷を少しずつ加え、表面がくもった温度を読む。それが露点。</div>
+`},
+
+{id:46,section:'earth',title:'太陽系は宇宙のどこにある——宇宙の広がり',desc:'地球は太陽系の一員。太陽系は銀河のはしっこ。宇宙は途方もなく広い',tag:'earth',tagLabel:'地学',time:9,
+content:`
+<h2>水金地火木土天海——太陽系の8兄弟</h2>
+<p>夜空を見上げると、何千もの星が輝いています。でもその中に「星のフリをした惑星」が混じっている。火星は赤っぽく光り、木星はひときわ明るい。星と惑星の違いは何か？ 星（恒星）は自分で光っている。惑星は太陽の光を反射しているだけ。そして地球も、宇宙から見れば太陽の光を反射して青く光る惑星のひとつなのです。</p>
+<p>地球は太陽を中心に回る8つの惑星のひとつ。内側から水星・金星・地球・火星・木星・土星・天王星・海王星。内側4つ（水星〜火星）は<strong>地球型惑星</strong>——小さく、岩石や金属でできていて密度が大きい。外側4つ（木星〜海王星）は<strong>木星型惑星</strong>——巨大だけどガスが主成分で密度が小さい。木星は地球1300個分の体積なのに、密度の小さい土星は水に浮くほど軽いのです。</p>
+<h2>太陽——自ら光る恒星</h2>
+<p>太陽は<strong>恒星</strong>（自分で光り輝く天体）。表面温度は約6000℃——想像もつかない熱さです。太陽の内部では水素がヘリウムに変わる核融合反応が起きていて、そのエネルギーが光と熱として放出されています。</p>
+<p>私たちの体を温め、植物の光合成を支え、天気を動かす——地球上のほぼすべてのエネルギーの源が太陽です。黒い斑点＝<strong>黒点</strong>は周囲より温度が低い（約4000℃）部分。黒点が日々移動するのは<strong>太陽が自転している</strong>証拠です。太陽のまわりに広がるガスが<strong>コロナ</strong>、炎のように噴き出すのが<strong>プロミネンス</strong>。</p>
+<p>地球から太陽まで約1.5億km。光速でも8分。でも宇宙ではご近所レベル。太陽のような恒星が数千億個集まった<strong>天の川銀河</strong>があり、太陽系はその端にいます。宇宙にはそんな銀河がさらに数千億個。私たちの存在はちっぽけだけど、だからこそ地球に生命があることのすごさがわかります。</p>
+<div class="callout"><div class="callout-title">🌟 金星が真夜中に見えない理由</div>金星は地球より内側を公転するので、太陽から大きく離れられない。だから<strong>明け方の東か夕方の西</strong>にしか見えない。真夜中に空高くに見えることは絶対にない。「明けの明星」「宵の明星」の由来です。望遠鏡で見ると月のように満ち欠けし、地球に近いほど大きく細く見えます。</div>
+<p>黒点を毎日スケッチすると、数日後には位置が移動していることがわかります。これは太陽が<strong>自転</strong>している証拠。しかも黒点の移動のしかたから、太陽が球体であること、赤道付近のほうが速く回っていることもわかる。たった「黒い点が動いた」という観察から、これだけの情報が引き出せる。科学の観察力のすごさです。</p>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①地球型惑星と木星型惑星</strong>：地球型（水〜火星）は小さく岩石で密度が大きい。木星型（木〜海王星）は巨大でガスが主成分、密度が小さい。<br>
+<strong>②恒星・惑星・衛星の区別</strong>：恒星＝自ら光る（太陽）。惑星＝恒星のまわりを回る（地球）。衛星＝惑星のまわりを回る（月）。<br>
+<strong>③金星が明け方か夕方にしか見えない理由</strong>：地球より内側を公転するため太陽から大きく離れられない。だから真夜中に見えることは絶対にない。</div>
+`},
+
+{id:47,section:'earth',title:'星が東から西に動く理由——地球の自転と公転',desc:'動いているのは星ではなく地球。メリーゴーランドと同じ原理',tag:'earth',tagLabel:'地学',time:9,
+content:`
+<h2>動いているのは星ではなく、あなた</h2>
+<p>夜空の星が東から昇って西に沈む。太陽も同じ。でもこれは星が動いているのではありません。<strong>あなたが乗っている地球が回っている</strong>から、空の風景が動いて見えるのです。</p>
+<p>メリーゴーランドに乗ると周りの建物が回って見える。実際に回っているのはあなた。地球も同じです。地球は24時間で1回転（自転）し、この自転が「昼と夜」をつくっています。</p>
+<p>さらに地球は365日かけて太陽のまわりを1周する（公転）。自転で「1日」が、公転で「1年」ができる。当たり前のように過ごしている1日も1年も、地球の運動が生み出した時間なのです。</p>
+<p>北の空の星は<strong>北極星を中心に反時計回り</strong>に動いて見えます。北極星がほぼ動かないのは、地軸の延長線上にあるから。コマが回るとき軸の先端が動かないのと同じです。カメラで長時間露光すると北極星を中心にした同心円の光跡が撮れる。天体写真の定番ですね。</p>
+<h2>公転——同じ時刻でも見える星座が変わる</h2>
+<p>地球は太陽のまわりを約365日で1周（公転）。公転のおかげで同じ時刻に見える星座は<strong>1か月に約30°西にずれる</strong>。夏にオリオン座が見えないのは昼間に出ているから。半年後の冬、地球が太陽の反対側に来ると夜空にオリオン座が戻ってくる。</p>
+<div class="callout"><div class="callout-title">🔭 透明半球の実験</div>透明ドームに太陽の位置を1時間ごとに記録。点を結ぶと太陽の軌跡に。最高点が<strong>南中</strong>。角度が<strong>南中高度</strong>。点の間隔が等しい＝1時間15°。夏は弧が高く長い（昼が長い）、冬は低く短い（昼が短い）。春分・秋分は真東から真西。この読み取り問題は入試の常連です。</div>
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①日周運動</strong>：地球の自転（西→東）により、天体が東→西に1時間15°動いて見える。北の空は北極星を中心に反時計回り。<br>
+<strong>②年周運動</strong>：地球の公転により、同じ時刻に見える星座が1か月に約30°ずつ西にずれる。<br>
+<strong>③透明半球の読み取り</strong>：太陽の軌跡を記録し、最高点＝南中、その角度＝南中高度。点の間隔が等しいことから1時間15°を確認する。</div>
+
+<div class="tip-box"><div class="tip-title">⭐ 星座の見える季節が変わる理由</div>夏の代表的な星座はさそり座。冬はオリオン座。なぜ季節で見える星座が変わるのか。地球が公転しているから、夜の方向（太陽の反対側）に見える星座が変わるのです。オリオン座が夏に見えないのは、太陽と同じ方向にあって昼間に出ているから。地球が半周すると夜空に戻ってきます。</div>
+`},
+
+{id:48,section:'earth',title:'なぜ夏は暑く冬は寒いのか——季節の変化',desc:'地軸の傾き23.4°が四季をつくる。南中高度と日照時間の関係',tag:'earth',tagLabel:'地学',time:9,
+content:`
+<h2>「太陽に近いから暑い」は間違い</h2>
+<p>なぜ夏は暑くて冬は寒いのか。「夏は太陽に近いから」——この答え、じつは<strong>間違い</strong>なのです。地球と太陽の距離は年間を通じてほとんど変わりません（むしろ北半球の夏のとき、地球はやや遠い位置にいます）。</p>
+<p>では本当の原因は何か。<strong>地軸が23.4°傾いている</strong>こと。たったこれだけのことが、地球上に四季をつくっています。</p>
+<p>もし地軸が傾いていなかったら、地球に四季はなく、1年中同じ気温。桜は咲かないし、紅葉もない。夏休みも冬休みも意味がなくなる。23.4°の傾き——たったそれだけのことが、私たちの暮らしを彩っているのです。</p>
+
+<h2>なぜ地軸の傾きで暑さが変わるのか</h2>
+<p>北半球が太陽の方向に傾いている時期（夏至のころ）は、太陽の<strong>南中高度が高く</strong>なります。</p>
+<p>高い位置から光が当たると、光が地面に対してより垂直に届く。同じ量の光が<strong>狭い面積に集中</strong>するので、単位面積あたりのエネルギーが大きい＝暑い。さらに<strong>昼が長い</strong>ので、たくさんの熱を受け取ります。</p>
+<p>冬はその逆。太陽が低い位置から光を当てるので、光が広い面積に薄く広がる。しかも昼が短い。だから寒いのです。</p>
+
+<h2>南中高度の計算</h2>
+<div class="example-block">
+<span class="en">春分・秋分の南中高度 ＝ 90° − その地点の緯度</span><br>
+<span class="en">夏至の南中高度 ＝ 90° − 緯度 + 23.4°</span><br>
+<span class="en">冬至の南中高度 ＝ 90° − 緯度 − 23.4°</span>
+</div>
+<p>那覇（北緯26°）の夏至：90 − 26 + 23.4 ＝ <strong>87.4°</strong>。ほぼ真上です！</p>
+<p>冬至でも 90 − 26 − 23.4 ＝ <strong>40.6°</strong>。本土に比べて沖縄の冬が暖かい理由が、この計算でわかります。</p>
+
+<div class="callout"><div class="callout-title">🌍 オーストラリアのクリスマスは真夏</div>地軸の傾きのせいで、北半球が夏のとき南半球は冬。だからオーストラリアのクリスマスは海水浴シーズン。季節が逆なのは「地球が丸いから」ではなく「<strong>地軸が傾いている</strong>から」。この区別は大切です。</div>
+
+<div class="tip-box"><div class="tip-title">🔭 南中高度を自分で確認する方法</div>地面に棒を立てて、影が一番短くなった瞬間が南中。そのときの棒の長さと影の長さの比率から南中高度を計算できます。夏至のころと冬至のころにやってみると、同じ場所なのに影の長さがまったく違うことが実感できます。季節の変化を「計算」ではなく「体感」できる実験です。</div>
+
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①季節の原因＝地軸の傾き23.4°</strong>：太陽との距離ではない。傾きにより南中高度と昼の長さが変化し、受ける熱量が変わる。<br>
+<strong>②南中高度の計算公式</strong>：春分・秋分＝90°−緯度。夏至＝90°−緯度＋23.4°。冬至＝90°−緯度−23.4°。<br>
+<strong>③夏至と冬至の違い</strong>：夏至は南中高度が最大・昼が最長。冬至は南中高度が最小・昼が最短。春分・秋分は昼夜同じ長さ。</div>
+`},
+
+{id:49,section:'earth',title:'月はなぜ形が変わるのか——月と惑星の見え方',desc:'太陽・月・地球の位置関係で月の見た目が変わる',tag:'earth',tagLabel:'地学',time:9,
+content:`
+<h2>月は自分では光っていない</h2>
+<p>今夜、月を見てみてください。満月なら丸い。三日月なら細い弧。月の形は毎日少しずつ変わっていきます。</p>
+<p>なぜ月は形が変わるのか。月自身が膨らんだり縮んだりしている？ もちろん違います。月はいつも丸い球体。ただ、<strong>太陽に照らされている面がどれだけ地球から見えるか</strong>で、形が変わって見えるだけなのです。</p>
+<p>これを理解すると、「今夜の月の形」から太陽・月・地球の位置関係を頭の中で描けるようになります。</p>
+<p>月が輝いて見えるのは太陽の光を反射しているだけ。月の半分は常に太陽に照らされて明るく、半分は暗い。地球から「明るい面がどれだけ見えるか」で、満月や三日月に見えるのです。</p>
+<p><strong>新月</strong>：月が太陽と同じ方向→光っている面が反対側→見えない。<strong>満月</strong>：太陽の反対側→光っている面が全部こちら向き→まん丸。新月から次の新月まで約<strong>29.5日</strong>。</p>
+<h2>月の形と見える時間帯</h2>
+<p><strong>満月</strong>は夕方に東から昇り一晩中見える。<strong>上弦の月</strong>（右半分が光る半月）は夕方に南中し、夜半に沈む。<strong>下弦の月</strong>（左半分が光る半月）は真夜中に東から昇り、明け方に南中。月の形と見える時間帯は太陽・月・地球の位置関係から論理的に導けます。</p>
+<h2>日食と月食</h2>
+<p><strong>日食</strong>：新月のとき月が太陽を隠す。太陽—月—地球が一直線。<strong>月食</strong>：満月のとき月が地球の影に入る。太陽—地球—月が一直線。月食のほうが見る機会が多いのは、地球の影が月の影よりずっと大きいからです。</p>
+<div class="exam-box"><div class="exam-title">📝 入試に出るポイント</div>
+<strong>①月の満ち欠け</strong>：太陽・月・地球の位置関係で光っている面の見え方が変わる。新月→上弦→満月→下弦で約29.5日。<br>
+<strong>②日食と月食</strong>：日食＝新月のとき月が太陽を隠す（太陽—月—地球）。月食＝満月のとき月が地球の影に入る（太陽—地球—月）。<br>
+<strong>③金星の見え方の変化</strong>：地球に近いとき＝大きく見えるが細い。遠いとき＝小さいが丸い。満ち欠けと大きさの変化はセットで出る。</div>
+
+<div class="callout"><div class="callout-title">🌑 月の満ち欠けモデルをつくろう</div>暗い部屋でライト（太陽）を置き、ボール（月）を持って自分（地球）のまわりに回してみてください。ボールの光っている面がどう見えるか確認すると、新月→三日月→上弦→満月→下弦のサイクルが体で理解できます。教科書の図を何度も見るより、一度この実験をやるほうがずっと記憶に残ります。</div>
+`},
+
+{id:50,section:'mind',title:'理科は「暗記」ではなく「なぜ」の教科',desc:'勉強が苦手でも理科は伸びる。「なぜ」と問う力が最強の武器',tag:'mind',tagLabel:'マインド',time:8,
+content:`
+<h2>理科は「覚える教科」ではなく「なぜの教科」</h2>
+<p>元素記号、化学式、器官の名前……。理科には確かに覚えることがたくさんあります。でも、もし暗記だけで理科をやろうとしたら、たぶん途中で嫌になります。そもそも、この本を読んでくれたのは「暗記が好きだから」ではなく、「なんかおもしろそうだな」と思ったからではないでしょうか。</p>
+<p>その「おもしろそう」が理科の本質です。カイロはなぜ温かいのか。鉄粉が酸素と反応して熱が出るから。じゃあカイロの反応とさびの反応は同じなのか。そう、速さが違うだけ。じゃあ酸化の逆は？ 還元。こうやって<strong>「なぜ？」から次の「なぜ？」へ</strong>進んでいくと、バラバラだった知識が1本のストーリーでつながっていく。つながった知識は、丸暗記の何倍も頭に残ります。</p>
+<p>もう一度言います。「なぜ？」と問うことが、理科の入口です。答えを最初から探そうとするのではなく、まず「あれ、なんでだろう？」と感じることから始める。その「?」が浮かんだ瞬間、あなたの頭は理科モードになっています。</p>
+
+<h2>目の前のすべてが「理科」</h2>
+<p>スマホが手から滑り落ちる——重力。自転車のブレーキをかけて止まる——摩擦。雨あがりの虹——光の分散。料理で肉が焼ける——化学変化。暑い日に汗をかいて涼しくなる——蒸発と体温調節。レモンをかじって酸っぱい——水素イオン。</p>
+<p><strong>理科は教科書の中だけにあるのではありません</strong>。なぜ空は青いのか。なぜ冬に息が白くなるのか。なぜ海はしょっぱいのか。こうした「なぜ？」は日常のあちこちに転がっています。教科書を閉じたあとも、ふとした瞬間に「あ、これ理科で習ったやつだ」と気づける。その瞬間が、理科を学ぶ一番の楽しさだと思います。</p>
+<p>たとえば、コップの外側に水滴がつくのは「露点と水蒸気の凝結」。お風呂で体が軽く感じるのは「浮力」。石鹸の泡が虹色に光るのは「光の干渉」。鉄がさびるのは「酸化」。これだけで身の回りの理科が見えてきますよね。</p>
+
+<div class="callout"><div class="callout-title">🌺 沖縄は理科の宝庫</div>サンゴ礁は生態系そのもの。毎年やってくる台風は気象の教材。琉球石灰岩には堆積岩と化石の知識が詰まっている。赤瓦と熱伝導、海風と陸風と対流、きれいな星空と天体観測、夏の南中高度がほぼ90°になることと季節の原因——沖縄で暮らしていると、日常そのものが理科の授業になっています。次に海に行ったとき、サンゴを見て「これが示相化石になるのか」と思えたら、あなたはもう理科の目で世界を見ています。</div>
+
+<h2>この本の使い方</h2>
+<p>全部を一気に読む必要はありません。<strong>興味のある章から読んでください</strong>。物理が好きなら最初から。生き物が好きなら生物の章から。宇宙が気になるなら地学から。どこから読んでも大丈夫なように書いてあります。</p>
+<p>1回読んだ章も、少し時間をあけてもう一度読むと、前よりずっと速く読めるし、見えなかったつながりが見えてきます。テストの前には「📝入試に出るポイント」だけを拾い読みするのも効果的です。</p>
+
+<div class="tip-box"><div class="tip-title">📖 苦手な子のための読み方アドバイス</div>
+理科が苦手と感じているなら、この読み方を試してみてください。<br><br>
+<strong>①まず「導入のエピソード」だけ読む</strong>——難しい用語は後回しでOK。「あ、そういうことか」と思えればそれで十分。<br><br>
+<strong>②表や箱の中だけを先に読む</strong>——理解が難しければ、callout boxや表だけ見てパターンを掴む。<br><br>
+<strong>③「📝入試に出るポイント」を先に読んでから本文に戻る</strong>——「何が大事か」を知っていると、本文が読みやすくなる。<br><br>
+<strong>④1章を2〜3回に分けて読む</strong>——一気に読もうとしなくていい。少しずつ読む方が定着する。</div>
+
+<p>理科がわかるようになると、世界の見え方が少しだけ変わります。空を見上げて「あの雲はなぜあの形なんだろう」と考えたり、夕焼けを見て「光の波長が長い赤い光だけが届いているんだな」と気づいたり。<strong>暗記した知識はいつか忘れるかもしれないけれど、「なぜ？」と問う力は一度身につけば一生使えます</strong>。</p>
+<p>この本が、あなたにとって理科を好きになるきっかけの一つになれたらうれしいです。</p>
+`}
+];
+</script>
+<script>
+const sections={physics:'physicsChapters',chemistry:'chemistryChapters',biology:'biologyChapters',earth:'earthChapters',mind:'mindChapters'};
+function renderChapterList(){
+  Object.values(sections).forEach(id=>document.getElementById(id).innerHTML='');
+  let delay=0;
+  chapters.forEach(ch=>{
+    const c=document.getElementById(sections[ch.section]);if(!c)return;
+    const d=document.createElement('div');d.className='chapter-card';d.dataset.id=ch.id;
+    d.style.animationDelay=delay*0.05+'s';delay++;
+    d.onclick=()=>openChapter(ch.id);
+    d.innerHTML='<div class="chapter-num">'+ch.id+'</div><div class="chapter-info"><div class="chapter-title">'+ch.title+'</div><div class="chapter-desc">'+ch.desc+'</div></div><span class="chapter-tag tag-'+ch.tag+'">'+ch.tagLabel+'</span>';
+    c.appendChild(d);
+  });
+  document.getElementById('totalCount').textContent=chapters.length;
+}
+function filterChapters(){
+  const q=document.getElementById('searchInput').value.toLowerCase();
+  document.querySelectorAll('.chapter-card').forEach(c=>{
+    const ch=chapters.find(x=>x.id==c.dataset.id);if(!ch)return;
+    const m=!q||ch.title.toLowerCase().includes(q)||ch.desc.toLowerCase().includes(q)||ch.tagLabel.includes(q);
+    c.style.display=m?'flex':'none';
+  });
+  Object.keys(sections).forEach(s=>{
+    const list=document.getElementById(sections[s]),label=document.getElementById('label-'+s);
+    label.style.display=[...list.children].some(c=>c.style.display!=='none')?'block':'none';
+  });
+}
+function openChapter(id){
+  const ch=chapters.find(c=>c.id===id);if(!ch)return;
+  document.getElementById('topPage').style.display='none';
+  document.getElementById('readingPage').style.display='block';
+  document.getElementById('readingTitle').textContent=ch.title;
+  document.getElementById('readingMeta').textContent=ch.tagLabel+' ・ '+ch.id+' / '+chapters.length;
+  document.getElementById('readingBody').innerHTML=ch.content+renderNav(ch.id);
+  document.getElementById('progressFill').style.width=(ch.id/chapters.length*100)+'%';
+  window.scrollTo(0,0);
+}
+function renderNav(id){
+  const p=chapters.find(c=>c.id===id-1),n=chapters.find(c=>c.id===id+1);
+  let h='<div class="chapter-nav">';
+  h+=p?'<button class="nav-btn" onclick="openChapter('+p.id+')">← '+p.title+'</button>':'<button class="nav-btn" disabled>最初の章</button>';
+  h+=n?'<button class="nav-btn" onclick="openChapter('+n.id+')">'+n.title+' →</button>':'<button class="nav-btn" disabled>最後の章</button>';
+  return h+'</div>';
+}
+function goBack(){document.getElementById('readingPage').style.display='none';document.getElementById('topPage').style.display='block';window.scrollTo(0,0);}
+window.addEventListener('scroll',()=>{document.getElementById('scrollTopBtn').style.display=window.scrollY>400?'flex':'none'});
+renderChapterList();
+renderTagFilters();
+function renderTagFilters(){
+  const tags=[
+    {key:'all',label:'すべて'},
+    {key:'physics',label:'⚡ 物理'},
+    {key:'chemistry',label:'🧪 化学'},
+    {key:'biology',label:'🌿 生物'},
+    {key:'earth',label:'🌏 地学'},
+    {key:'mind',label:'🧠 マインド'}
+  ];
+  const c=document.getElementById('tagFilters');
+  tags.forEach(t=>{
+    const b=document.createElement('button');
+    b.className='tag-filter'+(t.key==='all'?' active':'');
+    b.textContent=t.label;
+    b.dataset.tag=t.key;
+    b.onclick=()=>filterByTag(t.key);
+    c.appendChild(b);
+  });
+}
+function filterByTag(tag){
+  document.querySelectorAll('.tag-filter').forEach(b=>b.classList.toggle('active',b.dataset.tag===tag));
+  document.querySelectorAll('.chapter-card').forEach(c=>{
+    const ch=chapters.find(x=>x.id==c.dataset.id);
+    if(!ch)return;
+    c.style.display=(tag==='all'||ch.tag===tag)?'flex':'none';
+  });
+  Object.keys(sections).forEach(s=>{
+    const list=document.getElementById(sections[s]),label=document.getElementById('label-'+s);
+    const vis=[...list.children].some(c=>c.style.display!=='none');
+    label.style.display=vis?'block':'none';
+  });
+  document.getElementById('searchInput').value='';
+}
+</script>
+</body>
+</html>
